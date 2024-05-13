@@ -1,7 +1,19 @@
 services:
+  db:
+    build:
+      dockerfile: ./deploy/db/Dockerfile
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./deploy/db/data:/var/lib/mysql
+
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: ./deploy/app/Dockerfile
     ports:
       - '3000:3000'
     volumes:
       - .:/app
+    depends_on:
+      - db
