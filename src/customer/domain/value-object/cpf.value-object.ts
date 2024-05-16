@@ -1,8 +1,8 @@
 import { AbstractValueObject } from '@/shared/domain/value-object/abstract.value-object';
 
-interface CpfValueObjectProps {
+type CpfValueObjectProps = {
   value: string;
-}
+};
 
 export class CpfValueObject extends AbstractValueObject<CpfValueObjectProps> {
   get value(): string {

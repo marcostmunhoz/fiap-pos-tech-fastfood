@@ -1,8 +1,8 @@
 import { AbstractValueObject } from '@/shared/domain/value-object/abstract.value-object';
 
-interface EmailProps {
+type EmailProps = {
   value: string;
-}
+};
 
 export class EmailValueObject extends AbstractValueObject<EmailProps> {
   get value(): string {

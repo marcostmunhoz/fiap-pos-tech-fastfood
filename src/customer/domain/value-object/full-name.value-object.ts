@@ -1,9 +1,9 @@
 import { AbstractValueObject } from '@/shared/domain/value-object/abstract.value-object';
 
-interface FullNameProps {
+type FullNameProps = {
   firstName: string;
   lastName: string;
-}
+};
 
 export class FullNameValueObject extends AbstractValueObject<FullNameProps> {
   get firstName(): string {
