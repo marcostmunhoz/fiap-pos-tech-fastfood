@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 import { ConfigModule } from '@/shared/infrastructure/config/config.module';
 import { DatabaseConfigService } from '@/shared/infrastructure/config/database-config.service';
+import { CustomerModule } from './customer/customer.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DatabaseConfigService } from '@/shared/infrastructure/config/database-c
       inject: [DatabaseConfigService],
     }),
     ConfigModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
