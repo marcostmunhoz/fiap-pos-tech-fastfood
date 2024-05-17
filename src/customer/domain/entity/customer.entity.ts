@@ -7,6 +7,8 @@ export type CustomerEntityProps = {
   name?: FullNameValueObject;
   email?: EmailValueObject;
   cpf?: CpfValueObject;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type CustomerEntityPropsWithId = CustomerEntityProps & {
@@ -18,12 +20,16 @@ export class CustomerEntity {
   public readonly name?: FullNameValueObject;
   public readonly email?: EmailValueObject;
   public readonly cpf?: CpfValueObject;
+  public readonly createdAt?: Date;
+  public readonly updatedAt?: Date;
 
   private constructor(props: CustomerEntityPropsWithId) {
     this.id = props.id;
     this.name = props.name;
     this.email = props.email;
     this.cpf = props.cpf;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
   }
 
   public static create(props: CustomerEntityPropsWithId): CustomerEntity {
