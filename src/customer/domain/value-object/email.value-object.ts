@@ -11,7 +11,7 @@ export class EmailValueObject extends AbstractValueObject<EmailProps> {
 
   public static create(email: string): EmailValueObject {
     if (!this.isValidEmail(email)) {
-      throw new Error('Invalid email address.');
+      this.throwInvalidValue('Invalid email address.');
     }
 
     return new EmailValueObject({ value: email });

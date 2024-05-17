@@ -1,4 +1,5 @@
 import { shallowEqual } from 'shallow-equal-object';
+import { InvalidValueException } from '../exception/invalid-value.exception';
 
 interface ValueObjectProps {
   [index: string]: any;
@@ -21,5 +22,9 @@ export abstract class AbstractValueObject<T extends ValueObjectProps> {
     }
 
     return shallowEqual(this.props, vo.props);
+  }
+
+  protected static throwInvalidValue(message: string): InvalidValueException {
+    throw new InvalidValueException(message);
   }
 }

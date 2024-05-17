@@ -22,7 +22,7 @@ export class FullNameValueObject extends AbstractValueObject<FullNameProps> {
     const trimmedFullName = fullName.trim();
 
     if (!this.isValidFullName(trimmedFullName)) {
-      throw new Error('Invalid name.');
+      this.throwInvalidValue('Invalid name.');
     }
 
     const [firstName] = trimmedFullName.split(' ', 1);

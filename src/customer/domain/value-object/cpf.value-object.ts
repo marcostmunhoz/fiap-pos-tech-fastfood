@@ -13,7 +13,7 @@ export class CpfValueObject extends AbstractValueObject<CpfValueObjectProps> {
     const cleanCpf = cpf.replace(/\D/g, '');
 
     if (!this.isValidCpf(cleanCpf)) {
-      throw new Error('Invalid CPF.');
+      this.throwInvalidValue('Invalid CPF.');
     }
 
     return new CpfValueObject({ value: cleanCpf });

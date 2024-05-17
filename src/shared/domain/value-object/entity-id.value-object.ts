@@ -11,13 +11,13 @@ export class EntityIdValueObject extends AbstractValueObject<EntityIdValueObject
 
   public static create(id: string): EntityIdValueObject {
     if (!id) {
-      throw new Error('Invalid ID.');
+      this.throwInvalidValue('Invalid ID.');
     }
 
     const cleanId = String(id).trim();
 
     if (cleanId.length === 0) {
-      throw new Error('Invalid ID.');
+      this.throwInvalidValue('Invalid ID.');
     }
 
     return new EntityIdValueObject({ value: cleanId });
