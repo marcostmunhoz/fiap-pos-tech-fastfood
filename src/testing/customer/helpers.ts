@@ -14,6 +14,10 @@ import {
 } from '@/customer/infrastructure/entity/customer.entity';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 
+export function getValidEntityId(): EntityIdValueObject {
+  return EntityIdValueObject.create('customer-id');
+}
+
 export function getValidCpf(): CpfValueObject {
   return CpfValueObject.create('57516713090');
 }
@@ -44,7 +48,7 @@ export function getDomainCustomerEntityProps(): CustomerEntityProps {
 
 export function getDomainCustomerEntityPropsWithId(): CustomerEntityPropsWithId {
   return {
-    id: EntityIdValueObject.create('customer-id'),
+    id: getValidEntityId(),
     ...getDomainCustomerEntityProps(),
   };
 }
@@ -53,7 +57,7 @@ export function getDomainCustomerEntity(
   props?: EssentialCustomerEntityProps,
 ): DomainCustomerEntity {
   return DomainCustomerEntity.create({
-    id: EntityIdValueObject.create('customer-id'),
+    id: getValidEntityId(),
     createdAt: new Date(),
     updatedAt: new Date(),
     ...(props || getDomainEssentialCustomerEntityProps()),
@@ -62,6 +66,7 @@ export function getDomainCustomerEntity(
 
 export function getInfrastructureEssentialCustomerEntityProps(): InfrastructureEssentialCustomerEntityProps {
   return {
+    id: 'customer-id',
     name: getValidFullName().value,
     email: getValidEmail().value,
     cpf: getValidCpf().value,
@@ -72,7 +77,6 @@ export function getCustomerInfrastructureEntity(
   props?: InfrastructureEssentialCustomerEntityProps,
 ): InfrastructureCustomerEntity {
   return {
-    id: 'customer-id',
     createdAt: new Date(),
     updatedAt: new Date(),
     ...(props || getInfrastructureEssentialCustomerEntityProps()),
