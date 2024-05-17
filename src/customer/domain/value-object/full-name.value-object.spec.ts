@@ -10,7 +10,7 @@ describe('FullNameValueObject', () => {
       const instance = FullNameValueObject.createFromFullName(fullName);
 
       // Assert
-      expect(instance.fullName).toBe(fullName);
+      expect(instance.value).toBe(fullName);
       expect(instance.firstName).toBe('John');
       expect(instance.lastName).toBe('Something Doe');
     });
@@ -41,7 +41,7 @@ describe('FullNameValueObject', () => {
       );
 
       // Assert
-      expect(instance.fullName).toBe('John Doe');
+      expect(instance.value).toBe('John Doe');
       expect(instance.firstName).toBe(firstName);
       expect(instance.lastName).toBe(lastName);
     });

@@ -14,7 +14,7 @@ export class FullNameValueObject extends AbstractValueObject<FullNameProps> {
     return this.props.lastName;
   }
 
-  get fullName(): string {
+  get value(): string {
     return `${this.props.firstName} ${this.props.lastName}`;
   }
 

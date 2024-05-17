@@ -24,7 +24,7 @@ describe('FindCustomerByCpfUseCase', () => {
       const cpf = CpfValueObject.create('57516713090');
       const customer: CustomerEntityPropsWithId = {
         id: EntityIdValueObject.create('some-id'),
-        fullName: FullNameValueObject.createFromFullName('John Doe'),
+        name: FullNameValueObject.createFromFullName('John Doe'),
         cpf,
         email: EmailValueObject.create('john.doe@example.com'),
       };

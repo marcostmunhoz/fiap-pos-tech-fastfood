@@ -10,7 +10,7 @@ describe('CustomerEntity', () => {
       // Arrange
       const props: CustomerEntityPropsWithId = {
         id: EntityIdValueObject.create('some-id'),
-        fullName: FullNameValueObject.createFromFullName('John Doe'),
+        name: FullNameValueObject.createFromFullName('John Doe'),
         cpf: CpfValueObject.create('57516713090'),
         email: EmailValueObject.create('john.doe@example.com'),
       };

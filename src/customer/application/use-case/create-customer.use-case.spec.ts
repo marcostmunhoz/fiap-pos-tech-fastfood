@@ -25,7 +25,7 @@ describe('CreateCustomerUseCase', () => {
     it('should create a new customer', async () => {
       // Arrange
       const props: CustomerEntityProps = {
-        fullName: FullNameValueObject.createFromFullName('John Doe'),
+        name: FullNameValueObject.createFromFullName('John Doe'),
         cpf: CpfValueObject.create('57516713090'),
         email: EmailValueObject.create('john.doe@example.com'),
       };

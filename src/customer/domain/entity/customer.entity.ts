@@ -4,7 +4,7 @@ import { CpfValueObject } from '../value-object/cpf.value-object';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 
 export type CustomerEntityProps = {
-  fullName?: FullNameValueObject;
+  name?: FullNameValueObject;
   email?: EmailValueObject;
   cpf?: CpfValueObject;
 };
@@ -15,13 +15,13 @@ export type CustomerEntityPropsWithId = CustomerEntityProps & {
 
 export class CustomerEntity {
   public readonly id: EntityIdValueObject;
-  public readonly fullName?: FullNameValueObject;
+  public readonly name?: FullNameValueObject;
   public readonly email?: EmailValueObject;
   public readonly cpf?: CpfValueObject;
 
   private constructor(props: CustomerEntityPropsWithId) {
     this.id = props.id;
-    this.fullName = props.fullName;
+    this.name = props.name;
     this.email = props.email;
     this.cpf = props.cpf;
   }
