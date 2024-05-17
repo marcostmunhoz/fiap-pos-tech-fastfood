@@ -5,6 +5,7 @@ import { AppConfigService } from './shared/infrastructure/config/app-config.serv
 import { ValidationPipe } from '@nestjs/common';
 import { InvalidValueExceptionFilter } from './shared/infrastructure/filter/invalid-value-exception.filter';
 import 'reflect-metadata';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -21,6 +22,14 @@ async function bootstrap() {
   app.useGlobalFilters(new InvalidValueExceptionFilter());
 
   app.setGlobalPrefix('api/v1');
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Fastfood Totem API')
+    .setDescription('API for Fastfood Totem')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(config.getPort(), config.getHost());
 }

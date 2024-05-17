@@ -19,7 +19,7 @@ export function getValidEntityId(): EntityIdValueObject {
 }
 
 export function getValidCpf(): CpfValueObject {
-  return CpfValueObject.create('57516713090');
+  return CpfValueObject.create('12345678909');
 }
 
 export function getValidFullName(): FullNameValueObject {
