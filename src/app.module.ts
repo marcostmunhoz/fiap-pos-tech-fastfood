@@ -6,6 +6,7 @@ import { DataSourceOptions } from 'typeorm';
 import { ConfigModule } from '@/shared/infrastructure/config/config.module';
 import { DatabaseConfigService } from '@/shared/infrastructure/config/database-config.service';
 import { CustomerModule } from './customer/customer.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CustomerModule } from './customer/customer.module';
     }),
     ConfigModule,
     CustomerModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
