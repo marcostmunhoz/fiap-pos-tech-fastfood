@@ -13,9 +13,14 @@ import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.valu
 import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
 import { EmailValueObject } from '@/customer/domain/value-object/email.value-object';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
+import { Inject } from '@nestjs/common';
+import { EntityIdGeneratorHelperToken } from '@/shared/tokens';
 
 export class TypeOrmCustomerRepository implements CustomerRepository {
   constructor(
+    @Inject(EntityIdGeneratorHelperToken)
+    private readonly entityIdGenerator: EntityIdGeneratorHelper,
     @InjectRepository(InfrastructureCustomerEntity)
     private readonly typeOrmRepository: Repository<InfrastructureCustomerEntity>,
   ) {}
@@ -49,6 +54,7 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     props: DomainEssentialCustomerEntityProps,
   ): InfrastructureEssentialCustomerEntityProps {
     return {
+      id: this.entityIdGenerator.generate().value,
       name: props.name.value,
       email: props.email.value,
       cpf: props.cpf.value,

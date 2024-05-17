@@ -9,5 +9,6 @@ import { UuidV4EntityIdGeneratorHelper } from './infrastructure/helper/uuid-v4-e
       useClass: UuidV4EntityIdGeneratorHelper,
     },
   ],
+  exports: [EntityIdGeneratorHelperToken],
 })
 export class SharedModule {}

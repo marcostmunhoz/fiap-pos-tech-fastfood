@@ -21,7 +21,7 @@ import { SharedModule } from './shared/shared.module';
         password: config.getPassword(),
         database: config.getDatabase(),
         logging: config.getLogging(),
-        entities: config.getEntities(),
+        entities: [__dirname + '/**/infrastructure/entity/*.entity{.ts,.js}'],
         synchronize: config.getSynchronize(),
       }),
       inject: [DatabaseConfigService],
