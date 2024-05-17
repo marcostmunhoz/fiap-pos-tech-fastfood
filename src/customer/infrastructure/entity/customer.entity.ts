@@ -1,7 +1,7 @@
 import { BaseEntity } from '@/shared/infrastructure/entity/base.entity';
 import { Column, Entity } from 'typeorm';
 
-export type InputCustomerEntityProps = {
+export type EssentialCustomerEntityProps = {
   name: string;
   email: string;
   cpf: string;

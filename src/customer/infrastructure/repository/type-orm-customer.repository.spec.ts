@@ -4,7 +4,7 @@ import { CustomerEntity as InfrastructureCustomerEntity } from '../entity/custom
 import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
 import { CustomerEntity as DomainCustomerEntity } from '@/customer/domain/entity/customer.entity';
 import {
-  getCustomerDomainEntityProps,
+  getDomainEssentialCustomerEntityProps,
   getCustomerInfrastructureEntity,
   getValidCpf,
 } from '@/testing/customer/helpers';
@@ -60,7 +60,7 @@ describe('TypeOrmCustomerRepository', () => {
   describe('create', () => {
     it('should create a new customer entity', async () => {
       // Arrange
-      const customerProps = getCustomerDomainEntityProps();
+      const customerProps = getDomainEssentialCustomerEntityProps();
       const dbEntity = getCustomerInfrastructureEntity({
         name: customerProps.name.value,
         email: customerProps.email.value,

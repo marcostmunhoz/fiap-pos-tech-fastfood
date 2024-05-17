@@ -1,19 +1,11 @@
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
-import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
-import { EmailValueObject } from '@/customer/domain/value-object/email.value-object';
-import { CustomerEntity, CustomerEntityPropsWithId } from './customer.entity';
+import { CustomerEntity } from './customer.entity';
+import { getDomainCustomerEntityPropsWithId } from '@/testing/customer/helpers';
 
 describe('CustomerEntity', () => {
   describe('create', () => {
     it('should return a new Customer instance', async () => {
       // Arrange
-      const props: CustomerEntityPropsWithId = {
-        id: EntityIdValueObject.create('some-id'),
-        name: FullNameValueObject.createFromFullName('John Doe'),
-        cpf: CpfValueObject.create('57516713090'),
-        email: EmailValueObject.create('john.doe@example.com'),
-      };
+      const props = getDomainCustomerEntityPropsWithId();
 
       // Act
       const result = CustomerEntity.create(props);

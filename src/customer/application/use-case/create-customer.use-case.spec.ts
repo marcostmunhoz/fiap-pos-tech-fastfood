@@ -1,13 +1,8 @@
 import { CreateCustomerUseCase } from './create-customer.use-case';
-import {
-  CustomerEntityProps,
-  CustomerEntityPropsWithId,
-} from '@/customer/domain/entity/customer.entity';
+import { CustomerEntityPropsWithId } from '@/customer/domain/entity/customer.entity';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
-import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
-import { EmailValueObject } from '@/customer/domain/value-object/email.value-object';
+import { getDomainEssentialCustomerEntityProps } from '@/testing/customer/helpers';
 
 describe('CreateCustomerUseCase', () => {
   let sut: CreateCustomerUseCase;
@@ -24,11 +19,7 @@ describe('CreateCustomerUseCase', () => {
   describe('execute', () => {
     it('should create a new customer', async () => {
       // Arrange
-      const props: CustomerEntityProps = {
-        name: FullNameValueObject.createFromFullName('John Doe'),
-        cpf: CpfValueObject.create('57516713090'),
-        email: EmailValueObject.create('john.doe@example.com'),
-      };
+      const props = getDomainEssentialCustomerEntityProps();
       const propsWithId: CustomerEntityPropsWithId = {
         id: EntityIdValueObject.create('some-id'),
         ...props,

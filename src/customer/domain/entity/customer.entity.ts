@@ -3,10 +3,13 @@ import { FullNameValueObject } from '../value-object/full-name.value-object';
 import { CpfValueObject } from '../value-object/cpf.value-object';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 
-export type CustomerEntityProps = {
+export type EssentialCustomerEntityProps = {
   name?: FullNameValueObject;
   email?: EmailValueObject;
   cpf?: CpfValueObject;
+};
+
+export type CustomerEntityProps = EssentialCustomerEntityProps & {
   createdAt?: Date;
   updatedAt?: Date;
 };

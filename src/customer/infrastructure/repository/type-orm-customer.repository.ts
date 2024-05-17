@@ -1,9 +1,9 @@
 import {
   CustomerEntity as DomainCustomerEntity,
-  CustomerEntityProps,
+  EssentialCustomerEntityProps as DomainEssentialCustomerEntityProps,
 } from '@/customer/domain/entity/customer.entity';
 import {
-  InputCustomerEntityProps,
+  EssentialCustomerEntityProps as InfrastructureEssentialCustomerEntityProps,
   CustomerEntity as InfrastructureCustomerEntity,
 } from '../entity/customer.entity';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
@@ -34,7 +34,9 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     return this.mapToDomainEntity(dbEntity);
   }
 
-  async create(props: CustomerEntityProps): Promise<DomainCustomerEntity> {
+  async create(
+    props: DomainEssentialCustomerEntityProps,
+  ): Promise<DomainCustomerEntity> {
     const dbProps = this.mapToDbProps(props);
     const dbEntity = await this.typeOrmRepository.save(
       this.typeOrmRepository.create(dbProps),
@@ -43,7 +45,9 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     return this.mapToDomainEntity(dbEntity);
   }
 
-  private mapToDbProps(props: CustomerEntityProps): InputCustomerEntityProps {
+  private mapToDbProps(
+    props: DomainEssentialCustomerEntityProps,
+  ): InfrastructureEssentialCustomerEntityProps {
     return {
       name: props.name.value,
       email: props.email.value,
