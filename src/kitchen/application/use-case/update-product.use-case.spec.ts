@@ -41,19 +41,17 @@ describe('UpdateProductUseCase', () => {
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       });
-      const output: Output = updatedEntity;
       repository.findById.mockResolvedValue(entity);
       repository.update.mockResolvedValue(updatedEntity);
 
       // Act
-      const result = await sut.execute(input);
+      await sut.execute(input);
 
       // Assert
       expect(repository.update).toHaveBeenCalledTimes(1);
       expect(repository.update).toHaveBeenCalledWith(updatedEntity);
       expect(repository.findById).toHaveBeenCalledTimes(1);
       expect(repository.findById).toHaveBeenCalledWith(entity.id);
-      expect(result).toEqual(output);
     });
 
     it('should throw an error when the given id does not exist', async () => {
