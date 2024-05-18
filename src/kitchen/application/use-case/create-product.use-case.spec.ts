@@ -1,9 +1,11 @@
 import { CreateProductUseCase, Output } from './create-product.use-case';
-import { ProductEntityPropsWithId } from '@/shared/domain/entity/product.entity';
+import { ProductEntity } from '@/shared/domain/entity/product.entity';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { getDomainEssentialProductEntityProps } from '@/testing/shared/helpers';
+import {
+  getDomainEssentialProductEntityProps,
+  getValidProductEntityId,
+} from '@/testing/shared/helpers';
 import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
 
 describe('CreateProductUseCase', () => {
@@ -19,12 +21,12 @@ describe('CreateProductUseCase', () => {
     it('should create a new product when the given code does not exist', async () => {
       // Arrange
       const props = getDomainEssentialProductEntityProps();
-      const propsWithId: ProductEntityPropsWithId = {
-        id: EntityIdValueObject.create('some-id'),
+      const entity = ProductEntity.create({
+        id: getValidProductEntityId(),
         ...props,
-      };
-      const output: Output = propsWithId;
-      repository.create.mockResolvedValue(propsWithId);
+      });
+      const output: Output = entity;
+      repository.create.mockResolvedValue(entity);
       repository.existsWithCode.mockResolvedValue(false);
 
       // Act

@@ -39,6 +39,34 @@ export class ProductEntity {
     this.updatedAt = props.updatedAt;
   }
 
+  public setCode(code: ProductCodeValueObject): ProductEntity {
+    return ProductEntity.create({
+      ...this,
+      code,
+    });
+  }
+
+  public setName(name: ProductNameValueObject): ProductEntity {
+    return ProductEntity.create({
+      ...this,
+      name,
+    });
+  }
+
+  public setCategory(category: ProductCategoryEnum): ProductEntity {
+    return ProductEntity.create({
+      ...this,
+      category,
+    });
+  }
+
+  public setPrice(price: MoneyValueObject): ProductEntity {
+    return ProductEntity.create({
+      ...this,
+      price,
+    });
+  }
+
   public static create(props: ProductEntityPropsWithId): ProductEntity {
     const entity = new ProductEntity(props);
 

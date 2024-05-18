@@ -14,7 +14,7 @@ import {
   ProductEntity as InfrastructureProductEntity,
 } from '@/shared/infrastructure/entity/product.entity';
 
-export function getValidEntityId(): EntityIdValueObject {
+export function getValidProductEntityId(): EntityIdValueObject {
   return EntityIdValueObject.create('customer-id');
 }
 
@@ -53,7 +53,7 @@ export function getDomainProductEntityProps(): ProductEntityProps {
 
 export function getDomainProductEntityPropsWithId(): ProductEntityPropsWithId {
   return {
-    id: getValidEntityId(),
+    id: getValidProductEntityId(),
     ...getDomainProductEntityProps(),
   };
 }
@@ -62,7 +62,7 @@ export function getDomainProductEntity(
   props?: DomainEssentialProductEntityProps,
 ): DomainProductEntity {
   return DomainProductEntity.create({
-    id: getValidEntityId(),
+    id: getValidProductEntityId(),
     createdAt: new Date(),
     updatedAt: new Date(),
     ...(props || getDomainEssentialProductEntityProps()),
