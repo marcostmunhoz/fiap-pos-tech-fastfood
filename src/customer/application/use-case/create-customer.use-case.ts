@@ -5,6 +5,7 @@ import { CustomerRepositoryToken } from '../tokens';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
+import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
 
 export type Input = EssentialCustomerEntityProps;
 
@@ -20,6 +21,16 @@ export class CreateCustomerUseCase implements UseCase<Input, Output> {
   ) {}
 
   async execute(props: Input): Promise<Output> {
+    const exists = props.cpf
+      ? await this.repository.existsWithCpf(props.cpf)
+      : false;
+
+    if (exists) {
+      throw new EntityAlreadyExistsException(
+        'Customer already exists with given CPF.',
+      );
+    }
+
     const entity = await this.repository.create(props);
 
     return {
