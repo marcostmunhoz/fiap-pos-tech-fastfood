@@ -95,5 +95,31 @@ describe('TypeOrmCustomerRepository', () => {
       expect(result.createdAt).toBe(dbEntity.createdAt);
       expect(result.updatedAt).toBe(dbEntity.updatedAt);
     });
+
+    it('should create a new customer entity without optional fields', async () => {
+      // Arrange
+      const dbEntity = getCustomerInfrastructureEntity({
+        id: 'customer-id',
+        name: null,
+        email: null,
+        cpf: null,
+      });
+      entityIdGeneratorMock.generate.mockReturnValue(
+        EntityIdValueObject.create(dbEntity.id),
+      );
+      repositoryMock.create.mockReturnValue(dbEntity);
+      repositoryMock.save.mockResolvedValue(dbEntity);
+
+      // Act
+      const result = await sut.create({});
+
+      // Assert
+      expect(result.id.value).toBe(dbEntity.id);
+      expect(result.name).toBeNull();
+      expect(result.email).toBeNull();
+      expect(result.cpf).toBeNull();
+      expect(result.createdAt).toBe(dbEntity.createdAt);
+      expect(result.updatedAt).toBe(dbEntity.updatedAt);
+    });
   });
 });

@@ -1,4 +1,5 @@
 import {
+  CustomerEntityPropsWithId as DomainCustomerEntityPropsWithId,
   CustomerEntity as DomainCustomerEntity,
   EssentialCustomerEntityProps as DomainEssentialCustomerEntityProps,
 } from '@/customer/domain/entity/customer.entity';
@@ -55,22 +56,26 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
   ): InfrastructureEssentialCustomerEntityProps {
     return {
       id: this.entityIdGenerator.generate().value,
-      name: props.name.value,
-      email: props.email.value,
-      cpf: props.cpf.value,
+      name: props.name?.value,
+      email: props.email?.value,
+      cpf: props.cpf?.value,
     };
   }
 
   private mapToDomainEntity(
     entity: InfrastructureCustomerEntity,
   ): DomainCustomerEntity {
-    return DomainCustomerEntity.create({
+    const props: DomainCustomerEntityPropsWithId = {
       id: EntityIdValueObject.create(entity.id),
-      name: FullNameValueObject.createFromFullName(entity.name),
-      email: EmailValueObject.create(entity.email),
-      cpf: CpfValueObject.create(entity.cpf),
+      name: entity.name
+        ? FullNameValueObject.createFromFullName(entity.name)
+        : null,
+      email: entity.email ? EmailValueObject.create(entity.email) : null,
+      cpf: entity.cpf ? CpfValueObject.create(entity.cpf) : null,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-    });
+    };
+
+    return DomainCustomerEntity.create(props);
   }
 }
