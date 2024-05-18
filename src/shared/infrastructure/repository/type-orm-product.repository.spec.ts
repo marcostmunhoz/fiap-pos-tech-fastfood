@@ -7,6 +7,8 @@ import {
   getDomainProductEntity,
   getInfrastructureEssentialProductEntityProps,
   getInfrastructureProductEntity,
+  getValidProductCode,
+  getValidProductEntityId,
 } from '@/testing/shared/helpers';
 import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
@@ -177,7 +179,7 @@ describe('TypeOrmProductRepository', () => {
 
     it('should return null when no product with the provided ID exists', async () => {
       // Arrange
-      const id = EntityIdValueObject.create('non-existing-id');
+      const id = getValidProductEntityId();
       repositoryMock.findOneBy.mockResolvedValue(null);
 
       // Act
@@ -252,7 +254,7 @@ describe('TypeOrmProductRepository', () => {
   describe('delete', () => {
     it('should delete a product entity', async () => {
       // Arrange
-      const id = EntityIdValueObject.create('product-id');
+      const id = getValidProductEntityId();
 
       // Act
       await sut.delete(id);
@@ -266,7 +268,7 @@ describe('TypeOrmProductRepository', () => {
   describe('existsWithCode', () => {
     it('should return a boolean indicating whether when a product with the provided code exists', async () => {
       // Arrange
-      const code = ProductCodeValueObject.create('product-code');
+      const code = getValidProductCode();
       const expectedBoolean = true;
       repositoryMock.existsBy.mockResolvedValue(expectedBoolean);
 
@@ -278,6 +280,23 @@ describe('TypeOrmProductRepository', () => {
       expect(repositoryMock.existsBy).toHaveBeenCalledWith({
         code: code.value,
       });
+      expect(result).toBe(expectedBoolean);
+    });
+  });
+
+  describe('existsWithId', () => {
+    it('should return a boolean indicating whether when a product with the provided id exists', async () => {
+      // Arrange
+      const id = getValidProductEntityId();
+      const expectedBoolean = true;
+      repositoryMock.existsBy.mockResolvedValue(expectedBoolean);
+
+      // Act
+      const result = await sut.existsWithId(id);
+
+      // Assert
+      expect(repositoryMock.existsBy).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.existsBy).toHaveBeenCalledWith({ id: id.value });
       expect(result).toBe(expectedBoolean);
     });
   });

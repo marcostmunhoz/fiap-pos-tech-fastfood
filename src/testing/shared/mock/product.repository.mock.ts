@@ -8,4 +8,5 @@ export const getProductRepositoryMock = (): jest.Mocked<ProductRepository> => ({
   update: jest.fn(),
   delete: jest.fn(),
   existsWithCode: jest.fn(),
+  existsWithId: jest.fn(),
 });

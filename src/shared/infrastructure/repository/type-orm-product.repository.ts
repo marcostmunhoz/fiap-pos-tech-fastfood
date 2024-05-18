@@ -92,6 +92,10 @@ export class TypeOrmProductRepository implements ProductRepository {
     return this.typeOrmRepository.existsBy({ code: code.value });
   }
 
+  existsWithId(id: EntityIdValueObject): Promise<boolean> {
+    return this.typeOrmRepository.existsBy({ id: id.value });
+  }
+
   private mapToDomainEntity(
     entity: InfrastructureProductEntity,
   ): DomainProductEntity {
