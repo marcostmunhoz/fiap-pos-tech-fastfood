@@ -4,17 +4,14 @@ import { CustomerRepository } from '@/customer/domain/repository/customer.reposi
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { getDomainEssentialCustomerEntityProps } from '@/testing/customer/helpers';
+import { getCustomerRepositoryMock } from '@/testing/customer/mock/customer.repository.mock';
 
 describe('CreateCustomerUseCase', () => {
   let sut: CreateCustomerUseCase;
   let repository: jest.Mocked<CustomerRepository>;
 
   beforeEach(() => {
-    repository = {
-      create: jest.fn(),
-      findByCpf: jest.fn(),
-      existsWithCpf: jest.fn(),
-    };
+    repository = getCustomerRepositoryMock();
     sut = new CreateCustomerUseCase(repository);
   });
 

@@ -4,16 +4,14 @@ import {
   getDomainCustomerEntity,
   getValidCpf,
 } from '@/testing/customer/helpers';
+import { getCustomerRepositoryMock } from '@/testing/customer/mock/customer.repository.mock';
 
 describe('FindCustomerByCpfUseCase', () => {
   let sut: FindCustomerByCpfUseCase;
   let repository: jest.Mocked<CustomerRepository>;
 
   beforeEach(() => {
-    repository = {
-      findByCpf: jest.fn(),
-      create: jest.fn(),
-    };
+    repository = getCustomerRepositoryMock();
     sut = new FindCustomerByCpfUseCase(repository);
   });
 
