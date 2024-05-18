@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  getDomainCustomerEntityPropsWithId,
   getValidCpf,
+  getValidEntityId,
+  getValidFullName,
 } from '@/testing/customer/helpers';
 import {
   FindCustomerByCpfUseCase,
@@ -40,7 +41,10 @@ describe('FindCustomerByCpfController', () => {
       const param: FindCustomerByCpfPathParam = {
         cpf: getValidCpf(),
       };
-      const output: Output = getDomainCustomerEntityPropsWithId();
+      const output: Output = {
+        id: getValidEntityId(),
+        name: getValidFullName(),
+      };
       useCaseMock.execute.mockResolvedValue(output);
 
       // Act

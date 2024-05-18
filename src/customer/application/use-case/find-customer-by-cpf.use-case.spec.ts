@@ -21,6 +21,10 @@ describe('FindCustomerByCpfUseCase', () => {
     it('should return the customer when found', async () => {
       // Arrange
       const customer = getDomainCustomerEntity();
+      const output = {
+        id: customer.id,
+        name: customer.name,
+      };
       const { cpf } = customer;
       repository.findByCpf.mockResolvedValue(customer);
 
@@ -28,7 +32,7 @@ describe('FindCustomerByCpfUseCase', () => {
       const result = await sut.execute({ cpf });
 
       // Assert
-      expect(result).toEqual(customer);
+      expect(result).toEqual(output);
       expect(repository.findByCpf).toHaveBeenCalledWith(customer.cpf);
     });
 
