@@ -24,14 +24,42 @@ describe('CreateCustomerUseCase', () => {
         id: EntityIdValueObject.create('some-id'),
         ...props,
       };
+      const output = {
+        id: propsWithId.id,
+        name: props.name,
+      };
       repository.create.mockResolvedValue(propsWithId);
 
       // Act
       const result = await sut.execute(props);
 
       // Assert
-      expect(result).toEqual(propsWithId);
+      expect(result).toEqual(output);
       expect(repository.create).toHaveBeenCalledWith(props);
+    });
+
+    it('should create a new customer without optional fields', async () => {
+      // Arrange
+      const propsWithId: CustomerEntityPropsWithId = {
+        id: EntityIdValueObject.create('some-id'),
+        name: null,
+        email: null,
+        cpf: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const output = {
+        id: propsWithId.id,
+        name: null,
+      };
+      repository.create.mockResolvedValue(propsWithId);
+
+      // Act
+      const result = await sut.execute({});
+
+      // Assert
+      expect(result).toEqual(output);
+      expect(repository.create).toHaveBeenCalledWith({});
     });
   });
 });

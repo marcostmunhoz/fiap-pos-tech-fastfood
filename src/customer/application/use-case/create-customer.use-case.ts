@@ -1,15 +1,17 @@
-import {
-  CustomerEntityPropsWithId,
-  EssentialCustomerEntityProps,
-} from '@/customer/domain/entity/customer.entity';
+import { EssentialCustomerEntityProps } from '@/customer/domain/entity/customer.entity';
 import { UseCase } from '@/shared/application/use-case/use-case';
 import { Inject } from '@nestjs/common';
 import { CustomerRepositoryToken } from '../tokens';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
+import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
 
 export type Input = EssentialCustomerEntityProps;
 
-export type Output = CustomerEntityPropsWithId;
+export type Output = {
+  id: EntityIdValueObject;
+  name?: FullNameValueObject;
+};
 
 export class CreateCustomerUseCase implements UseCase<Input, Output> {
   constructor(
@@ -18,6 +20,11 @@ export class CreateCustomerUseCase implements UseCase<Input, Output> {
   ) {}
 
   async execute(props: Input): Promise<Output> {
-    return await this.repository.create(props);
+    const entity = await this.repository.create(props);
+
+    return {
+      id: entity.id,
+      name: entity.name,
+    };
   }
 }
