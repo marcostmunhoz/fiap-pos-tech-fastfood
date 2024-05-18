@@ -40,9 +40,7 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     props: DomainEssentialCustomerEntityProps,
   ): Promise<DomainCustomerEntity> {
     const dbProps = this.mapToDbProps(props);
-    const dbEntity = await this.typeOrmRepository.save(
-      this.typeOrmRepository.create(dbProps),
-    );
+    const dbEntity = await this.typeOrmRepository.save(dbProps);
 
     return this.mapToDomainEntity(dbEntity);
   }

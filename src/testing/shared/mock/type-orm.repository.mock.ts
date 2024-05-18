@@ -22,11 +22,11 @@ export const getTypeOrmRepositoryMock = <
   const queryBuilderMock = getQueryBuilderMock<T>();
   const repositoryMock = {
     find: jest.fn(),
-    createQueryBuilder: jest.fn().mockReturnValue(queryBuilderMock),
     findOneBy: jest.fn(),
     save: jest.fn(),
     delete: jest.fn(),
     existsBy: jest.fn(),
+    createQueryBuilder: jest.fn().mockReturnValue(queryBuilderMock),
   } as unknown as jest.Mocked<Repository<T>>;
 
   return { repositoryMock, queryBuilderMock };

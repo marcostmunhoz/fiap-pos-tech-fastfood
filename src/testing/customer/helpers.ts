@@ -73,7 +73,7 @@ export function getInfrastructureEssentialCustomerEntityProps(): InfrastructureE
   };
 }
 
-export function getCustomerInfrastructureEntity(
+export function getInfrastructureCustomerEntity(
   props?: InfrastructureEssentialCustomerEntityProps,
 ): InfrastructureCustomerEntity {
   return {
