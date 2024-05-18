@@ -1,5 +1,5 @@
 import { EssentialCustomerEntityProps } from '@/customer/domain/entity/customer.entity';
-import { UseCase } from '@/shared/application/use-case/use-case';
+import { UseCase } from '@/shared/application/use-case/use-case.interface';
 import { Inject } from '@nestjs/common';
 import { CustomerRepositoryToken } from '../../tokens';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
