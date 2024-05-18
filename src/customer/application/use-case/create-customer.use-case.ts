@@ -1,7 +1,7 @@
 import { EssentialCustomerEntityProps } from '@/customer/domain/entity/customer.entity';
 import { UseCase } from '@/shared/application/use-case/use-case';
 import { Inject } from '@nestjs/common';
-import { CustomerRepositoryToken } from '../tokens';
+import { CustomerRepositoryToken } from '../../tokens';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';

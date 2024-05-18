@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CustomerRepositoryToken } from './application/tokens';
+import { CustomerRepositoryToken } from './tokens';
 import { TypeOrmCustomerRepository } from './infrastructure/repository/type-orm-customer.repository';
 import { FindCustomerByCpfController } from './interface/controller/find-customer-by-cpf.controller';
 import { CreateCustomerController } from './interface/controller/create-customer.controller';
