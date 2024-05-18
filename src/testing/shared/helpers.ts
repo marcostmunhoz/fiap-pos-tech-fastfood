@@ -3,13 +3,16 @@ import {
   ProductEntityProps,
   EssentialProductEntityProps as DomainEssentialProductEntityProps,
   ProductEntityPropsWithId,
-  EssentialProductEntityProps,
 } from '@/shared/domain/entity/product.entity';
 import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
+import {
+  EssentialProductEntityProps as InfrastructureEssentialProductEntityProps,
+  ProductEntity as InfrastructureProductEntity,
+} from '@/shared/infrastructure/entity/product.entity';
 
 export function getValidEntityId(): EntityIdValueObject {
   return EntityIdValueObject.create('customer-id');
@@ -24,7 +27,7 @@ export function getValidProductName(): ProductNameValueObject {
 }
 
 export function getValidMoney(): MoneyValueObject {
-  return MoneyValueObject.create(12.34);
+  return MoneyValueObject.create(1234);
 }
 
 export function getValidProductCategory(): ProductCategoryEnum {
@@ -56,7 +59,7 @@ export function getDomainProductEntityPropsWithId(): ProductEntityPropsWithId {
 }
 
 export function getDomainProductEntity(
-  props?: EssentialProductEntityProps,
+  props?: DomainEssentialProductEntityProps,
 ): DomainProductEntity {
   return DomainProductEntity.create({
     id: getValidEntityId(),
@@ -64,4 +67,24 @@ export function getDomainProductEntity(
     updatedAt: new Date(),
     ...(props || getDomainEssentialProductEntityProps()),
   });
+}
+
+export function getInfrastructureEssentialProductEntityProps(): InfrastructureEssentialProductEntityProps {
+  return {
+    id: 'product-id',
+    code: getValidProductCode().value,
+    name: getValidProductName().value,
+    category: getValidProductCategory(),
+    price: getValidMoney().value,
+  };
+}
+
+export function getInfrastructureProductEntity(
+  props?: InfrastructureEssentialProductEntityProps,
+): InfrastructureProductEntity {
+  return {
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...(props || getInfrastructureEssentialProductEntityProps()),
+  };
 }
