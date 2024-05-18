@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 import { ConfigModule } from '@/shared/infrastructure/config/config.module';
@@ -30,6 +29,6 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
   ],
   controllers: [],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
