@@ -9,7 +9,7 @@ class BadRequestResponse {
   @ApiProperty({
     example: 400,
   })
-  statusCode: number = 400;
+  statusCode: number;
 }
 
 class UnprocessableEntityResponse {
@@ -27,7 +27,7 @@ class UnprocessableEntityResponse {
   @ApiProperty({
     example: 422,
   })
-  statusCode: number = 422;
+  statusCode: number;
 }
 
 class InternalServerErrorResponse {
@@ -39,7 +39,19 @@ class InternalServerErrorResponse {
   @ApiProperty({
     example: 500,
   })
-  statusCode: number = 500;
+  statusCode: number;
+}
+
+class NotFoundResponse {
+  @ApiProperty({
+    example: 'Not Found',
+  })
+  message: string;
+
+  @ApiProperty({
+    example: 404,
+  })
+  statusCode: number;
 }
 
 const defaultBadRequestOptions: ApiResponseOptions = {
@@ -60,6 +72,12 @@ const defaultInternalServerErrorOptions: ApiResponseOptions = {
   type: InternalServerErrorResponse,
 };
 
+const defaultNotFoundOptions: ApiResponseOptions = {
+  status: 404,
+  description: 'Not Found',
+  type: NotFoundResponse,
+};
+
 export const DefaultBadRequestResponse = (
   options: ApiResponseOptions = defaultBadRequestOptions,
 ) => ApiResponse(options);
@@ -70,4 +88,8 @@ export const DefaultUnprocessableEntityResponse = (
 
 export const DefaultInternalServerErrorResponse = (
   options: ApiResponseOptions = defaultInternalServerErrorOptions,
+) => ApiResponse(options);
+
+export const DefaultNotFoundResponse = (
+  options: ApiResponseOptions = defaultNotFoundOptions,
 ) => ApiResponse(options);

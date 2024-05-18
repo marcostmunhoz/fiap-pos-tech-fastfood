@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CustomerRepositoryToken } from './application/tokens';
 import { TypeOrmCustomerRepository } from './infrastructure/repository/type-orm-customer.repository';
+import { FindCustomerByCpfController } from './interface/controller/find-customer-by-cpf.controller';
 import { CreateCustomerController } from './interface/controller/create-customer.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerEntity } from './infrastructure/entity/customer.entity';
@@ -19,6 +20,6 @@ const useCases = [FindCustomerByCpfUseCase, CreateCustomerUseCase];
     },
     ...useCases,
   ],
-  controllers: [CreateCustomerController],
+  controllers: [FindCustomerByCpfController, CreateCustomerController],
 })
 export class CustomerModule {}
