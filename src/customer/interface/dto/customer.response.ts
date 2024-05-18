@@ -12,9 +12,10 @@ export class CustomerResponse {
   id: string;
 
   @Expose()
-  @Transform(({ obj }) => (obj.name as FullNameValueObject).value)
+  @Transform(({ obj }) => (obj.name as FullNameValueObject)?.value || null)
   @ApiProperty({
     example: 'John Doe',
+    required: false,
   })
-  name: string;
+  name?: string;
 }
