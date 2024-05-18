@@ -10,13 +10,13 @@ import {
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FindCustomerByCpfPathParam } from '../dto/find-customer-by-cpf.request';
 import { CustomerResponse } from '../dto/customer.response';
-import { plainToClass } from 'class-transformer';
 import {
   DefaultBadRequestResponse,
   DefaultInternalServerErrorResponse,
   DefaultNotFoundResponse,
   DefaultUnprocessableEntityResponse,
 } from '@/shared/infrastructure/decorator/swagger-response.decorator';
+import { mapObjectToResponse } from '@/shared/infrastructure/helper/response.helper';
 
 @ApiTags('Customers')
 @Controller('customers')
@@ -46,8 +46,6 @@ export class FindCustomerByCpfController {
       throw new NotFoundException();
     }
 
-    return plainToClass(CustomerResponse, result, {
-      excludeExtraneousValues: true,
-    });
+    return mapObjectToResponse(CustomerResponse, result);
   }
 }
