@@ -7,4 +7,5 @@ import { CpfValueObject } from '../value-object/cpf.value-object';
 export interface CustomerRepository {
   findByCpf(cpf: CpfValueObject): Promise<CustomerEntity | null>;
   create(props: EssentialCustomerEntityProps): Promise<CustomerEntity>;
+  existsWithCpf(cpf: CpfValueObject): Promise<boolean>;
 }

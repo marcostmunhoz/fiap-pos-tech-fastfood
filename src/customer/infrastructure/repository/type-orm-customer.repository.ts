@@ -27,11 +27,7 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
   ) {}
 
   async findByCpf(cpf: CpfValueObject): Promise<DomainCustomerEntity> {
-    const dbEntity = await this.typeOrmRepository.findOne({
-      where: {
-        cpf: cpf.value,
-      },
-    });
+    const dbEntity = await this.typeOrmRepository.findOneBy({ cpf: cpf.value });
 
     if (!dbEntity) {
       return null;
@@ -49,6 +45,10 @@ export class TypeOrmCustomerRepository implements CustomerRepository {
     );
 
     return this.mapToDomainEntity(dbEntity);
+  }
+
+  async existsWithCpf(cpf: CpfValueObject): Promise<boolean> {
+    return await this.typeOrmRepository.existsBy({ cpf: cpf.value });
   }
 
   private mapToDbProps(

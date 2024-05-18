@@ -18,9 +18,10 @@ describe('TypeOrmCustomerRepository', () => {
 
   beforeEach(() => {
     repositoryMock = {
-      findOne: jest.fn(),
+      findOneBy: jest.fn(),
       save: jest.fn(),
       create: jest.fn(),
+      existsBy: jest.fn(),
     } as unknown as jest.Mocked<Repository<InfrastructureCustomerEntity>>;
     entityIdGeneratorMock = {
       generate: jest.fn(),
@@ -33,13 +34,13 @@ describe('TypeOrmCustomerRepository', () => {
       // Arrange
       const dbEntity = getCustomerInfrastructureEntity();
       const cpf = CpfValueObject.create(dbEntity.cpf);
-      repositoryMock.findOne.mockResolvedValue(dbEntity);
+      repositoryMock.findOneBy.mockResolvedValue(dbEntity);
 
       // Act
       const result = await sut.findByCpf(cpf);
 
       // Assert
-      expect(repositoryMock.findOne).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.findOneBy).toHaveBeenCalledTimes(1);
       expect(result).toBeDefined();
       expect(result).toBeInstanceOf(DomainCustomerEntity);
       expect(result.id.value).toBe(dbEntity.id);
@@ -53,7 +54,7 @@ describe('TypeOrmCustomerRepository', () => {
     it('should return null when an invalid CPF is provided', async () => {
       // Arrange
       const cpf = getValidCpf();
-      repositoryMock.findOne.mockResolvedValue(null);
+      repositoryMock.findOneBy.mockResolvedValue(null);
 
       // Act
       const result = await sut.findByCpf(cpf);
@@ -120,6 +121,21 @@ describe('TypeOrmCustomerRepository', () => {
       expect(result.cpf).toBeNull();
       expect(result.createdAt).toBe(dbEntity.createdAt);
       expect(result.updatedAt).toBe(dbEntity.updatedAt);
+    });
+  });
+
+  describe('existsWithCpf', () => {
+    it('should return a boolean indicating whether when a customer with the provided CPF exists', async () => {
+      // Arrange
+      const cpf = getValidCpf();
+      const expectedBoolean = true;
+      repositoryMock.existsBy.mockResolvedValue(expectedBoolean);
+
+      // Act
+      const result = await sut.existsWithCpf(cpf);
+
+      // Assert
+      expect(result).toBe(expectedBoolean);
     });
   });
 });
