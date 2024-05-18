@@ -1,4 +1,4 @@
-import { InvalidValueException } from '@/shared/domain/exception/invalid-value.exception';
+import { DomainException } from '@/shared/domain/exception/domain.exception';
 import {
   ArgumentsHost,
   Catch,
@@ -6,9 +6,9 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 
-@Catch(InvalidValueException)
-export class InvalidValueExceptionFilter implements ExceptionFilter {
-  catch(exception: InvalidValueException, host: ArgumentsHost) {
+@Catch(DomainException)
+export class DomainExceptionFilter implements ExceptionFilter {
+  catch(exception: DomainException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const status = HttpStatus.BAD_REQUEST;

@@ -1,4 +1,6 @@
-export class InvalidValueException extends Error {
+import { DomainException } from './domain.exception';
+
+export class InvalidValueException extends DomainException {
   constructor(message: string) {
     super(message);
   }

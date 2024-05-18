@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppConfigService } from './shared/infrastructure/config/app-config.service';
 import { ValidationPipe } from '@nestjs/common';
-import { InvalidValueExceptionFilter } from './shared/infrastructure/filter/invalid-value-exception.filter';
+import { DomainExceptionFilter } from './shared/infrastructure/filter/domain-exception.filter';
 import 'reflect-metadata';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -19,7 +19,7 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalFilters(new InvalidValueExceptionFilter());
+  app.useGlobalFilters(new DomainExceptionFilter());
 
   app.setGlobalPrefix('api/v1');
 
