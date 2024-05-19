@@ -8,6 +8,7 @@ export class CreateProducts1716043956445 implements MigrationInterface {
         code VARCHAR(20) NOT NULL,
         name VARCHAR(100) NOT NULL,
         category VARCHAR(10) NULL,
+        price INT UNSIGNED NOT NULL,
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         CONSTRAINT products_pk_index PRIMARY KEY (id)
