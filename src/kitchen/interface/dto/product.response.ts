@@ -17,7 +17,7 @@ export class ProductResponse {
   @Expose()
   @TransformValueObjectToPrimitive()
   @ApiProperty({
-    example: 'PROD-001',
+    example: 'PRD-001',
   })
   code: string;
 

@@ -8,12 +8,15 @@ import { UpdateProductController } from './interface/controller/update-product.c
 import { UpdateProductUseCase } from './application/use-case/update-product.use-case';
 import { DeleteProductUseCase } from './application/use-case/delete-product.use-case';
 import { DeleteProductController } from './interface/controller/delete-product.controller';
+import { SearchProductsController } from './interface/controller/search-products.controller';
+import { SearchProductsUseCase } from './application/use-case/search-products.use-case';
 
 const useCases = [
   CreateProductUseCase,
   ShowProductUseCase,
   UpdateProductUseCase,
   DeleteProductUseCase,
+  SearchProductsUseCase,
 ];
 
 @Module({
@@ -24,6 +27,7 @@ const useCases = [
     ShowProductController,
     UpdateProductController,
     DeleteProductController,
+    SearchProductsController,
   ],
 })
 export class KitchenModule {}
