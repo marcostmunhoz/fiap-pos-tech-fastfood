@@ -2,22 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppConfigService } from './shared/infrastructure/config/app-config.service';
-import { ValidationPipe } from '@nestjs/common';
 import { DomainExceptionFilter } from './shared/infrastructure/filter/domain-exception.filter';
-import 'reflect-metadata';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from './shared/infrastructure/pipe/validation.pipe';
+import { TransformationPipe } from './shared/infrastructure/pipe/transformation.pipe';
+import 'reflect-metadata';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(AppConfigService);
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      errorHttpStatusCode: 422,
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe(), new TransformationPipe());
 
   app.useGlobalFilters(new DomainExceptionFilter());
 
