@@ -50,6 +50,8 @@ describe('CreateProductController', () => {
       const response = await controller.execute(request);
 
       // Assert
+      expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
+      expect(useCaseMock.execute).toHaveBeenCalledWith(request);
       expect(response).toEqual({
         id: output.id.value,
         code: output.code.value,

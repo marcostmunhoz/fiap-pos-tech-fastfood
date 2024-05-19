@@ -1,9 +1,21 @@
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import {
+  ApiParam,
+  ApiParamOptions,
+  ApiProperty,
+  ApiPropertyOptions,
+} from '@nestjs/swagger';
 
-const defaultUuidOptions: ApiPropertyOptions = {
+const defaultUuidPropertyOptions: ApiPropertyOptions = {
   example: '053b636d-aaa3-4700-9ead-fe9cfd20507f',
 };
 
 export const UuidProperty = (
-  options: ApiPropertyOptions = defaultUuidOptions,
+  options: ApiPropertyOptions = defaultUuidPropertyOptions,
 ) => ApiProperty(options);
+
+export const UuidParam = (options: ApiParamOptions) => {
+  return ApiParam({
+    example: '053b636d-aaa3-4700-9ead-fe9cfd20507f',
+    ...options,
+  });
+};
