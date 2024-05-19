@@ -18,6 +18,9 @@ export interface ProductRepository {
   create(product: EssentialProductEntityProps): Promise<ProductEntity>;
   update(product: ProductEntity): Promise<ProductEntity>;
   delete(id: EntityIdValueObject): Promise<void>;
-  existsWithCode(code: ProductCodeValueObject): Promise<boolean>;
+  existsWithCode(
+    code: ProductCodeValueObject,
+    except?: EntityIdValueObject,
+  ): Promise<boolean>;
   existsWithId(id: EntityIdValueObject): Promise<boolean>;
 }

@@ -1,4 +1,4 @@
-import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
+import { Brackets, Not, Repository, SelectQueryBuilder } from 'typeorm';
 import { TypeOrmProductRepository } from './type-orm-product.repository';
 import { ProductEntity as InfrastructureProductEntity } from '../entity/product.entity';
 import { ProductEntity as DomainProductEntity } from '@/shared/domain/entity/product.entity';
@@ -270,15 +270,38 @@ describe('TypeOrmProductRepository', () => {
       // Arrange
       const code = getValidProductCode();
       const expectedBoolean = true;
-      repositoryMock.existsBy.mockResolvedValue(expectedBoolean);
+      repositoryMock.exists.mockResolvedValue(expectedBoolean);
 
       // Act
       const result = await sut.existsWithCode(code);
 
       // Assert
-      expect(repositoryMock.existsBy).toHaveBeenCalledTimes(1);
-      expect(repositoryMock.existsBy).toHaveBeenCalledWith({
-        code: code.value,
+      expect(repositoryMock.exists).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.exists).toHaveBeenCalledWith({
+        where: {
+          code: code.value,
+        },
+      });
+      expect(result).toBe(expectedBoolean);
+    });
+
+    it('should ignore the provided id', async () => {
+      // Arrange
+      const id = getValidProductEntityId();
+      const code = getValidProductCode();
+      const expectedBoolean = true;
+      repositoryMock.exists.mockResolvedValue(expectedBoolean);
+
+      // Act
+      const result = await sut.existsWithCode(code, id);
+
+      // Assert
+      expect(repositoryMock.exists).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.exists).toHaveBeenCalledWith({
+        where: {
+          id: Not(id.value),
+          code: code.value,
+        },
       });
       expect(result).toBe(expectedBoolean);
     });

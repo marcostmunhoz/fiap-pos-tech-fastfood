@@ -15,7 +15,13 @@ import {
   ProductEntityPropsWithId as DomainProductEntityPropsWithId,
 } from '@/shared/domain/entity/product.entity';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { Brackets, Repository } from 'typeorm';
+import {
+  Brackets,
+  FindOptions,
+  FindOptionsWhere,
+  Not,
+  Repository,
+} from 'typeorm';
 import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
@@ -88,8 +94,19 @@ export class TypeOrmProductRepository implements ProductRepository {
     await this.typeOrmRepository.delete({ id: id.value });
   }
 
-  existsWithCode(code: ProductCodeValueObject): Promise<boolean> {
-    return this.typeOrmRepository.existsBy({ code: code.value });
+  existsWithCode(
+    code: ProductCodeValueObject,
+    except?: EntityIdValueObject,
+  ): Promise<boolean> {
+    const where: FindOptionsWhere<InfrastructureProductEntity> = {
+      code: code.value,
+    };
+
+    if (except) {
+      where.id = Not(except.value);
+    }
+
+    return this.typeOrmRepository.exists({ where });
   }
 
   existsWithId(id: EntityIdValueObject): Promise<boolean> {

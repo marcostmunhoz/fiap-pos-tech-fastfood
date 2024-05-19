@@ -27,7 +27,10 @@ export class UpdateProductUseCase implements UseCase<Input, Output> {
       throw new EntityNotFoundException('Product not found with given ID.');
     }
 
-    const exists = await this.repository.existsWithCode(input.data.code);
+    const exists = await this.repository.existsWithCode(
+      input.data.code,
+      entity.id,
+    );
 
     if (exists) {
       throw new EntityAlreadyExistsException(

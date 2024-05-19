@@ -48,10 +48,15 @@ describe('UpdateProductUseCase', () => {
       await sut.execute(input);
 
       // Assert
-      expect(repository.update).toHaveBeenCalledTimes(1);
-      expect(repository.update).toHaveBeenCalledWith(updatedEntity);
       expect(repository.findById).toHaveBeenCalledTimes(1);
       expect(repository.findById).toHaveBeenCalledWith(entity.id);
+      expect(repository.existsWithCode).toHaveBeenCalledTimes(1);
+      expect(repository.existsWithCode).toHaveBeenCalledWith(
+        input.data.code,
+        entity.id,
+      );
+      expect(repository.update).toHaveBeenCalledTimes(1);
+      expect(repository.update).toHaveBeenCalledWith(updatedEntity);
     });
 
     it('should throw an error when the given id does not exist', async () => {

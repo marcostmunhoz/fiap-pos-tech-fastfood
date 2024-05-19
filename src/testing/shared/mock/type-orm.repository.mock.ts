@@ -25,6 +25,7 @@ export const getTypeOrmRepositoryMock = <
     findOneBy: jest.fn(),
     save: jest.fn(),
     delete: jest.fn(),
+    exists: jest.fn(),
     existsBy: jest.fn(),
     createQueryBuilder: jest.fn().mockReturnValue(queryBuilderMock),
   } as unknown as jest.Mocked<Repository<T>>;
