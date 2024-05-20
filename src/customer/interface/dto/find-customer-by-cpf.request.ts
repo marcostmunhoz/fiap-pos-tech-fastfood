@@ -1,9 +1,9 @@
 import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
-import { Transform } from 'class-transformer';
+import { TransformPrimitiveToValueObject } from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
 import { Allow } from 'class-validator';
 
 export class FindCustomerByCpfPathParam {
   @Allow()
-  @Transform(({ value }) => CpfValueObject.create(value))
+  @TransformPrimitiveToValueObject(CpfValueObject)
   cpf: CpfValueObject;
 }

@@ -1,6 +1,6 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
-  TransformEntityIdToString,
+  TransformObjectKeyOptional,
   TransformValueObjectToPrimitive,
 } from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
 import { UuidProperty } from '@/shared/infrastructure/decorator/swagger-property.decorator';
@@ -10,7 +10,7 @@ import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum'
 
 export class ProductResponse {
   @Expose()
-  @TransformEntityIdToString()
+  @TransformValueObjectToPrimitive()
   @UuidProperty()
   id: string;
 
@@ -29,7 +29,7 @@ export class ProductResponse {
   name: string;
 
   @Expose()
-  @Transform(({ obj }) => (obj.price as MoneyValueObject).valueAsFloat)
+  @TransformObjectKeyOptional((obj) => (obj as MoneyValueObject).valueAsFloat)
   @ApiProperty({
     example: 10.99,
   })

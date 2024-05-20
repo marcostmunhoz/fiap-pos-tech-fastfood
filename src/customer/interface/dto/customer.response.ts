@@ -1,18 +1,16 @@
-import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
+import { TransformValueObjectToPrimitive } from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
+import { UuidProperty } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
 export class CustomerResponse {
   @Expose()
-  @Transform(({ obj }) => (obj.id as EntityIdValueObject).value)
-  @ApiProperty({
-    example: '053b636d-aaa3-4700-9ead-fe9cfd20507f',
-  })
+  @TransformValueObjectToPrimitive()
+  @UuidProperty()
   id: string;
 
   @Expose()
-  @Transform(({ obj }) => (obj.name as FullNameValueObject)?.value || null)
+  @TransformValueObjectToPrimitive()
   @ApiProperty({
     example: 'John Doe',
     required: false,

@@ -1,14 +1,18 @@
 import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
 import { EmailValueObject } from '@/customer/domain/value-object/email.value-object';
 import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
+import {
+  TransformPrimitiveToValueObject,
+  TransformOptional,
+} from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCustomerRequest {
   @IsNotEmpty()
+  @IsString()
   @IsOptional()
-  @Transform(({ value }) => FullNameValueObject.createFromFullName(value))
+  @TransformOptional((value) => FullNameValueObject.createFromFullName(value))
   @ApiProperty({
     example: 'John Doe',
     type: String,
@@ -18,7 +22,8 @@ export class CreateCustomerRequest {
 
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => EmailValueObject.create(value))
+  @IsEmail()
+  @TransformPrimitiveToValueObject(EmailValueObject)
   @ApiProperty({
     example: 'john.doe@example.com',
     type: String,
@@ -27,8 +32,9 @@ export class CreateCustomerRequest {
   email?: EmailValueObject;
 
   @IsNotEmpty()
+  @IsString()
   @IsOptional()
-  @Transform(({ value }) => CpfValueObject.create(value))
+  @TransformPrimitiveToValueObject(CpfValueObject)
   @ApiProperty({
     example: '12345678909',
     type: String,
