@@ -5,6 +5,7 @@ import {
 } from '@/payment/domain/entity/payment.entity';
 import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { PaymentEntity as InfrastructurePaymentEntity } from '@/payment/infrastructure/entity/payment.entity';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 
@@ -39,3 +40,15 @@ export const getDomainPaymentEntity = (
   props?: CompletePaymentEntityProps,
 ): DomainPaymentEntity =>
   new DomainPaymentEntity(props || getDomainCompletePaymentEntityProps());
+
+export const getInfrastructurePaymentEntity =
+  (): InfrastructurePaymentEntity => ({
+    id: getValidPaymentEntityId().value,
+    orderId: getValidOrderEntityId(),
+    total: getValidOrderTotal().value,
+    paymentMethod: PaymentMethodEnum.CREDIT_CARD,
+    status: PaymentStatusEnum.PENDING,
+    externalPaymentId: getValidExternalPaymentId(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
