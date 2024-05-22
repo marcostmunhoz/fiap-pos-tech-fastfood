@@ -7,6 +7,7 @@ import { CustomerModule } from './customer/customer.module';
 import { SharedModule } from './shared/shared.module';
 import { KitchenModule } from './kitchen/kitchen.module';
 import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { OrderModule } from './order/order.module';
     SharedModule,
     KitchenModule,
     OrderModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [],
