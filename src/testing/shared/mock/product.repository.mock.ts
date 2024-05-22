@@ -4,6 +4,7 @@ export const getProductRepositoryMock = (): jest.Mocked<ProductRepository> => ({
   list: jest.fn(),
   search: jest.fn(),
   findById: jest.fn(),
+  findByCode: jest.fn(),
   create: jest.fn(),
   update: jest.fn(),
   delete: jest.fn(),

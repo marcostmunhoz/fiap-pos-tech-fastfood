@@ -16,7 +16,6 @@ import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.reposit
 import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
 import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import { SearchProductQuery } from '@/shared/domain/repository/product.repository.interface';
-import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 
 describe('TypeOrmProductRepository', () => {
   let queryBuilderMock: jest.Mocked<

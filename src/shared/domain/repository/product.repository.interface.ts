@@ -15,6 +15,7 @@ export interface ProductRepository {
   list(): Promise<ProductEntity[]>;
   search(filter: SearchProductQuery): Promise<ProductEntity[]>;
   findById(id: EntityIdValueObject): Promise<ProductEntity | null>;
+  findByCode(code: ProductCodeValueObject): Promise<ProductEntity | null>;
   create(product: EssentialProductEntityProps): Promise<ProductEntity>;
   update(product: ProductEntity): Promise<ProductEntity>;
   delete(id: EntityIdValueObject): Promise<void>;

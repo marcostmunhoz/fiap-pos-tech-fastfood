@@ -15,13 +15,7 @@ import {
   ProductEntityPropsWithId as DomainProductEntityPropsWithId,
 } from '@/shared/domain/entity/product.entity';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import {
-  Brackets,
-  FindOptions,
-  FindOptionsWhere,
-  Not,
-  Repository,
-} from 'typeorm';
+import { Brackets, FindOptionsWhere, Not, Repository } from 'typeorm';
 import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
@@ -65,6 +59,18 @@ export class TypeOrmProductRepository implements ProductRepository {
 
   async findById(id: EntityIdValueObject): Promise<DomainProductEntity> {
     const dbEntity = await this.typeOrmRepository.findOneBy({ id: id.value });
+
+    if (!dbEntity) {
+      return null;
+    }
+
+    return this.mapToDomainEntity(dbEntity);
+  }
+
+  async findByCode(code: ProductCodeValueObject): Promise<DomainProductEntity> {
+    const dbEntity = await this.typeOrmRepository.findOneBy({
+      code: code.value,
+    });
 
     if (!dbEntity) {
       return null;
