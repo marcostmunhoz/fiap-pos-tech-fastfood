@@ -6,6 +6,7 @@ import { DatabaseConfigService } from '@/shared/infrastructure/config/database-c
 import { CustomerModule } from './customer/customer.module';
 import { SharedModule } from './shared/shared.module';
 import { KitchenModule } from './kitchen/kitchen.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { KitchenModule } from './kitchen/kitchen.module';
     CustomerModule,
     SharedModule,
     KitchenModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],
