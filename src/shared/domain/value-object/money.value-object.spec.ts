@@ -24,17 +24,6 @@ describe('MoneyValueObject', () => {
       expect(create).toThrow('Invalid money value.');
     });
 
-    it('should throw an error when the value is zero', () => {
-      // Arrange
-      const zeroValue = 0;
-
-      // Act
-      const create = () => MoneyValueObject.create(zeroValue);
-
-      // Act & Assert
-      expect(create).toThrow('Invalid money value.');
-    });
-
     it('should throw an error when the value is NaN', () => {
       // Arrange
       const nanValue = NaN;
@@ -76,17 +65,6 @@ describe('MoneyValueObject', () => {
 
       // Act
       const create = () => MoneyValueObject.createFromFloat(negativeValue);
-
-      // Act & Assert
-      expect(create).toThrow('Invalid money value.');
-    });
-
-    it('should throw an error when the value is zero', () => {
-      // Arrange
-      const zeroValue = 0.0;
-
-      // Act
-      const create = () => MoneyValueObject.createFromFloat(zeroValue);
 
       // Act & Assert
       expect(create).toThrow('Invalid money value.');

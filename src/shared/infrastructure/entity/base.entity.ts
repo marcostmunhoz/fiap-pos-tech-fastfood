@@ -1,22 +1,19 @@
-import {
-  CreateDateColumn,
-  UpdateDateColumn,
-  Entity,
-  PrimaryColumn,
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity()
 export class BaseEntity {
   @PrimaryColumn()
   id: string;
 
-  @CreateDateColumn({
+  @Column({
     name: 'created_at',
+    type: 'timestamp',
   })
   createdAt: Date;
 
-  @UpdateDateColumn({
+  @Column({
     name: 'updated_at',
+    type: 'timestamp',
   })
   updatedAt: Date;
 }

@@ -13,6 +13,14 @@ export class MoneyValueObject extends AbstractValueObject<MoneyValueObjectProps>
     return parseFloat((this.value / 100).toFixed(2));
   }
 
+  sum(value: MoneyValueObject): MoneyValueObject {
+    return MoneyValueObject.create(this.value + value.value);
+  }
+
+  multiply(value: number): MoneyValueObject {
+    return MoneyValueObject.create(Math.round(this.valueAsFloat * value * 100));
+  }
+
   /**
    * @param {number} value an integer representation (in cents) of the money value
    */
@@ -28,6 +36,10 @@ export class MoneyValueObject extends AbstractValueObject<MoneyValueObjectProps>
     return this.create(Math.round(value * 100));
   }
 
+  public static zero(): MoneyValueObject {
+    return this.create(0);
+  }
+
   private static isValid(value: number): boolean {
     if (value % 1 !== 0) {
       return false;
@@ -37,7 +49,7 @@ export class MoneyValueObject extends AbstractValueObject<MoneyValueObjectProps>
       return false;
     }
 
-    if (value < 1) {
+    if (value < 0) {
       return false;
     }
 
