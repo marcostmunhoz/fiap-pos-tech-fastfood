@@ -40,6 +40,7 @@ describe('PaymentFactory', () => {
       expect(payment.total).toEqual(props.total);
       expect(payment.paymentMethod).toEqual(props.paymentMethod);
       expect(payment.status).toEqual(PaymentStatusEnum.PENDING);
+      expect(payment.externalPaymentId).toBeFalsy();
       expect(payment.createdAt).toEqual(expectedDate);
       expect(payment.updatedAt).toEqual(expectedDate);
     });

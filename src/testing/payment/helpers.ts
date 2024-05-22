@@ -13,6 +13,8 @@ export const getValidPaymentEntityId = (): EntityIdValueObject =>
 
 export const getValidOrderEntityId = (): string => 'order-id';
 
+export const getValidExternalPaymentId = (): string => 'external-payment-id';
+
 export const getValidOrderTotal = (): MoneyValueObject =>
   MoneyValueObject.create(1000);
 
@@ -27,6 +29,7 @@ export const getDomainCompletePaymentEntityProps =
   (): CompletePaymentEntityProps => ({
     id: getValidPaymentEntityId(),
     status: PaymentStatusEnum.PENDING,
+    externalPaymentId: getValidExternalPaymentId(),
     createdAt: new Date(),
     updatedAt: new Date(),
     ...getDomainPartialPaymentEntityProps(),

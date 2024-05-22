@@ -14,6 +14,7 @@ export type PartialPaymentEntityProps = {
 export type CompletePaymentEntityProps = PartialPaymentEntityProps & {
   id: EntityIdValueObject;
   status: PaymentStatusEnum;
+  externalPaymentId?: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -35,22 +36,37 @@ export class PaymentEntity extends AbstractEntity<CompletePaymentEntityProps> {
     return this.props.status;
   }
 
-  public canBeEdited(): boolean {
-    return this.status === PaymentStatusEnum.PENDING;
+  public get externalPaymentId(): string {
+    return this.props.externalPaymentId;
   }
 
-  public markAsPaid(): void {
+  public canBeEdited(): boolean {
+    return PaymentStatusEnum.PENDING === this.status;
+  }
+
+  public setExternalPaymentId(id: string): PaymentEntity {
+    this.props.externalPaymentId = id;
+    this.markAsUpdated();
+
+    return this;
+  }
+
+  public markAsPaid(): PaymentEntity {
     this.ensureCanBeEdited();
 
     this.props.status = PaymentStatusEnum.PAID;
     this.markAsUpdated();
+
+    return this;
   }
 
-  public markAsFailed(): void {
+  public markAsFailed(): PaymentEntity {
     this.ensureCanBeEdited();
 
     this.props.status = PaymentStatusEnum.FAILED;
     this.markAsUpdated();
+
+    return this;
   }
 
   private ensureCanBeEdited(): void {

@@ -1,6 +1,7 @@
 import {
   getDomainCompletePaymentEntityProps,
   getDomainPaymentEntity,
+  getValidExternalPaymentId,
 } from '@/testing/payment/helpers';
 import { PaymentStatusEnum } from '../enum/payment-status.enum';
 import { PaymentCanNotBeEditedException } from '../exception/payment-can-not-be-edited.exception';
@@ -20,6 +21,29 @@ describe('PaymentEntity', () => {
       expect(payment.total).toEqual(props.total);
       expect(payment.createdAt).toEqual(props.createdAt);
       expect(payment.updatedAt).toEqual(props.updatedAt);
+    });
+  });
+
+  describe('canBeEdited', () => {
+    it('should return a boolean indicating whether the payment status is PENDING', async () => {
+      // Arrange
+      const props = getDomainCompletePaymentEntityProps();
+      const pendingPayment = getDomainPaymentEntity({
+        ...props,
+        status: PaymentStatusEnum.PENDING,
+      });
+      const paidPayment = getDomainPaymentEntity({
+        ...props,
+        status: PaymentStatusEnum.PAID,
+      });
+
+      // Act
+      const pendingPaymentResult = pendingPayment.canBeEdited();
+      const paidPaymentResult = paidPayment.canBeEdited();
+
+      // Assert
+      expect(pendingPaymentResult).toBe(true);
+      expect(paidPaymentResult).toBe(false);
     });
   });
 
@@ -82,6 +106,22 @@ describe('PaymentEntity', () => {
 
       // Assert
       expect(act).toThrow(PaymentCanNotBeEditedException);
+    });
+  });
+
+  describe('setExternalPaymentId', () => {
+    it('should set the externalPaymentId property', async () => {
+      // Arrange
+      const payment = getDomainPaymentEntity();
+      const externalPaymentId = getValidExternalPaymentId();
+      const paymentSpy = jest.spyOn(payment as any, 'markAsUpdated');
+
+      // Act
+      payment.setExternalPaymentId(externalPaymentId);
+
+      // Assert
+      expect(paymentSpy).toHaveBeenCalledTimes(1);
+      expect(payment.externalPaymentId).toEqual(externalPaymentId);
     });
   });
 });
