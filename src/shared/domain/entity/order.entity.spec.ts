@@ -1,3 +1,4 @@
+import { OrderCanNotBeEditedException } from '@/shared/domain/exception/order-can-not-be-edited.exception';
 import { OrderStatusEnum } from '../enum/order-status.enum';
 import { ItemAlreadyAddedException } from '../exception/item-already-added.exception';
 import { ItemNotFoundException } from '../exception/item-not-found.exception';
@@ -6,7 +7,7 @@ import { MoneyValueObject } from '../value-object/money.value-object';
 import { OrderItemValueObject } from '../value-object/order-item.value-object';
 import {
   getDomainOrderEntity,
-  getDomainCompletedOrderEntityProps,
+  getDomainCompleteOrderEntityProps,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
 
@@ -14,7 +15,7 @@ describe('OrderEntity', () => {
   describe('getters', () => {
     it('should return the correct values', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const order = getDomainOrderEntity(props);
 
       // Assert
@@ -31,7 +32,7 @@ describe('OrderEntity', () => {
   describe('canBeEdited', () => {
     it('should return a boolean indicating whether the order status is PENDING', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const pendingOrder = getDomainOrderEntity({
         ...props,
         status: OrderStatusEnum.PENDING,
@@ -54,7 +55,7 @@ describe('OrderEntity', () => {
   describe('addItem', () => {
     it('should add an item to the order and update its total', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const order = getDomainOrderEntity({
         ...props,
         items: [],
@@ -86,9 +87,24 @@ describe('OrderEntity', () => {
       expect(order.items[1].equals(item2)).toBe(true);
     });
 
+    it('shoud throw an error if the order can not be edited', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PAID,
+      });
+
+      // Act
+      const action = () => order.addItem(getValidOrderItem());
+
+      // Assert
+      expect(action).toThrow(OrderCanNotBeEditedException);
+    });
+
     it('should throw an error if the item already exists in the order', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const item = getValidOrderItem();
       const order = getDomainOrderEntity({
         ...props,
@@ -96,17 +112,17 @@ describe('OrderEntity', () => {
       });
 
       // Act
-      const action = () => order.addItem(item);
+      const act = () => order.addItem(item);
 
       // Assert
-      expect(action).toThrow(ItemAlreadyAddedException);
+      expect(act).toThrow(ItemAlreadyAddedException);
     });
   });
 
   describe('removeItem', () => {
     it('should remove an item from the order and update its total', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const item1 = OrderItemValueObject.create({
         code: 'product-code-1',
         name: 'Product 1',
@@ -135,9 +151,24 @@ describe('OrderEntity', () => {
       expect(order.items[0].equals(item2)).toBe(true);
     });
 
+    it('shoud throw an error if the order can not be edited', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PAID,
+      });
+
+      // Act
+      const act = () => order.removeItem('product-code');
+
+      // Assert
+      expect(act).toThrow(OrderCanNotBeEditedException);
+    });
+
     it('should throw an error if the item does not exist in the order', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const item = getValidOrderItem();
       const order = getDomainOrderEntity({
         ...props,
@@ -155,7 +186,7 @@ describe('OrderEntity', () => {
   describe('changeItemQuantity', () => {
     it('should change the quantity of an item in the order and update its total', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const item1 = OrderItemValueObject.create({
         code: 'product-code-1',
         name: 'Product 1',
@@ -185,9 +216,28 @@ describe('OrderEntity', () => {
       expect(order.items[1].quantity.equals(newQuantity)).toBe(true);
     });
 
+    it('shoud throw an error if the order can not be edited', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PAID,
+      });
+
+      // Act
+      const act = () =>
+        order.changeItemQuantity(
+          'product-code',
+          ItemQuantityValueObject.create(1),
+        );
+
+      // Assert
+      expect(act).toThrow(OrderCanNotBeEditedException);
+    });
+
     it('should throw an error if the item does not exist in the order', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const item = getValidOrderItem();
       const order = getDomainOrderEntity({
         ...props,
@@ -200,6 +250,67 @@ describe('OrderEntity', () => {
 
       // Assert
       expect(action).toThrow(ItemNotFoundException);
+    });
+  });
+
+  describe('markAsPaid', () => {
+    it('should mark the order as paid', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity(props);
+      const orderSpy = jest.spyOn(order as any, 'markAsUpdated');
+
+      // Act
+      order.markAsPaid();
+
+      // Assert
+      expect(orderSpy).toHaveBeenCalledTimes(1);
+      expect(order.status).toEqual(OrderStatusEnum.PAID);
+    });
+
+    it('should throw an exception if the order can not be edited', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PAID,
+      });
+
+      // Act
+      const act = () => order.markAsPaid();
+
+      // Assert
+      expect(act).toThrow(OrderCanNotBeEditedException);
+    });
+  });
+
+  describe('markAsCanceled', () => {
+    it('should mark the order as canceled', async () => {
+      // Arrange
+      const order = getDomainOrderEntity();
+      const orderSpy = jest.spyOn(order as any, 'markAsUpdated');
+
+      // Act
+      order.markAsCanceled();
+
+      // Assert
+      expect(orderSpy).toHaveBeenCalledTimes(1);
+      expect(order.status).toEqual(OrderStatusEnum.CANCELED);
+    });
+
+    it('should throw an exception if the order can not be edited', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PAID,
+      });
+
+      // Act
+      const act = () => order.markAsCanceled();
+
+      // Assert
+      expect(act).toThrow(OrderCanNotBeEditedException);
     });
   });
 });

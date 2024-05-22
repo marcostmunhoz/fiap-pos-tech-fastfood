@@ -5,7 +5,7 @@ import {
 } from './change-order-item-quantity.use-case';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import {
-  getDomainCompletedOrderEntityProps,
+  getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderEntityId,
   getValidOrderItem,
@@ -25,7 +25,7 @@ describe('ChangeOrderItemQuantityUseCase', () => {
     it('should change the quantity of an item from the order', async () => {
       // Arrange
       const item = getValidOrderItem();
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const order = getDomainOrderEntity({
         ...props,
         items: [item],

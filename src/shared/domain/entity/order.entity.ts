@@ -1,6 +1,7 @@
 import { OrderStatusEnum } from '../enum/order-status.enum';
 import { ItemAlreadyAddedException } from '../exception/item-already-added.exception';
 import { ItemNotFoundException } from '../exception/item-not-found.exception';
+import { OrderCanNotBeEditedException } from '../exception/order-can-not-be-edited.exception';
 import { EntityIdValueObject } from '../value-object/entity-id.value-object';
 import { ItemQuantityValueObject } from '../value-object/item-quantity.value-object';
 import { MoneyValueObject } from '../value-object/money.value-object';
@@ -47,6 +48,8 @@ export class OrderEntity extends AbstractEntity<CompleteOrderEntityProps> {
   }
 
   public addItem(item: OrderItemValueObject): OrderEntity {
+    this.ensureCanBeEdited();
+
     const exists = this.items.some(
       (existingItem) => existingItem.code === item.code,
     );
@@ -63,6 +66,7 @@ export class OrderEntity extends AbstractEntity<CompleteOrderEntityProps> {
   }
 
   public removeItem(code: string): OrderEntity {
+    this.ensureCanBeEdited();
     this.ensureItemExists(code);
 
     this.props.items = this.items.filter((item) => item.code !== code);
@@ -76,6 +80,7 @@ export class OrderEntity extends AbstractEntity<CompleteOrderEntityProps> {
     code: string,
     quantity: ItemQuantityValueObject,
   ): OrderEntity {
+    this.ensureCanBeEdited();
     this.ensureItemExists(code);
 
     this.props.items = this.items.map((item) => {
@@ -96,11 +101,35 @@ export class OrderEntity extends AbstractEntity<CompleteOrderEntityProps> {
     return this;
   }
 
+  public markAsPaid(): OrderEntity {
+    this.ensureCanBeEdited();
+
+    this.props.status = OrderStatusEnum.PAID;
+    this.markAsUpdated();
+
+    return this;
+  }
+
+  public markAsCanceled(): OrderEntity {
+    this.ensureCanBeEdited();
+
+    this.props.status = OrderStatusEnum.CANCELED;
+    this.markAsUpdated();
+
+    return this;
+  }
+
   private ensureItemExists(code: string): void {
     const exists = this.items.some((item) => item.code === code);
 
     if (!exists) {
       throw new ItemNotFoundException();
+    }
+  }
+
+  private ensureCanBeEdited(): void {
+    if (!this.canBeEdited()) {
+      throw new OrderCanNotBeEditedException();
     }
   }
 

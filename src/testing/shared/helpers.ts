@@ -130,7 +130,7 @@ export function getDomainPartialOrderEntityProps(): PartialOrderEntityProps {
   };
 }
 
-export function getDomainCompletedOrderEntityProps(): CompleteOrderEntityProps {
+export function getDomainCompleteOrderEntityProps(): CompleteOrderEntityProps {
   return {
     id: getValidOrderEntityId(),
     items: [getValidOrderItem()],
@@ -145,7 +145,7 @@ export function getDomainCompletedOrderEntityProps(): CompleteOrderEntityProps {
 export function getDomainOrderEntity(
   props?: CompleteOrderEntityProps,
 ): DomainOrderEntity {
-  return new DomainOrderEntity(props || getDomainCompletedOrderEntityProps());
+  return new DomainOrderEntity(props || getDomainCompleteOrderEntityProps());
 }
 
 export function getInfrastructureOrderEntity(): InfrastructureOrderEntity {

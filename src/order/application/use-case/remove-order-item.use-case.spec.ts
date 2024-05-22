@@ -2,7 +2,7 @@ import { OrderRepository } from '@/shared/domain/repository/order.repository.int
 import { Input, RemoveOrderItemUseCase } from './remove-order-item.use-case';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import {
-  getDomainCompletedOrderEntityProps,
+  getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderEntityId,
   getValidOrderItem,
@@ -21,7 +21,7 @@ describe('RemoveOrderItemUseCase', () => {
     it('should remove an item from the order', async () => {
       // Arrange
       const item = getValidOrderItem();
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const order = getDomainOrderEntity({
         ...props,
         items: [item],

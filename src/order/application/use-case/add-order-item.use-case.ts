@@ -7,7 +7,6 @@ import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quant
 import { OrderRepositoryToken, ProductRepositoryToken } from '@/shared/tokens';
 import { Inject } from '@nestjs/common';
 import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.value-object';
-import { OrderCanNotBeEditedException } from '@/order/domain/exception/order-can-not-be-edited.exception';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 
 export type Input = {
@@ -33,10 +32,6 @@ export class AddOrderItemUseCase implements UseCase<Input, Output> {
 
     if (!order) {
       throw new EntityNotFoundException('Order not found with given ID.');
-    }
-
-    if (!order.canBeEdited()) {
-      throw new OrderCanNotBeEditedException();
     }
 
     const product = await this.productRepository.findByCode(

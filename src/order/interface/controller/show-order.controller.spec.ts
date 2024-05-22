@@ -5,7 +5,7 @@ import {
   Output,
 } from '@/order/application/use-case/show-order.use-case';
 import {
-  getDomainCompletedOrderEntityProps,
+  getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
@@ -34,7 +34,7 @@ describe('ShowOrderController', () => {
   describe('execute', () => {
     it('should return an existing order', async () => {
       // Arrange
-      const props = getDomainCompletedOrderEntityProps();
+      const props = getDomainCompleteOrderEntityProps();
       const item = getValidOrderItem();
       const order = getDomainOrderEntity({
         ...props,
