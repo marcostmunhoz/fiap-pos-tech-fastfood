@@ -1,11 +1,11 @@
-import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
-import { ListProductsUseCase } from './list-products.use-case';
+import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
+import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
-import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
-import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import { getDomainProductEntity } from '@/testing/shared/helpers';
+import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
+import { ListProductsUseCase } from './list-products.use-case';
 
 describe('ListProductsUseCase', () => {
   let sut: ListProductsUseCase;

@@ -1,7 +1,7 @@
 import {
   CompletePaymentEntityProps,
-  PartialPaymentEntityProps,
   PaymentEntity as DomainPaymentEntity,
+  PartialPaymentEntityProps,
 } from '@/payment/domain/entity/payment.entity';
 import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';

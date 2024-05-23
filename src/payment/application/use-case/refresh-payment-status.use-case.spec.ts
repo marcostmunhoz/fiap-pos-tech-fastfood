@@ -1,19 +1,19 @@
+import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
+import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
 import { PaymentRepository } from '@/payment/domain/repository/payment.repository.interface';
-import {
-  Input,
-  Output,
-  RefreshPaymentStatusUseCase,
-} from './refresh-payment-status.use-case';
-import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
-import { getPaymentRepositoryMock } from '@/testing/payment/mock/payment.repository.mock';
-import { getPaymentGatewayServiceMock } from '@/testing/payment/mock/payment-gateway-service.mock';
 import {
   getDomainCompletePaymentEntityProps,
   getDomainPaymentEntity,
   getValidPaymentEntityId,
 } from '@/testing/payment/helpers';
-import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
-import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { getPaymentGatewayServiceMock } from '@/testing/payment/mock/payment-gateway-service.mock';
+import { getPaymentRepositoryMock } from '@/testing/payment/mock/payment.repository.mock';
+import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
+import {
+  Input,
+  Output,
+  RefreshPaymentStatusUseCase,
+} from './refresh-payment-status.use-case';
 
 describe('RefreshPaymentStatusUseCase', () => {
   let repositoryMock: jest.Mocked<PaymentRepository>;

@@ -1,5 +1,4 @@
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
-import { CompleteOrderEntityProps } from '@/shared/domain/entity/order.entity';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';

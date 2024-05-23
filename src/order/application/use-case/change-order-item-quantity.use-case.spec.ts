@@ -1,16 +1,16 @@
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
-import {
-  ChangeOrderItemQuantityUseCase,
-  Input,
-} from './change-order-item-quantity.use-case';
-import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
 import {
   getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderEntityId,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
-import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
+import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import {
+  ChangeOrderItemQuantityUseCase,
+  Input,
+} from './change-order-item-quantity.use-case';
 
 describe('ChangeOrderItemQuantityUseCase', () => {
   let orderRepositoryMock: jest.Mocked<OrderRepository>;

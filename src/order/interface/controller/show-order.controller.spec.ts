@@ -1,14 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ShowOrderController } from './show-order.controller';
 import {
-  ShowOrderUseCase,
   Output,
+  ShowOrderUseCase,
 } from '@/order/application/use-case/show-order.use-case';
 import {
   getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ShowOrderController } from './show-order.controller';
 
 describe('ShowOrderController', () => {
   let useCaseMock: jest.Mocked<ShowOrderUseCase>;

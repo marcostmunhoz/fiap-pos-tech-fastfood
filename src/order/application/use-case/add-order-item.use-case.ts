@@ -4,10 +4,10 @@ import { OrderRepository } from '@/shared/domain/repository/order.repository.int
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
-import { OrderRepositoryToken, ProductRepositoryToken } from '@/shared/tokens';
-import { Inject } from '@nestjs/common';
 import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
+import { OrderRepositoryToken, ProductRepositoryToken } from '@/shared/tokens';
+import { Inject } from '@nestjs/common';
 
 export type Input = {
   id: EntityIdValueObject;

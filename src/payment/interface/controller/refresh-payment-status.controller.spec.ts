@@ -1,16 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RefreshPaymentStatusController } from './refresh-payment-status.controller';
 import {
-  RefreshPaymentStatusUseCase,
   Output,
+  RefreshPaymentStatusUseCase,
 } from '@/payment/application/use-case/refresh-payment-status.use-case';
-import {
-  getValidOrderEntityId,
-  getValidPaymentEntityId,
-} from '@/testing/payment/helpers';
-import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { getValidPaymentEntityId } from '@/testing/payment/helpers';
+import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentParam } from '../dto/payment.param';
+import { RefreshPaymentStatusController } from './refresh-payment-status.controller';
 
 describe('RefreshPaymentStatusController', () => {
   let useCaseMock: jest.Mocked<RefreshPaymentStatusUseCase>;

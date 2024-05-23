@@ -1,12 +1,12 @@
-import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
 import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
-import { PaymentFactory } from './payment.factory';
 import {
   getDomainPartialPaymentEntityProps,
   getValidPaymentEntityId,
 } from '@/testing/payment/helpers';
+import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
 import { PaymentEntity } from '../entity/payment.entity';
 import { PaymentStatusEnum } from '../enum/payment-status.enum';
+import { PaymentFactory } from './payment.factory';
 
 describe('PaymentFactory', () => {
   let entityIdGeneratorMock: jest.Mocked<EntityIdGeneratorHelper>;

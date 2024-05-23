@@ -1,9 +1,9 @@
-import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
-import { Input, CreateOrderUseCase } from './create-order.use-case';
 import { OrderFactory } from '@/shared/domain/factory/order.factory';
-import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
-import { getOrderFactoryMock } from '@/testing/shared/mock/order.factory.mock';
+import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { getDomainOrderEntity } from '@/testing/shared/helpers';
+import { getOrderFactoryMock } from '@/testing/shared/mock/order.factory.mock';
+import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import { CreateOrderUseCase, Input } from './create-order.use-case';
 
 describe('CreateOrderUseCase', () => {
   let orderRepositoryMock: jest.Mocked<OrderRepository>;

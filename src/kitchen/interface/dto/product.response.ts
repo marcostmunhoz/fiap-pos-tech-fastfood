@@ -1,12 +1,12 @@
-import { Expose } from 'class-transformer';
+import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
+import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import {
   TransformObjectKeyOptional,
   TransformValueObjectToPrimitive,
 } from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
 import { UuidProperty } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
-import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
+import { Expose } from 'class-transformer';
 
 export class ProductResponse {
   @Expose()

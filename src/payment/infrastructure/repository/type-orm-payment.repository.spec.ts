@@ -1,15 +1,15 @@
-import { In, Repository } from 'typeorm';
-import { TypeOrmPaymentRepository } from './type-orm-payment.repository';
-import { PaymentEntity as InfrastructurePaymentEntity } from '../entity/payment.entity';
-import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.repository.mock';
+import { PaymentEntity as DomainPaymentEntity } from '@/payment/domain/entity/payment.entity';
+import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import {
   getDomainPaymentEntity,
   getInfrastructurePaymentEntity,
   getValidPaymentEntityId,
 } from '@/testing/payment/helpers';
-import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
-import { PaymentEntity as DomainPaymentEntity } from '@/payment/domain/entity/payment.entity';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
+import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.repository.mock';
+import { In, Repository } from 'typeorm';
+import { PaymentEntity as InfrastructurePaymentEntity } from '../entity/payment.entity';
+import { TypeOrmPaymentRepository } from './type-orm-payment.repository';
 
 describe('TypeOrmPaymentRepository', () => {
   let repositoryMock: jest.Mocked<Repository<InfrastructurePaymentEntity>>;

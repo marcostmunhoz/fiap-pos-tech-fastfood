@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CreateOrderController } from './create-order.controller';
 import {
   CreateOrderUseCase,
   Output,
 } from '@/order/application/use-case/create-order.use-case';
 import { getValidOrderEntityId } from '@/testing/shared/helpers';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CreateOrderRequest } from '../dto/create-order.request';
+import { CreateOrderController } from './create-order.controller';
 
 describe('CreateOrderController', () => {
   let useCaseMock: jest.Mocked<CreateOrderUseCase>;

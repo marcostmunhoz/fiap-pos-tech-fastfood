@@ -1,8 +1,8 @@
-import { DeleteProductUseCase } from './delete-product.use-case';
+import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import { getValidProductEntityId } from '@/testing/shared/helpers';
 import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
-import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
+import { DeleteProductUseCase } from './delete-product.use-case';
 
 describe('DeleteProductUseCase', () => {
   let sut: DeleteProductUseCase;

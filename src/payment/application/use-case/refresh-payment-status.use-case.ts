@@ -2,6 +2,7 @@ import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
 import { InvalidPaymentMethodException } from '@/payment/domain/exception/invalid-payment-method.exception';
 import { InvalidPaymentStatusException } from '@/payment/domain/exception/invalid-payment-status.exception';
+import { PaymentFailedException } from '@/payment/domain/exception/payment-failed.exception';
 import { PaymentRepository } from '@/payment/domain/repository/payment.repository.interface';
 import {
   PaymentGatewayServiceToken,
@@ -12,7 +13,6 @@ import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-fo
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { Inject } from '@nestjs/common';
 import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
-import { PaymentFailedException } from '@/payment/domain/exception/payment-failed.exception';
 
 export type Input = {
   id: EntityIdValueObject;

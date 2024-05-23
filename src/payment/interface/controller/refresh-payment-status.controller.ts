@@ -1,8 +1,5 @@
 import { RefreshPaymentStatusUseCase } from '@/payment/application/use-case/refresh-payment-status.use-case';
-import { Controller, HttpCode, Param, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { PaymentParam } from '../dto/payment.param';
-import { RefreshPaymentStatusResponse } from '../dto/refresh-payment-status.response';
+import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import {
   DefaultBadRequestResponse,
   DefaultInternalServerErrorResponse,
@@ -10,7 +7,10 @@ import {
   DefaultUnprocessableEntityResponse,
 } from '@/shared/infrastructure/decorator/swagger-response.decorator';
 import { mapObjectToResponse } from '@/shared/infrastructure/helper/response.helper';
-import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
+import { Controller, HttpCode, Param, Post } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { PaymentParam } from '../dto/payment.param';
+import { RefreshPaymentStatusResponse } from '../dto/refresh-payment-status.response';
 
 @ApiTags('Payments')
 @Controller('payments')

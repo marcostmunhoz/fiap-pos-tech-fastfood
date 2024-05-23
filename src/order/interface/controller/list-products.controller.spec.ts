@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ListProductsController } from './list-products.controller';
 import {
   ListProductsUseCase,
   Output,
 } from '@/order/application/use-case/list-products.use-case';
 import { getDomainProductEntity } from '@/testing/shared/helpers';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ListProductsController } from './list-products.controller';
 
 describe('ListProductsController', () => {
   let useCaseMock: jest.Mocked<ListProductsUseCase>;

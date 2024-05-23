@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import 'reflect-metadata';
+import { AppModule } from './app.module';
 import { AppConfigService } from './shared/infrastructure/config/app-config.service';
 import { DomainExceptionFilter } from './shared/infrastructure/filter/domain-exception.filter';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from './shared/infrastructure/pipe/validation.pipe';
 import { TransformationPipe } from './shared/infrastructure/pipe/transformation.pipe';
-import 'reflect-metadata';
+import { ValidationPipe } from './shared/infrastructure/pipe/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

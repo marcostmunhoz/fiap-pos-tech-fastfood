@@ -1,16 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CreatePaymentController } from './create-payment.controller';
 import {
   CreatePaymentUseCase,
   Output,
 } from '@/payment/application/use-case/create-payment.use-case';
-import { CreatePaymentRequest } from '../dto/create-payment.request';
+import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
+import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
 import {
   getValidOrderEntityId,
   getValidPaymentEntityId,
 } from '@/testing/payment/helpers';
-import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
-import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CreatePaymentRequest } from '../dto/create-payment.request';
+import { CreatePaymentController } from './create-payment.controller';
 
 describe('CreatePaymentController', () => {
   let useCaseMock: jest.Mocked<CreatePaymentUseCase>;

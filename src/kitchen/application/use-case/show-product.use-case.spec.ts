@@ -1,11 +1,11 @@
-import { ShowProductUseCase } from './show-product.use-case';
+import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import {
   getDomainProductEntity,
   getValidProductEntityId,
 } from '@/testing/shared/helpers';
 import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
-import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
+import { ShowProductUseCase } from './show-product.use-case';
 
 describe('ShowProductUseCase', () => {
   let sut: ShowProductUseCase;

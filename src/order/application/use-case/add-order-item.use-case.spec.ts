@@ -1,16 +1,16 @@
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
-import { AddOrderItemUseCase, Input } from './add-order-item.use-case';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
-import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
-import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
+import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
+import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.value-object';
 import {
   getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getDomainProductEntity,
   getValidOrderEntityId,
 } from '@/testing/shared/helpers';
-import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
-import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.value-object';
+import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
+import { AddOrderItemUseCase, Input } from './add-order-item.use-case';
 
 describe('AddOrderItemUseCase', () => {
   let orderRepositoryMock: jest.Mocked<OrderRepository>;

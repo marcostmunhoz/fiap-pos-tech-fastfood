@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RemoveOrderItemController } from './remove-order-item.controller';
 import { RemoveOrderItemUseCase } from '@/order/application/use-case/remove-order-item.use-case';
 import { getValidOrderEntityId } from '@/testing/shared/helpers';
-import { RemoveOrderItemRequest } from '../dto/remove-order-item.request';
+import { Test, TestingModule } from '@nestjs/testing';
 import { OrderParam } from '../dto/order.param';
+import { RemoveOrderItemRequest } from '../dto/remove-order-item.request';
+import { RemoveOrderItemController } from './remove-order-item.controller';
 
 describe('RemoveOrderItemController', () => {
   let useCaseMock: jest.Mocked<RemoveOrderItemUseCase>;

@@ -1,3 +1,11 @@
+import { RemoveOrderItemUseCase } from '@/order/application/use-case/remove-order-item.use-case';
+import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
+import {
+  DefaultBadRequestResponse,
+  DefaultInternalServerErrorResponse,
+  DefaultNotFoundResponse,
+  DefaultUnprocessableEntityResponse,
+} from '@/shared/infrastructure/decorator/swagger-response.decorator';
 import {
   Body,
   Controller,
@@ -7,15 +15,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
-import {
-  DefaultBadRequestResponse,
-  DefaultInternalServerErrorResponse,
-  DefaultNotFoundResponse,
-  DefaultUnprocessableEntityResponse,
-} from '@/shared/infrastructure/decorator/swagger-response.decorator';
-import { RemoveOrderItemUseCase } from '@/order/application/use-case/remove-order-item.use-case';
 import { OrderParam } from '../dto/order.param';
-import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import { RemoveOrderItemRequest } from '../dto/remove-order-item.request';
 
 @ApiTags('Orders')

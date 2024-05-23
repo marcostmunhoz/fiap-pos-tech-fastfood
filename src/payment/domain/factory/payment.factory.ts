@@ -1,10 +1,10 @@
+import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
 import { EntityIdGeneratorHelperToken } from '@/shared/tokens';
 import { Inject } from '@nestjs/common';
 import {
   PartialPaymentEntityProps,
   PaymentEntity,
 } from '../entity/payment.entity';
-import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
 import { PaymentStatusEnum } from '../enum/payment-status.enum';
 
 export class PaymentFactory {

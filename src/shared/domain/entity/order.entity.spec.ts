@@ -1,15 +1,15 @@
 import { OrderCanNotBeEditedException } from '@/shared/domain/exception/order-can-not-be-edited.exception';
+import {
+  getDomainCompleteOrderEntityProps,
+  getDomainOrderEntity,
+  getValidOrderItem,
+} from '@/testing/shared/helpers';
 import { OrderStatusEnum } from '../enum/order-status.enum';
 import { ItemAlreadyAddedException } from '../exception/item-already-added.exception';
 import { ItemNotFoundException } from '../exception/item-not-found.exception';
 import { ItemQuantityValueObject } from '../value-object/item-quantity.value-object';
 import { MoneyValueObject } from '../value-object/money.value-object';
 import { OrderItemValueObject } from '../value-object/order-item.value-object';
-import {
-  getDomainOrderEntity,
-  getDomainCompleteOrderEntityProps,
-  getValidOrderItem,
-} from '@/testing/shared/helpers';
 
 describe('OrderEntity', () => {
   describe('getters', () => {

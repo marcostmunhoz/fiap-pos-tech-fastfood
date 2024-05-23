@@ -1,5 +1,5 @@
-import { UuidV4EntityIdGeneratorHelper } from './uuid-v4-entity-id-generator.helper';
 import * as uuid from 'uuid';
+import { UuidV4EntityIdGeneratorHelper } from './uuid-v4-entity-id-generator.helper';
 
 jest.mock('uuid');
 

@@ -1,20 +1,20 @@
-import { CreatePaymentUseCase, Input, Output } from './create-payment.use-case';
-import { PaymentRepository } from '@/payment/domain/repository/payment.repository.interface';
-import { getPaymentRepositoryMock } from '@/testing/payment/mock/payment.repository.mock';
-import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
-import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
-import { getPaymentGatewayServiceMock } from '@/testing/payment/mock/payment-gateway-service.mock';
-import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
+import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
 import { PaymentFactory } from '@/payment/domain/factory/payment.factory';
-import { getPaymentFactoryMock } from '@/testing/payment/mock/payment.factory.mock';
+import { PaymentRepository } from '@/payment/domain/repository/payment.repository.interface';
+import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import {
   getDomainCompletePaymentEntityProps,
   getDomainPaymentEntity,
   getValidOrderEntityId,
 } from '@/testing/payment/helpers';
-import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
+import { getPaymentGatewayServiceMock } from '@/testing/payment/mock/payment-gateway-service.mock';
+import { getPaymentFactoryMock } from '@/testing/payment/mock/payment.factory.mock';
+import { getPaymentRepositoryMock } from '@/testing/payment/mock/payment.repository.mock';
 import { getDomainOrderEntity } from '@/testing/shared/helpers';
-import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
+import { CreatePaymentUseCase, Input, Output } from './create-payment.use-case';
 
 describe('CreatePaymentUseCase', () => {
   let paymentGatewayServiceMock: jest.Mocked<PaymentGatewayService>;

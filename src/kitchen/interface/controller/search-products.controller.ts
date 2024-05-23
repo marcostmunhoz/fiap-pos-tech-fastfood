@@ -1,10 +1,10 @@
-import { Controller, Get, HttpCode, Inject, Query } from '@nestjs/common';
-import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ProductResponse } from '../dto/product.response';
+import { SearchProductsUseCase } from '@/kitchen/application/use-case/search-products.use-case';
 import { DefaultInternalServerErrorResponse } from '@/shared/infrastructure/decorator/swagger-response.decorator';
 import { mapObjectToResponse } from '@/shared/infrastructure/helper/response.helper';
-import { SearchProductsUseCase } from '@/kitchen/application/use-case/search-products.use-case';
+import { Controller, Get, HttpCode, Inject, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ProductQuery } from '../dto/product.query';
+import { ProductResponse } from '../dto/product.response';
 
 @ApiTags('Products')
 @Controller('products')

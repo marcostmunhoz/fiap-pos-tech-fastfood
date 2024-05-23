@@ -1,13 +1,13 @@
-import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
-import { EntityIdGeneratorHelper } from '../helper/entity-id-generator.helper.interface';
-import { OrderFactory } from './order.factory';
 import {
   getDomainPartialOrderEntityProps,
   getValidOrderEntityId,
 } from '@/testing/shared/helpers';
+import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
 import { OrderEntity } from '../entity/order.entity';
 import { OrderStatusEnum } from '../enum/order-status.enum';
+import { EntityIdGeneratorHelper } from '../helper/entity-id-generator.helper.interface';
 import { MoneyValueObject } from '../value-object/money.value-object';
+import { OrderFactory } from './order.factory';
 
 describe('OrderFactory', () => {
   let entityIdGeneratorMock: jest.Mocked<EntityIdGeneratorHelper>;

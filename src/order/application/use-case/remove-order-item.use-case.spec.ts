@@ -1,12 +1,12 @@
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
-import { Input, RemoveOrderItemUseCase } from './remove-order-item.use-case';
-import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import {
   getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderEntityId,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
+import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
+import { Input, RemoveOrderItemUseCase } from './remove-order-item.use-case';
 
 describe('RemoveOrderItemUseCase', () => {
   let orderRepositoryMock: jest.Mocked<OrderRepository>;

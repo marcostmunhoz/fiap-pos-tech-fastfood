@@ -1,13 +1,13 @@
-import { Body, Controller, HttpCode, Inject, Param, Put } from '@nestjs/common';
-import { ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
+import { UpdateProductUseCase } from '@/kitchen/application/use-case/update-product.use-case';
+import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import {
   DefaultBadRequestResponse,
   DefaultInternalServerErrorResponse,
   DefaultUnprocessableEntityResponse,
 } from '@/shared/infrastructure/decorator/swagger-response.decorator';
+import { Body, Controller, HttpCode, Inject, Param, Put } from '@nestjs/common';
+import { ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
 import { ProductParam } from '../dto/product.param';
-import { UpdateProductUseCase } from '@/kitchen/application/use-case/update-product.use-case';
-import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import { ProductRequest } from '../dto/product.request';
 
 @ApiTags('Products')

@@ -1,14 +1,14 @@
-import { Controller, Get, HttpCode, Inject, Param } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ProductResponse } from '../dto/product.response';
+import { ShowProductUseCase } from '@/kitchen/application/use-case/show-product.use-case';
+import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import {
   DefaultInternalServerErrorResponse,
   DefaultNotFoundResponse,
 } from '@/shared/infrastructure/decorator/swagger-response.decorator';
 import { mapObjectToResponse } from '@/shared/infrastructure/helper/response.helper';
+import { Controller, Get, HttpCode, Inject, Param } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProductParam } from '../dto/product.param';
-import { ShowProductUseCase } from '@/kitchen/application/use-case/show-product.use-case';
-import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
+import { ProductResponse } from '../dto/product.response';
 
 @ApiTags('Products')
 @Controller('products')

@@ -1,14 +1,14 @@
-import { Controller, Delete, HttpCode, Inject, Param } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { DeleteProductUseCase } from '@/kitchen/application/use-case/delete-product.use-case';
+import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 import {
   DefaultBadRequestResponse,
   DefaultInternalServerErrorResponse,
   DefaultNotFoundResponse,
   DefaultUnprocessableEntityResponse,
 } from '@/shared/infrastructure/decorator/swagger-response.decorator';
+import { Controller, Delete, HttpCode, Inject, Param } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProductParam } from '../dto/product.param';
-import { DeleteProductUseCase } from '@/kitchen/application/use-case/delete-product.use-case';
-import { UuidParam } from '@/shared/infrastructure/decorator/swagger-property.decorator';
 
 @ApiTags('Products')
 @Controller('products')

@@ -1,11 +1,11 @@
-import { Output, ShowOrderUseCase } from './show-order.use-case';
+import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import {
   getDomainOrderEntity,
   getValidOrderEntityId,
 } from '@/testing/shared/helpers';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
-import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
+import { Output, ShowOrderUseCase } from './show-order.use-case';
 
 describe('ShowOrderUseCase', () => {
   let sut: ShowOrderUseCase;

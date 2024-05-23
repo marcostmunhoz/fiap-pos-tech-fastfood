@@ -1,8 +1,8 @@
-import { Inject } from '@nestjs/common';
-import { EntityIdGeneratorHelper } from '../helper/entity-id-generator.helper.interface';
 import { EntityIdGeneratorHelperToken } from '@/shared/tokens';
+import { Inject } from '@nestjs/common';
 import { OrderEntity, PartialOrderEntityProps } from '../entity/order.entity';
 import { OrderStatusEnum } from '../enum/order-status.enum';
+import { EntityIdGeneratorHelper } from '../helper/entity-id-generator.helper.interface';
 import { MoneyValueObject } from '../value-object/money.value-object';
 
 export class OrderFactory {
