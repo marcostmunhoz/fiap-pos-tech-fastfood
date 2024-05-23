@@ -41,14 +41,21 @@ export const getDomainPaymentEntity = (
 ): DomainPaymentEntity =>
   new DomainPaymentEntity(props || getDomainCompletePaymentEntityProps());
 
-export const getInfrastructurePaymentEntity =
-  (): InfrastructurePaymentEntity => ({
-    id: getValidPaymentEntityId().value,
-    orderId: getValidOrderEntityId(),
-    total: getValidOrderTotal().value,
-    paymentMethod: PaymentMethodEnum.CREDIT_CARD,
-    status: PaymentStatusEnum.PENDING,
-    externalPaymentId: getValidExternalPaymentId(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+export const getInfrastructurePaymentEntity = (
+  entity?: DomainPaymentEntity,
+): InfrastructurePaymentEntity => {
+  if (!entity) {
+    entity = getDomainPaymentEntity();
+  }
+
+  return {
+    id: entity.id.value,
+    orderId: entity.orderId,
+    total: entity.total.value,
+    paymentMethod: entity.paymentMethod,
+    status: entity.status,
+    externalPaymentId: entity.externalPaymentId,
+    createdAt: entity.createdAt,
+    updatedAt: entity.updatedAt,
+  };
+};

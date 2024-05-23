@@ -36,7 +36,7 @@ export class PaymentEntity extends AbstractEntity<CompletePaymentEntityProps> {
     return this.props.status;
   }
 
-  public get externalPaymentId(): string {
+  public get externalPaymentId(): string | null {
     return this.props.externalPaymentId;
   }
 

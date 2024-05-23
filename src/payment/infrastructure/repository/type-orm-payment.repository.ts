@@ -14,6 +14,16 @@ export class TypeOrmPaymentRepository implements PaymentRepository {
     private readonly typeOrmRepository: Repository<InfrastructurePaymentEntity>,
   ) {}
 
+  async findById(id: EntityIdValueObject): Promise<DomainPaymentEntity> {
+    const dbEntity = await this.typeOrmRepository.findOneBy({ id: id.value });
+
+    if (!dbEntity) {
+      return null;
+    }
+
+    return this.mapToDomainEntity(dbEntity);
+  }
+
   async existsWithOrderIdAndNotFailed(orderId: string): Promise<boolean> {
     return await this.typeOrmRepository.exists({
       where: {

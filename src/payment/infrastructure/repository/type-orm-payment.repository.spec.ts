@@ -5,9 +5,11 @@ import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.reposit
 import {
   getDomainPaymentEntity,
   getInfrastructurePaymentEntity,
+  getValidPaymentEntityId,
 } from '@/testing/payment/helpers';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
 import { PaymentEntity as DomainPaymentEntity } from '@/payment/domain/entity/payment.entity';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 
 describe('TypeOrmPaymentRepository', () => {
   let repositoryMock: jest.Mocked<Repository<InfrastructurePaymentEntity>>;
@@ -17,6 +19,48 @@ describe('TypeOrmPaymentRepository', () => {
     const mocks = getTypeOrmRepositoryMock<InfrastructurePaymentEntity>();
     repositoryMock = mocks.repositoryMock;
     sut = new TypeOrmPaymentRepository(repositoryMock);
+  });
+
+  describe('findById', () => {
+    it('should return false when a payment with the provided order ID does not exist', async () => {
+      // Arrange
+      const id = getValidPaymentEntityId();
+      repositoryMock.findOneBy.mockResolvedValue(null);
+
+      // Act
+      const result = await sut.findById(id);
+
+      // Assert
+      expect(repositoryMock.findOneBy).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.findOneBy).toHaveBeenCalledWith({ id: id.value });
+      expect(result).toBeNull();
+    });
+
+    it('should return the payment when it exists', async () => {
+      // Arrange
+      const dbEntity = getInfrastructurePaymentEntity();
+      const id = EntityIdValueObject.create(dbEntity.id);
+      repositoryMock.findOneBy.mockResolvedValue(dbEntity);
+
+      // Act
+      const result = await sut.findById(id);
+
+      // Assert
+      expect(repositoryMock.findOneBy).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.findOneBy).toHaveBeenCalledWith({
+        id: dbEntity.id,
+      });
+      expect(result).toBeDefined();
+      expect(result).toBeInstanceOf(DomainPaymentEntity);
+      expect(result.id.value).toBe(dbEntity.id);
+      expect(result.orderId).toBe(dbEntity.orderId);
+      expect(result.total.value).toBe(dbEntity.total);
+      expect(result.paymentMethod).toBe(dbEntity.paymentMethod);
+      expect(result.status).toBe(dbEntity.status);
+      expect(result.externalPaymentId).toBe(dbEntity.externalPaymentId);
+      expect(result.createdAt).toBe(dbEntity.createdAt);
+      expect(result.updatedAt).toBe(dbEntity.updatedAt);
+    });
   });
 
   describe('existsWithOrderIdAndNotFailed', () => {
@@ -44,7 +88,7 @@ describe('TypeOrmPaymentRepository', () => {
     it('should create a payment', async () => {
       // Arrange
       const entity = getDomainPaymentEntity();
-      const dbEntity = getInfrastructurePaymentEntity();
+      const dbEntity = getInfrastructurePaymentEntity(entity);
       repositoryMock.save.mockResolvedValue(dbEntity);
 
       // Act
