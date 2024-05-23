@@ -8,8 +8,8 @@ export class CreateCustomers1715900327981 implements MigrationInterface {
         name VARCHAR(100) NULL,
         email VARCHAR(255) NULL,
         cpf VARCHAR(11) NULL,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        created_at TIMESTAMP NOT NULL,
+        updated_at TIMESTAMP NOT NULL,
         CONSTRAINT customers_pk_index PRIMARY KEY (id)
       )`,
     );
