@@ -20,8 +20,6 @@ export class ListProductsController {
   async execute(): Promise<ListProductsResponse[]> {
     const result = await this.useCase.execute();
 
-    console.log(result);
-
     return mapObjectToResponse(
       ListProductsResponse,
       result,

@@ -5,7 +5,6 @@ type TransformOptionalCallback = (value: any) => any | null;
 
 export const TransformOptional = (callback: TransformOptionalCallback) =>
   Transform(({ value, key }) => {
-    console.log(value, key);
     if (value === null || value === undefined || value === '') {
       return null;
     }

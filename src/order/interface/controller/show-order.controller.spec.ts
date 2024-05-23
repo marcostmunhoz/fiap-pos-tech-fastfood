@@ -50,8 +50,6 @@ describe('ShowOrderController', () => {
       // Act
       const response = await controller.execute({ id });
 
-      console.log(response);
-
       // Assert
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
       expect(useCaseMock.execute).toHaveBeenCalledWith({ id });
