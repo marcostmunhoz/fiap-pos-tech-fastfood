@@ -4,6 +4,7 @@ import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-fo
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
+import { ProductDescriptionValueObject } from '@/shared/domain/value-object/product-description.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
 import {
   getDomainPartialProductEntityProps,
@@ -33,6 +34,9 @@ describe('UpdateProductUseCase', () => {
         id: entity.id,
         data: {
           code: ProductCodeValueObject.create('NEWCODE'),
+          description: ProductDescriptionValueObject.create(
+            'New product description',
+          ),
           name: ProductNameValueObject.create('New product name'),
           category: ProductCategoryEnum.DRINK,
           price: MoneyValueObject.create(100),

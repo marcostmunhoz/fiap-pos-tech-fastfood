@@ -10,6 +10,9 @@ export class ProductEntity extends BaseEntity {
   name: string;
 
   @Column()
+  description: string;
+
+  @Column()
   price: number;
 
   @Column()

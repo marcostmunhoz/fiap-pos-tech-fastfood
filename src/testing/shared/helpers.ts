@@ -15,6 +15,7 @@ import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quant
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
+import { ProductDescriptionValueObject } from '@/shared/domain/value-object/product-description.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
 import { OrderEntity as InfrastructureOrderEntity } from '@/shared/infrastructure/entity/order.entity';
 import { ProductEntity as InfrastructureProductEntity } from '@/shared/infrastructure/entity/product.entity';
@@ -30,6 +31,9 @@ export const getValidProductCode = (): ProductCodeValueObject =>
 
 export const getValidProductName = (): ProductNameValueObject =>
   ProductNameValueObject.create('Some Product');
+
+export const getValidProductDescription = (): ProductDescriptionValueObject =>
+  ProductDescriptionValueObject.create('Some Product Description');
 
 export const getValidMoney = (): MoneyValueObject =>
   MoneyValueObject.create(1234);
@@ -56,6 +60,7 @@ export const getDomainPartialProductEntityProps =
   (): PartialProductEntityProps => ({
     code: getValidProductCode(),
     name: getValidProductName(),
+    description: getValidProductDescription(),
     category: getValidProductCategory(),
     price: getValidMoney(),
   });
@@ -77,6 +82,7 @@ export const getDomainProductEntity = (
     id: props.id || defaultProps.id,
     code: props.code || defaultProps.code,
     name: props.name || defaultProps.name,
+    description: props.description || defaultProps.description,
     category: props.category || defaultProps.category,
     price: props.price || defaultProps.price,
     createdAt: props.createdAt || defaultProps.createdAt,
@@ -93,6 +99,7 @@ export const getInfrastructureProductEntity = (
     id: props.id?.value || defaultProps.id.value,
     code: props.code?.value || defaultProps.code.value,
     name: props.name?.value || defaultProps.name.value,
+    description: props.description?.value || defaultProps.description.value,
     category: props.category || defaultProps.category,
     price: props.price?.value || defaultProps.price.value,
     createdAt: props.createdAt || defaultProps.createdAt,

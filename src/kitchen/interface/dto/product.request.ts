@@ -1,6 +1,7 @@
 import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
+import { ProductDescriptionValueObject } from '@/shared/domain/value-object/product-description.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
 import { TransformPrimitiveToValueObject } from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -34,6 +35,12 @@ export class ProductRequest {
     type: String,
   })
   name: ProductNameValueObject;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 255)
+  @TransformPrimitiveToValueObject(ProductDescriptionValueObject)
+  description: ProductDescriptionValueObject;
 
   @IsNotEmpty()
   @IsNumber()

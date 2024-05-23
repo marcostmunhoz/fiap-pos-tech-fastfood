@@ -7,6 +7,7 @@ import {
   getValidMoney,
   getValidProductCategory,
   getValidProductCode,
+  getValidProductDescription,
   getValidProductName,
 } from '@/testing/shared/helpers';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -40,6 +41,7 @@ describe('CreateProductController', () => {
       const request: ProductRequest = {
         code: getValidProductCode(),
         name: getValidProductName(),
+        description: getValidProductDescription(),
         price: getValidMoney(),
         category: getValidProductCategory(),
       };
@@ -56,6 +58,7 @@ describe('CreateProductController', () => {
         id: output.id.value,
         code: output.code.value,
         name: output.name.value,
+        description: output.description.value,
         price: output.price.valueAsFloat,
         category: output.category,
         createdAt: output.createdAt,

@@ -41,6 +41,7 @@ export class UpdateProductUseCase implements UseCase<Input, Output> {
     const updatedEntity = entity
       .setCode(input.data.code)
       .setName(input.data.name)
+      .setDescription(input.data.description)
       .setCategory(input.data.category)
       .setPrice(input.data.price);
 

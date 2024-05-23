@@ -7,6 +7,7 @@ export class CreateProducts1716043956445 implements MigrationInterface {
         id VARCHAR(36) NOT NULL,
         code VARCHAR(20) NOT NULL,
         name VARCHAR(100) NOT NULL,
+        description VARCHAR(255) NULL,
         category VARCHAR(10) NULL,
         price INT UNSIGNED NOT NULL,
         created_at TIMESTAMP NOT NULL,

@@ -2,12 +2,14 @@ import { ProductCategoryEnum } from '../enum/product-category.enum';
 import { EntityIdValueObject } from '../value-object/entity-id.value-object';
 import { MoneyValueObject } from '../value-object/money.value-object';
 import { ProductCodeValueObject } from '../value-object/product-code.value-object';
+import { ProductDescriptionValueObject } from '../value-object/product-description.value-object';
 import { ProductNameValueObject } from '../value-object/product-name.value-object';
 import { AbstractEntity } from './abstract.entity';
 
 export type PartialProductEntityProps = {
   code: ProductCodeValueObject;
   name: ProductNameValueObject;
+  description: ProductDescriptionValueObject;
   category: ProductCategoryEnum;
   price: MoneyValueObject;
 };
@@ -27,6 +29,10 @@ export class ProductEntity extends AbstractEntity<CompleteProductEntityProps> {
     return this.props.name;
   }
 
+  public get description(): ProductDescriptionValueObject {
+    return this.props.description;
+  }
+
   public get category(): ProductCategoryEnum {
     return this.props.category;
   }
@@ -44,6 +50,15 @@ export class ProductEntity extends AbstractEntity<CompleteProductEntityProps> {
 
   public setName(name: ProductNameValueObject): ProductEntity {
     this.props.name = name;
+    this.markAsUpdated();
+
+    return this;
+  }
+
+  public setDescription(
+    description: ProductDescriptionValueObject,
+  ): ProductEntity {
+    this.props.description = description;
     this.markAsUpdated();
 
     return this;

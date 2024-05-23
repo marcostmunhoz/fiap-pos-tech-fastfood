@@ -45,6 +45,7 @@ describe('ShowProductController', () => {
         id: output.id.value,
         code: output.code.value,
         name: output.name.value,
+        description: output.description.value,
         price: output.price.valueAsFloat,
         category: output.category,
         createdAt: output.createdAt,

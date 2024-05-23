@@ -45,6 +45,7 @@ describe('SearchProductsController', () => {
         id: props.id.value,
         code: props.code.value,
         name: props.name.value,
+        description: props.description.value,
         price: props.price.valueAsFloat,
         category: props.category,
         createdAt: props.createdAt,

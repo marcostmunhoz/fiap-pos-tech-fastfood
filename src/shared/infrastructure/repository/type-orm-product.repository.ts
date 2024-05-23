@@ -7,6 +7,7 @@ import {
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
+import { ProductDescriptionValueObject } from '@/shared/domain/value-object/product-description.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, FindOptionsWhere, Not, Repository } from 'typeorm';
@@ -105,6 +106,7 @@ export class TypeOrmProductRepository implements ProductRepository {
       id: EntityIdValueObject.create(entity.id),
       code: ProductCodeValueObject.create(entity.code),
       name: ProductNameValueObject.create(entity.name),
+      description: ProductDescriptionValueObject.create(entity.description),
       price: MoneyValueObject.create(entity.price),
       category: entity.category as ProductCategoryEnum,
       createdAt: entity.createdAt,
@@ -119,6 +121,7 @@ export class TypeOrmProductRepository implements ProductRepository {
       id: entity.id.value,
       code: entity.code.value,
       name: entity.name.value,
+      description: entity.description.value,
       price: entity.price.value,
       category: entity.category,
       createdAt: entity.createdAt,

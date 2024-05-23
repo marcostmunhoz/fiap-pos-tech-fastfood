@@ -44,6 +44,7 @@ describe('TypeOrmProductRepository', () => {
       expect(result[0].id.value).toBe(dbEntity.id);
       expect(result[0].code.value).toBe(dbEntity.code);
       expect(result[0].name.value).toBe(dbEntity.name);
+      expect(result[0].description.value).toBe(dbEntity.description);
       expect(result[0].price.value).toBe(dbEntity.price);
       expect(result[0].category).toBe(dbEntity.category);
       expect(result[0].createdAt).toBe(dbEntity.createdAt);
@@ -81,6 +82,7 @@ describe('TypeOrmProductRepository', () => {
       expect(result[0].id.value).toBe(dbEntity.id);
       expect(result[0].code.value).toBe(dbEntity.code);
       expect(result[0].name.value).toBe(dbEntity.name);
+      expect(result[0].description.value).toBe(dbEntity.description);
       expect(result[0].price.value).toBe(dbEntity.price);
       expect(result[0].category).toBe(dbEntity.category);
       expect(result[0].createdAt).toBe(dbEntity.createdAt);
@@ -164,6 +166,7 @@ describe('TypeOrmProductRepository', () => {
       expect(result.id.value).toBe(dbEntity.id);
       expect(result.code.value).toBe(dbEntity.code);
       expect(result.name.value).toBe(dbEntity.name);
+      expect(result.description.value).toBe(dbEntity.description);
       expect(result.price.value).toBe(dbEntity.price);
       expect(result.category).toBe(dbEntity.category);
       expect(result.createdAt).toBe(dbEntity.createdAt);
@@ -201,6 +204,7 @@ describe('TypeOrmProductRepository', () => {
       expect(result.id.value).toBe(dbEntity.id);
       expect(result.code.value).toBe(dbEntity.code);
       expect(result.name.value).toBe(dbEntity.name);
+      expect(result.description.value).toBe(dbEntity.description);
       expect(result.price.value).toBe(dbEntity.price);
       expect(result.category).toBe(dbEntity.category);
       expect(result.createdAt).toBe(dbEntity.createdAt);

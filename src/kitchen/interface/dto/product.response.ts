@@ -29,6 +29,13 @@ export class ProductResponse {
   name: string;
 
   @Expose()
+  @TransformValueObjectToPrimitive()
+  @ApiProperty({
+    example: 'Product Description',
+  })
+  description: string;
+
+  @Expose()
   @TransformObjectKeyOptional((obj) => (obj as MoneyValueObject).valueAsFloat)
   @ApiProperty({
     example: 10.99,
