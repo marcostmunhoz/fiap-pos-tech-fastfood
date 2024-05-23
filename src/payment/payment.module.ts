@@ -8,9 +8,11 @@ import { TypeOrmPaymentRepository } from './infrastructure/repository/type-orm-p
 import { CreatePaymentController } from './interface/controller/create-payment.controller';
 import { CreatePaymentUseCase } from './application/use-case/create-payment.use-case';
 import { FakePaymentGatewayService } from './infrastructure/service/fake-payment-gateway.service';
+import { RefreshPaymentStatusController } from './interface/controller/refresh-payment-status.controller';
+import { RefreshPaymentStatusUseCase } from './application/use-case/refresh-payment-status.use-case';
 
 const factories = [PaymentFactory];
-const useCases = [CreatePaymentUseCase];
+const useCases = [CreatePaymentUseCase, RefreshPaymentStatusUseCase];
 
 @Module({
   imports: [TypeOrmModule.forFeature([PaymentEntity]), SharedModule],
@@ -26,6 +28,6 @@ const useCases = [CreatePaymentUseCase];
     ...factories,
     ...useCases,
   ],
-  controllers: [CreatePaymentController],
+  controllers: [CreatePaymentController, RefreshPaymentStatusController],
 })
 export class PaymentModule {}
