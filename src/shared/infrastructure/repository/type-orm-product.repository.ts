@@ -1,31 +1,19 @@
+import { ProductEntity as DomainProductEntity } from '@/shared/domain/entity/product.entity';
+import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import {
   ProductRepository,
   SearchProductQuery,
 } from '@/shared/domain/repository/product.repository.interface';
-import { EntityIdGeneratorHelperToken } from '@/shared/tokens';
-import { Inject } from '@nestjs/common';
-import {
-  EssentialProductEntityProps as InfrastructureEssentialProductEntityProps,
-  ProductEntity as InfrastructureProductEntity,
-} from '../entity/product.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import {
-  ProductEntity as DomainProductEntity,
-  EssentialProductEntityProps as DomainEssentialProductEntityProps,
-  ProductEntityPropsWithId as DomainProductEntityPropsWithId,
-} from '@/shared/domain/entity/product.entity';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { Brackets, FindOptionsWhere, Not, Repository } from 'typeorm';
-import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
+import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
-import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
-import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Brackets, FindOptionsWhere, Not, Repository } from 'typeorm';
+import { ProductEntity as InfrastructureProductEntity } from '../entity/product.entity';
 
 export class TypeOrmProductRepository implements ProductRepository {
   constructor(
-    @Inject(EntityIdGeneratorHelperToken)
-    private readonly entityIdGenerator: EntityIdGeneratorHelper,
     @InjectRepository(InfrastructureProductEntity)
     private readonly typeOrmRepository: Repository<InfrastructureProductEntity>,
   ) {}
@@ -79,18 +67,9 @@ export class TypeOrmProductRepository implements ProductRepository {
     return this.mapToDomainEntity(dbEntity);
   }
 
-  async create(
-    product: DomainEssentialProductEntityProps,
-  ): Promise<DomainProductEntity> {
-    const dbProps = this.mapToDbProps(product);
-    const dbEntity = await this.typeOrmRepository.save(dbProps);
-
-    return this.mapToDomainEntity(dbEntity);
-  }
-
-  async update(product: DomainProductEntity): Promise<DomainProductEntity> {
+  async save(entity: DomainProductEntity): Promise<DomainProductEntity> {
     const dbEntity = await this.typeOrmRepository.save(
-      this.mapToDbEntity(product),
+      this.mapToDbEntity(entity),
     );
 
     return this.mapToDomainEntity(dbEntity);
@@ -122,7 +101,7 @@ export class TypeOrmProductRepository implements ProductRepository {
   private mapToDomainEntity(
     entity: InfrastructureProductEntity,
   ): DomainProductEntity {
-    const props: DomainProductEntityPropsWithId = {
+    return new DomainProductEntity({
       id: EntityIdValueObject.create(entity.id),
       code: ProductCodeValueObject.create(entity.code),
       name: ProductNameValueObject.create(entity.name),
@@ -130,21 +109,7 @@ export class TypeOrmProductRepository implements ProductRepository {
       category: entity.category as ProductCategoryEnum,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-    };
-
-    return DomainProductEntity.create(props);
-  }
-
-  private mapToDbProps(
-    props: DomainEssentialProductEntityProps,
-  ): InfrastructureEssentialProductEntityProps {
-    return {
-      id: this.entityIdGenerator.generate().value,
-      code: props.code.value,
-      name: props.name.value,
-      price: props.price.value,
-      category: props.category,
-    };
+    });
   }
 
   private mapToDbEntity(
@@ -157,7 +122,7 @@ export class TypeOrmProductRepository implements ProductRepository {
       price: entity.price.value,
       category: entity.category,
       createdAt: entity.createdAt,
-      updatedAt: new Date(),
+      updatedAt: entity.updatedAt,
     };
   }
 }

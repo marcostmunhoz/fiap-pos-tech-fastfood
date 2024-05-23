@@ -1,17 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CreateProductController } from './create-product.controller';
 import {
   CreateProductUseCase,
   Output,
 } from '@/kitchen/application/use-case/create-product.use-case';
 import {
-  getDomainProductEntityPropsWithId,
+  getDomainCompleteProductEntityProps,
   getValidMoney,
   getValidProductCategory,
   getValidProductCode,
   getValidProductName,
 } from '@/testing/shared/helpers';
+import { Test, TestingModule } from '@nestjs/testing';
 import { ProductRequest } from '../dto/product.request';
+import { CreateProductController } from './create-product.controller';
 
 describe('CreateProductController', () => {
   let useCaseMock: jest.Mocked<CreateProductUseCase>;
@@ -43,7 +43,7 @@ describe('CreateProductController', () => {
         price: getValidMoney(),
         category: getValidProductCategory(),
       };
-      const output: Output = getDomainProductEntityPropsWithId();
+      const output: Output = getDomainCompleteProductEntityProps();
       useCaseMock.execute.mockResolvedValue(output);
 
       // Act

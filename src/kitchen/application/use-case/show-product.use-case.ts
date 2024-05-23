@@ -1,5 +1,5 @@
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
-import { ProductEntityPropsWithId } from '@/shared/domain/entity/product.entity';
+import { CompleteProductEntityProps } from '@/shared/domain/entity/product.entity';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
@@ -10,7 +10,7 @@ export type Input = {
   id: EntityIdValueObject;
 };
 
-export type Output = ProductEntityPropsWithId;
+export type Output = CompleteProductEntityProps;
 
 export class ShowProductUseCase implements UseCase<Input, Output> {
   constructor(

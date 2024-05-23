@@ -3,73 +3,63 @@ import { EntityIdValueObject } from '../value-object/entity-id.value-object';
 import { MoneyValueObject } from '../value-object/money.value-object';
 import { ProductCodeValueObject } from '../value-object/product-code.value-object';
 import { ProductNameValueObject } from '../value-object/product-name.value-object';
+import { AbstractEntity } from './abstract.entity';
 
-export type EssentialProductEntityProps = {
+export type PartialProductEntityProps = {
   code: ProductCodeValueObject;
   name: ProductNameValueObject;
   category: ProductCategoryEnum;
   price: MoneyValueObject;
 };
 
-export type ProductEntityProps = EssentialProductEntityProps & {
-  createdAt?: Date;
-  updatedAt?: Date;
-};
-
-export type ProductEntityPropsWithId = ProductEntityProps & {
+export type CompleteProductEntityProps = PartialProductEntityProps & {
   id: EntityIdValueObject;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-export class ProductEntity {
-  public readonly id: EntityIdValueObject;
-  public readonly code: ProductCodeValueObject;
-  public readonly name: ProductNameValueObject;
-  public readonly category: ProductCategoryEnum;
-  public readonly price: MoneyValueObject;
-  public readonly createdAt?: Date;
-  public readonly updatedAt?: Date;
+export class ProductEntity extends AbstractEntity<CompleteProductEntityProps> {
+  public get code(): ProductCodeValueObject {
+    return this.props.code;
+  }
 
-  private constructor(props: ProductEntityPropsWithId) {
-    this.id = props.id;
-    this.code = props.code;
-    this.name = props.name;
-    this.category = props.category;
-    this.price = props.price;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
+  public get name(): ProductNameValueObject {
+    return this.props.name;
+  }
+
+  public get category(): ProductCategoryEnum {
+    return this.props.category;
+  }
+
+  public get price(): MoneyValueObject {
+    return this.props.price;
   }
 
   public setCode(code: ProductCodeValueObject): ProductEntity {
-    return ProductEntity.create({
-      ...this,
-      code,
-    });
+    this.props.code = code;
+    this.markAsUpdated();
+
+    return this;
   }
 
   public setName(name: ProductNameValueObject): ProductEntity {
-    return ProductEntity.create({
-      ...this,
-      name,
-    });
+    this.props.name = name;
+    this.markAsUpdated();
+
+    return this;
   }
 
   public setCategory(category: ProductCategoryEnum): ProductEntity {
-    return ProductEntity.create({
-      ...this,
-      category,
-    });
+    this.props.category = category;
+    this.markAsUpdated();
+
+    return this;
   }
 
   public setPrice(price: MoneyValueObject): ProductEntity {
-    return ProductEntity.create({
-      ...this,
-      price,
-    });
-  }
+    this.props.price = price;
+    this.markAsUpdated();
 
-  public static create(props: ProductEntityPropsWithId): ProductEntity {
-    const entity = new ProductEntity(props);
-
-    return entity;
+    return this;
   }
 }

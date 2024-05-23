@@ -1,10 +1,7 @@
+import { UpdateProductUseCase } from '@/kitchen/application/use-case/update-product.use-case';
+import { getDomainCompleteProductEntityProps } from '@/testing/shared/helpers';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateProductController } from './update-product.controller';
-import {
-  UpdateProductUseCase,
-  Output,
-} from '@/kitchen/application/use-case/update-product.use-case';
-import { getDomainProductEntityPropsWithId } from '@/testing/shared/helpers';
 
 describe('UpdateProductController', () => {
   let useCaseMock: jest.Mocked<UpdateProductUseCase>;
@@ -30,7 +27,7 @@ describe('UpdateProductController', () => {
   describe('execute', () => {
     it('should return an existing product', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteProductEntityProps();
       const { id } = props;
 
       // Act

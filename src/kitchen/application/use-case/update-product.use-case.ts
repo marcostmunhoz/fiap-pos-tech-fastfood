@@ -1,5 +1,5 @@
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
-import { EssentialProductEntityProps } from '@/shared/domain/entity/product.entity';
+import { PartialProductEntityProps } from '@/shared/domain/entity/product.entity';
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
@@ -9,7 +9,7 @@ import { Inject } from '@nestjs/common';
 
 export type Input = {
   id: EntityIdValueObject;
-  data: EssentialProductEntityProps;
+  data: PartialProductEntityProps;
 };
 
 export type Output = void;
@@ -44,6 +44,6 @@ export class UpdateProductUseCase implements UseCase<Input, Output> {
       .setCategory(input.data.category)
       .setPrice(input.data.price);
 
-    await this.repository.update(updatedEntity);
+    await this.repository.save(updatedEntity);
   }
 }

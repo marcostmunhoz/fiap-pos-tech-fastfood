@@ -1,17 +1,16 @@
-import { UpdateProductUseCase, Output, Input } from './update-product.use-case';
 import { ProductEntity } from '@/shared/domain/entity/product.entity';
-import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
+import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
-import {
-  getDomainEssentialProductEntityProps,
-  getDomainProductEntity,
-  getValidProductEntityId,
-} from '@/testing/shared/helpers';
-import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
+import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
+import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
-import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
-import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
+import {
+  getDomainPartialProductEntityProps,
+  getDomainProductEntity,
+} from '@/testing/shared/helpers';
+import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
+import { Input, UpdateProductUseCase } from './update-product.use-case';
 
 describe('UpdateProductUseCase', () => {
   let sut: UpdateProductUseCase;
@@ -25,6 +24,10 @@ describe('UpdateProductUseCase', () => {
   describe('execute', () => {
     it('should update an existing product when the given id exists', async () => {
       // Arrange
+      const expectedDate = new Date();
+      // forces the date constructor to always return the same value, preventing failed tests because of the
+      // changed updatedAt
+      jest.spyOn(global, 'Date').mockImplementation(() => expectedDate);
       const entity = getDomainProductEntity();
       const input: Input = {
         id: entity.id,
@@ -35,14 +38,14 @@ describe('UpdateProductUseCase', () => {
           price: MoneyValueObject.create(100),
         },
       };
-      const updatedEntity = ProductEntity.create({
+      const updatedEntity = new ProductEntity({
         id: entity.id,
         ...input.data,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
       });
       repository.findById.mockResolvedValue(entity);
-      repository.update.mockResolvedValue(updatedEntity);
+      repository.save.mockResolvedValue(updatedEntity);
 
       // Act
       await sut.execute(input);
@@ -55,17 +58,14 @@ describe('UpdateProductUseCase', () => {
         input.data.code,
         entity.id,
       );
-      expect(repository.update).toHaveBeenCalledTimes(1);
-      expect(repository.update).toHaveBeenCalledWith(updatedEntity);
+      expect(repository.save).toHaveBeenCalledTimes(1);
+      expect(repository.save).toHaveBeenCalledWith(updatedEntity);
     });
 
     it('should throw an error when the given id does not exist', async () => {
       // Arrange
-      const props = getDomainEssentialProductEntityProps();
-      const entity = ProductEntity.create({
-        id: getValidProductEntityId(),
-        ...props,
-      });
+      const props = getDomainPartialProductEntityProps();
+      const entity = getDomainProductEntity(props);
       repository.findById.mockResolvedValue(null);
 
       // Act
@@ -79,11 +79,8 @@ describe('UpdateProductUseCase', () => {
 
     it('should throw an error when another product already exists with the given code', async () => {
       // Arrange
-      const props = getDomainEssentialProductEntityProps();
-      const entity = ProductEntity.create({
-        id: getValidProductEntityId(),
-        ...props,
-      });
+      const props = getDomainPartialProductEntityProps();
+      const entity = getDomainProductEntity(props);
       repository.findById.mockResolvedValue(entity);
       repository.existsWithCode.mockResolvedValue(true);
 

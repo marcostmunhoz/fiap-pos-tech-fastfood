@@ -1,13 +1,12 @@
 import {
+  CompleteOrderEntityProps,
   OrderEntity as DomainOrderEntity,
   PartialOrderEntityProps,
-  CompleteOrderEntityProps,
 } from '@/shared/domain/entity/order.entity';
 import {
+  CompleteProductEntityProps,
   ProductEntity as DomainProductEntity,
-  ProductEntityProps,
-  EssentialProductEntityProps as DomainEssentialProductEntityProps,
-  ProductEntityPropsWithId,
+  PartialProductEntityProps,
 } from '@/shared/domain/entity/product.entity';
 import { OrderStatusEnum } from '@/shared/domain/enum/order-status.enum';
 import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
@@ -18,110 +17,88 @@ import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.va
 import { ProductCodeValueObject } from '@/shared/domain/value-object/product-code.value-object';
 import { ProductNameValueObject } from '@/shared/domain/value-object/product-name.value-object';
 import { OrderEntity as InfrastructureOrderEntity } from '@/shared/infrastructure/entity/order.entity';
-import {
-  EssentialProductEntityProps as InfrastructureEssentialProductEntityProps,
-  ProductEntity as InfrastructureProductEntity,
-} from '@/shared/infrastructure/entity/product.entity';
+import { ProductEntity as InfrastructureProductEntity } from '@/shared/infrastructure/entity/product.entity';
 
-export function getValidProductEntityId(): EntityIdValueObject {
-  return EntityIdValueObject.create('product-id');
-}
+export const getValidProductEntityId = (): EntityIdValueObject =>
+  EntityIdValueObject.create('product-id');
 
-export function getValidOrderEntityId(): EntityIdValueObject {
-  return EntityIdValueObject.create('order-id');
-}
+export const getValidOrderEntityId = (): EntityIdValueObject =>
+  EntityIdValueObject.create('order-id');
 
-export function getValidProductCode(): ProductCodeValueObject {
-  return ProductCodeValueObject.create('CODE123');
-}
+export const getValidProductCode = (): ProductCodeValueObject =>
+  ProductCodeValueObject.create('CODE123');
 
-export function getValidProductName(): ProductNameValueObject {
-  return ProductNameValueObject.create('Some Product');
-}
+export const getValidProductName = (): ProductNameValueObject =>
+  ProductNameValueObject.create('Some Product');
 
-export function getValidMoney(): MoneyValueObject {
-  return MoneyValueObject.create(1234);
-}
+export const getValidMoney = (): MoneyValueObject =>
+  MoneyValueObject.create(1234);
 
-export function getValidProductCategory(): ProductCategoryEnum {
-  return ProductCategoryEnum.FOOD;
-}
+export const getValidProductCategory = (): ProductCategoryEnum =>
+  ProductCategoryEnum.FOOD;
 
-export function getValidOrderCustomerId(): string {
-  return 'customer-id';
-}
+export const getValidOrderCustomerId = (): string => 'customer-id';
 
-export function getValidOrderCustomerName(): string {
-  return 'Customer Name';
-}
+export const getValidOrderCustomerName = (): string => 'Customer Name';
 
-export function getValidOrderItem(): OrderItemValueObject {
-  return OrderItemValueObject.create({
+export const getValidOrderItem = (): OrderItemValueObject =>
+  OrderItemValueObject.create({
     code: getValidProductCode().value,
     name: getValidProductName().value,
     price: MoneyValueObject.create(1000),
     quantity: ItemQuantityValueObject.create(1),
   });
-}
 
-export function getValidOrderTotal(): MoneyValueObject {
-  return MoneyValueObject.create(1000);
-}
+export const getValidOrderTotal = (): MoneyValueObject =>
+  MoneyValueObject.create(1000);
 
-export function getDomainEssentialProductEntityProps(): DomainEssentialProductEntityProps {
-  return {
+export const getDomainPartialProductEntityProps =
+  (): PartialProductEntityProps => ({
     code: getValidProductCode(),
     name: getValidProductName(),
     category: getValidProductCategory(),
     price: getValidMoney(),
-  };
-}
-
-export function getDomainProductEntityProps(): ProductEntityProps {
-  return {
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...getDomainEssentialProductEntityProps(),
-  };
-}
-
-export function getDomainProductEntityPropsWithId(): ProductEntityPropsWithId {
-  return {
-    id: getValidProductEntityId(),
-    ...getDomainProductEntityProps(),
-  };
-}
-
-export function getDomainProductEntity(
-  props?: DomainEssentialProductEntityProps,
-): DomainProductEntity {
-  return DomainProductEntity.create({
-    id: getValidProductEntityId(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...(props || getDomainEssentialProductEntityProps()),
   });
-}
 
-export function getInfrastructureEssentialProductEntityProps(): InfrastructureEssentialProductEntityProps {
-  return {
-    id: 'product-id',
-    code: getValidProductCode().value,
-    name: getValidProductName().value,
-    category: getValidProductCategory(),
-    price: getValidMoney().value,
-  };
-}
-
-export function getInfrastructureProductEntity(
-  props?: InfrastructureEssentialProductEntityProps,
-): InfrastructureProductEntity {
-  return {
+export const getDomainCompleteProductEntityProps =
+  (): CompleteProductEntityProps => ({
+    id: getValidProductEntityId(),
     createdAt: new Date(),
     updatedAt: new Date(),
-    ...(props || getInfrastructureEssentialProductEntityProps()),
+    ...getDomainPartialProductEntityProps(),
+  });
+
+export const getDomainProductEntity = (
+  props: Partial<CompleteProductEntityProps> = {},
+): DomainProductEntity => {
+  const defaultProps = getDomainCompleteProductEntityProps();
+
+  return new DomainProductEntity({
+    id: props.id || defaultProps.id,
+    code: props.code || defaultProps.code,
+    name: props.name || defaultProps.name,
+    category: props.category || defaultProps.category,
+    price: props.price || defaultProps.price,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
+  });
+};
+
+export const getInfrastructureProductEntity = (
+  props: Partial<CompleteProductEntityProps> = {},
+): InfrastructureProductEntity => {
+  const defaultProps = getDomainCompleteProductEntityProps();
+
+  return {
+    id: props.id?.value || defaultProps.id.value,
+    code: props.code?.value || defaultProps.code.value,
+    name: props.name?.value || defaultProps.name.value,
+    category: props.category || defaultProps.category,
+    price: props.price?.value || defaultProps.price.value,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
   };
-}
+};
 
 export function getDomainPartialOrderEntityProps(): PartialOrderEntityProps {
   return {

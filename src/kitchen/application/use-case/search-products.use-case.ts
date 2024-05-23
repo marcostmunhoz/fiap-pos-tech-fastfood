@@ -1,5 +1,5 @@
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
-import { ProductEntityPropsWithId } from '@/shared/domain/entity/product.entity';
+import { CompleteProductEntityProps } from '@/shared/domain/entity/product.entity';
 import {
   ProductRepository,
   SearchProductQuery,
@@ -9,7 +9,7 @@ import { Inject } from '@nestjs/common';
 
 export type Input = SearchProductQuery;
 
-export type Output = ProductEntityPropsWithId[];
+export type Output = CompleteProductEntityProps[];
 
 export class SearchProductsUseCase implements UseCase<Input, Output> {
   constructor(

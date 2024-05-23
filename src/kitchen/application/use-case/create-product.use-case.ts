@@ -1,19 +1,21 @@
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
 import {
-  EssentialProductEntityProps,
-  ProductEntityPropsWithId,
+  CompleteProductEntityProps,
+  PartialProductEntityProps,
 } from '@/shared/domain/entity/product.entity';
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
+import { ProductFactory } from '@/shared/domain/factory/product.factory';
 import { ProductRepository } from '@/shared/domain/repository/product.repository.interface';
 import { ProductRepositoryToken } from '@/shared/tokens';
 import { Inject } from '@nestjs/common';
 
-export type Input = EssentialProductEntityProps;
+export type Input = PartialProductEntityProps;
 
-export type Output = ProductEntityPropsWithId;
+export type Output = CompleteProductEntityProps;
 
 export class CreateProductUseCase implements UseCase<Input, Output> {
   constructor(
+    private readonly factory: ProductFactory,
     @Inject(ProductRepositoryToken)
     private readonly repository: ProductRepository,
   ) {}
@@ -27,6 +29,8 @@ export class CreateProductUseCase implements UseCase<Input, Output> {
       );
     }
 
-    return await this.repository.create(input);
+    const entity = this.factory.createProduct(input);
+
+    return await this.repository.save(entity);
   }
 }

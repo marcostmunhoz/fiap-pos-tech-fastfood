@@ -1,36 +1,30 @@
-import { Brackets, Not, Repository, SelectQueryBuilder } from 'typeorm';
-import { TypeOrmProductRepository } from './type-orm-product.repository';
-import { ProductEntity as InfrastructureProductEntity } from '../entity/product.entity';
 import { ProductEntity as DomainProductEntity } from '@/shared/domain/entity/product.entity';
+import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
+import { SearchProductQuery } from '@/shared/domain/repository/product.repository.interface';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import {
-  getDomainEssentialProductEntityProps,
   getDomainProductEntity,
-  getInfrastructureEssentialProductEntityProps,
   getInfrastructureProductEntity,
   getValidProductCode,
   getValidProductEntityId,
 } from '@/testing/shared/helpers';
-import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.repository.mock';
-import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
-import { ProductCategoryEnum } from '@/shared/domain/enum/product-category.enum';
-import { SearchProductQuery } from '@/shared/domain/repository/product.repository.interface';
+import { Brackets, Not, Repository, SelectQueryBuilder } from 'typeorm';
+import { ProductEntity as InfrastructureProductEntity } from '../entity/product.entity';
+import { TypeOrmProductRepository } from './type-orm-product.repository';
 
 describe('TypeOrmProductRepository', () => {
   let queryBuilderMock: jest.Mocked<
     SelectQueryBuilder<InfrastructureProductEntity>
   >;
   let repositoryMock: jest.Mocked<Repository<InfrastructureProductEntity>>;
-  let entityIdGeneratorMock: jest.Mocked<EntityIdGeneratorHelper>;
   let sut: TypeOrmProductRepository;
 
   beforeEach(() => {
     const mocks = getTypeOrmRepositoryMock<InfrastructureProductEntity>();
     repositoryMock = mocks.repositoryMock;
     queryBuilderMock = mocks.queryBuilderMock;
-    entityIdGeneratorMock = getEntityIdGeneratorHelperMock();
-    sut = new TypeOrmProductRepository(entityIdGeneratorMock, repositoryMock);
+    sut = new TypeOrmProductRepository(repositoryMock);
   });
 
   describe('list', () => {
@@ -189,51 +183,15 @@ describe('TypeOrmProductRepository', () => {
     });
   });
 
-  describe('create', () => {
-    it('should create a new product entity', async () => {
+  describe('save', () => {
+    it('should save the entity', async () => {
       // Arrange
-      const productProps = getDomainEssentialProductEntityProps();
-      const dbEntityProps = getInfrastructureEssentialProductEntityProps();
-      const dbEntity = getInfrastructureProductEntity(dbEntityProps);
-      entityIdGeneratorMock.generate.mockReturnValue(
-        EntityIdValueObject.create(dbEntity.id),
-      );
+      const entity = getDomainProductEntity();
+      const dbEntity = getInfrastructureProductEntity(entity);
       repositoryMock.save.mockResolvedValue(dbEntity);
 
       // Act
-      const result = await sut.create(productProps);
-
-      // Assert
-      expect(entityIdGeneratorMock.generate).toHaveBeenCalledTimes(1);
-      expect(repositoryMock.save).toHaveBeenCalledTimes(1);
-      expect(repositoryMock.save).toHaveBeenCalledWith(dbEntityProps);
-      expect(result).toBeDefined();
-      expect(result).toBeInstanceOf(DomainProductEntity);
-      expect(result.id.value).toBe(dbEntity.id);
-      expect(result.code.value).toBe(dbEntity.code);
-      expect(result.name.value).toBe(dbEntity.name);
-      expect(result.price.value).toBe(dbEntity.price);
-      expect(result.category).toBe(dbEntity.category);
-      expect(result.createdAt).toBe(dbEntity.createdAt);
-      expect(result.updatedAt).toBe(dbEntity.updatedAt);
-    });
-  });
-
-  describe('updated', () => {
-    it('should update a product entity', async () => {
-      // Arrange
-      const domainEntity = getDomainProductEntity();
-      const dbEntity = getInfrastructureProductEntity({
-        id: domainEntity.id.value,
-        code: domainEntity.code.value,
-        name: domainEntity.name.value,
-        price: domainEntity.price.value,
-        category: domainEntity.category,
-      });
-      repositoryMock.save.mockResolvedValue(dbEntity);
-
-      // Act
-      const result = await sut.update(domainEntity);
+      const result = await sut.save(entity);
 
       // Assert
       expect(repositoryMock.save).toHaveBeenCalledTimes(1);

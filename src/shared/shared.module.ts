@@ -1,18 +1,19 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderFactory } from './domain/factory/order.factory';
+import { ProductFactory } from './domain/factory/product.factory';
+import { OrderEntity } from './infrastructure/entity/order.entity';
+import { ProductEntity } from './infrastructure/entity/product.entity';
+import { UuidV4EntityIdGeneratorHelper } from './infrastructure/helper/uuid-v4-entity-id-generator.helper';
+import { TypeOrmOrderRepository } from './infrastructure/repository/type-orm-order.repository';
+import { TypeOrmProductRepository } from './infrastructure/repository/type-orm-product.repository';
 import {
   EntityIdGeneratorHelperToken,
   OrderRepositoryToken,
   ProductRepositoryToken,
 } from './tokens';
-import { UuidV4EntityIdGeneratorHelper } from './infrastructure/helper/uuid-v4-entity-id-generator.helper';
-import { TypeOrmProductRepository } from './infrastructure/repository/type-orm-product.repository';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductEntity } from './infrastructure/entity/product.entity';
-import { OrderEntity } from './infrastructure/entity/order.entity';
-import { TypeOrmOrderRepository } from './infrastructure/repository/type-orm-order.repository';
-import { OrderFactory } from './domain/factory/order.factory';
 
-const factories = [OrderFactory];
+const factories = [OrderFactory, ProductFactory];
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProductEntity, OrderEntity])],
@@ -36,6 +37,7 @@ const factories = [OrderFactory];
     ProductRepositoryToken,
     OrderRepositoryToken,
     OrderFactory,
+    ProductFactory,
   ],
 })
 export class SharedModule {}

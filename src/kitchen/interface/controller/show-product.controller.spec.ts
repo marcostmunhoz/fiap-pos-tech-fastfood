@@ -1,10 +1,10 @@
+import {
+  Output,
+  ShowProductUseCase,
+} from '@/kitchen/application/use-case/show-product.use-case';
+import { getDomainCompleteProductEntityProps } from '@/testing/shared/helpers';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ShowProductController } from './show-product.controller';
-import {
-  ShowProductUseCase,
-  Output,
-} from '@/kitchen/application/use-case/show-product.use-case';
-import { getDomainProductEntityPropsWithId } from '@/testing/shared/helpers';
 
 describe('ShowProductController', () => {
   let useCaseMock: jest.Mocked<ShowProductUseCase>;
@@ -30,7 +30,7 @@ describe('ShowProductController', () => {
   describe('execute', () => {
     it('should return an existing product', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteProductEntityProps();
       const { id } = props;
       const output: Output = props;
       useCaseMock.execute.mockResolvedValue(output);

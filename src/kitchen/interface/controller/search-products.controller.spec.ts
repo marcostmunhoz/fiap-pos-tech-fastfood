@@ -1,10 +1,10 @@
+import {
+  Output,
+  SearchProductsUseCase,
+} from '@/kitchen/application/use-case/search-products.use-case';
+import { getDomainCompleteProductEntityProps } from '@/testing/shared/helpers';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SearchProductsController } from './search-products.controller';
-import {
-  SearchProductsUseCase,
-  Output,
-} from '@/kitchen/application/use-case/search-products.use-case';
-import { getDomainProductEntityPropsWithId } from '@/testing/shared/helpers';
 
 describe('SearchProductsController', () => {
   let useCaseMock: jest.Mocked<SearchProductsUseCase>;
@@ -30,7 +30,7 @@ describe('SearchProductsController', () => {
   describe('execute', () => {
     it('should return the existing products', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteProductEntityProps();
       const output: Output = [props];
       useCaseMock.execute.mockResolvedValue(output);
 
@@ -54,7 +54,7 @@ describe('SearchProductsController', () => {
 
     it('should filter by the query', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteProductEntityProps();
       const output: Output = [props];
       useCaseMock.execute.mockResolvedValue(output);
 
@@ -68,7 +68,7 @@ describe('SearchProductsController', () => {
 
     it('should filter by the category', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteProductEntityProps();
       const output: Output = [props];
       useCaseMock.execute.mockResolvedValue(output);
 
@@ -84,7 +84,7 @@ describe('SearchProductsController', () => {
 
     it('should filter by both the query and the category', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteProductEntityProps();
       const output: Output = [props];
       useCaseMock.execute.mockResolvedValue(output);
 

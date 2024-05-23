@@ -1,10 +1,7 @@
+import { DeleteProductUseCase } from '@/kitchen/application/use-case/delete-product.use-case';
+import { getDomainCompleteCustomerEntityProps } from '@/testing/customer/helpers';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteProductController } from './delete-product.controller';
-import {
-  DeleteProductUseCase,
-  Output,
-} from '@/kitchen/application/use-case/delete-product.use-case';
-import { getDomainProductEntityPropsWithId } from '@/testing/shared/helpers';
 
 describe('DeleteProductController', () => {
   let useCaseMock: jest.Mocked<DeleteProductUseCase>;
@@ -30,7 +27,7 @@ describe('DeleteProductController', () => {
   describe('execute', () => {
     it('should delete an existing product', async () => {
       // Arrange
-      const props = getDomainProductEntityPropsWithId();
+      const props = getDomainCompleteCustomerEntityProps();
       const { id } = props;
 
       // Act
