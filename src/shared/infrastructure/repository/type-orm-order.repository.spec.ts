@@ -1,14 +1,14 @@
-import { Repository } from 'typeorm';
-import { TypeOrmOrderRepository } from './type-orm-order.repository';
-import { OrderEntity as InfrastructureOrderEntity } from '../entity/order.entity';
-import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.repository.mock';
+import { OrderEntity as DomainOrderEntity } from '@/shared/domain/entity/order.entity';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import {
   getDomainOrderEntity,
   getInfrastructureOrderEntity,
   getValidOrderEntityId,
 } from '@/testing/shared/helpers';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { OrderEntity as DomainOrderEntity } from '@/shared/domain/entity/order.entity';
+import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.repository.mock';
+import { Repository } from 'typeorm';
+import { OrderEntity as InfrastructureOrderEntity } from '../entity/order.entity';
+import { TypeOrmOrderRepository } from './type-orm-order.repository';
 
 describe('TypeOrmOrderRepository', () => {
   let repositoryMock: jest.Mocked<Repository<InfrastructureOrderEntity>>;
@@ -68,7 +68,7 @@ describe('TypeOrmOrderRepository', () => {
     it('should create an order', async () => {
       // Arrange
       const entity = getDomainOrderEntity();
-      const dbEntity = getInfrastructureOrderEntity();
+      const dbEntity = getInfrastructureOrderEntity(entity);
       repositoryMock.save.mockResolvedValue(dbEntity);
 
       // Act

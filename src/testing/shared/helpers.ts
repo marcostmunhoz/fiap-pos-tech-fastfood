@@ -100,15 +100,14 @@ export const getInfrastructureProductEntity = (
   };
 };
 
-export function getDomainPartialOrderEntityProps(): PartialOrderEntityProps {
-  return {
+export const getDomainPartialOrderEntityProps =
+  (): PartialOrderEntityProps => ({
     customerId: getValidOrderCustomerId(),
     customerName: getValidOrderCustomerName(),
-  };
-}
+  });
 
-export function getDomainCompleteOrderEntityProps(): CompleteOrderEntityProps {
-  return {
+export const getDomainCompleteOrderEntityProps =
+  (): CompleteOrderEntityProps => ({
     id: getValidOrderEntityId(),
     items: [getValidOrderItem()],
     total: getValidOrderTotal(),
@@ -116,33 +115,44 @@ export function getDomainCompleteOrderEntityProps(): CompleteOrderEntityProps {
     createdAt: new Date(),
     updatedAt: new Date(),
     ...getDomainPartialOrderEntityProps(),
-  };
-}
+  });
 
-export function getDomainOrderEntity(
-  props?: CompleteOrderEntityProps,
-): DomainOrderEntity {
-  return new DomainOrderEntity(props || getDomainCompleteOrderEntityProps());
-}
+export const getDomainOrderEntity = (
+  props: Partial<CompleteOrderEntityProps> = {},
+): DomainOrderEntity => {
+  const defaultProps = getDomainCompleteOrderEntityProps();
 
-export function getInfrastructureOrderEntity(): InfrastructureOrderEntity {
-  const item = getValidOrderItem();
+  return new DomainOrderEntity({
+    id: props.id || defaultProps.id,
+    customerId: props.customerId || defaultProps.customerId,
+    customerName: props.customerName || defaultProps.customerName,
+    items: props.items || defaultProps.items,
+    total: props.total || defaultProps.total,
+    status: props.status || defaultProps.status,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
+  });
+};
+
+export const getInfrastructureOrderEntity = (
+  props: Partial<CompleteOrderEntityProps> = {},
+): InfrastructureOrderEntity => {
+  const defaultProps = getDomainCompleteOrderEntityProps();
+  const items = (props.items || defaultProps.items).map((item) => ({
+    code: item.code,
+    name: item.name,
+    price: item.price.value,
+    quantity: item.quantity.value,
+  }));
 
   return {
-    id: 'order-id',
-    customerId: getValidOrderCustomerId(),
-    customerName: getValidOrderCustomerName(),
-    items: [
-      {
-        code: item.code,
-        name: item.name,
-        price: item.price.value,
-        quantity: item.quantity.value,
-      },
-    ],
-    total: item.price.value,
-    status: OrderStatusEnum.PENDING,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    id: props.id?.value || defaultProps.id.value,
+    customerId: props.customerId || defaultProps.customerId,
+    customerName: props.customerName || defaultProps.customerName,
+    items,
+    total: props.total?.value || defaultProps.total.value,
+    status: props.status || defaultProps.status,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
   };
-}
+};
