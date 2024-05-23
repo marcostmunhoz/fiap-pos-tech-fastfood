@@ -1,16 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import {
-  getValidCpf,
-  getValidEntityId,
-  getValidFullName,
-} from '@/testing/customer/helpers';
 import {
   FindCustomerByCpfUseCase,
   Output,
 } from '@/customer/application/use-case/find-customer-by-cpf.use-case';
-import { FindCustomerByCpfController } from './find-customer-by-cpf.controller';
-import { FindCustomerByCpfPathParam } from '../dto/find-customer-by-cpf.request';
+import {
+  getValidCpf,
+  getValidCustomerEntityId,
+  getValidFullName,
+} from '@/testing/customer/helpers';
 import { NotFoundException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { FindCustomerByCpfPathParam } from '../dto/find-customer-by-cpf.request';
+import { FindCustomerByCpfController } from './find-customer-by-cpf.controller';
 
 describe('FindCustomerByCpfController', () => {
   let useCaseMock: jest.Mocked<FindCustomerByCpfUseCase>;
@@ -42,7 +42,7 @@ describe('FindCustomerByCpfController', () => {
         cpf: getValidCpf(),
       };
       const output: Output = {
-        id: getValidEntityId(),
+        id: getValidCustomerEntityId(),
         name: getValidFullName(),
       };
       useCaseMock.execute.mockResolvedValue(output);

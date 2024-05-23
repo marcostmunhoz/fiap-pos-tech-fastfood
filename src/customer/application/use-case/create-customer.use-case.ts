@@ -1,13 +1,14 @@
-import { EssentialCustomerEntityProps } from '@/customer/domain/entity/customer.entity';
+import { PartialCustomerEntityProps } from '@/customer/domain/entity/customer.entity';
+import { CustomerFactory } from '@/customer/domain/factory/customer.factory';
+import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
+import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
+import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { Inject } from '@nestjs/common';
 import { CustomerRepositoryToken } from '../../tokens';
-import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
-import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
 
-export type Input = EssentialCustomerEntityProps;
+export type Input = PartialCustomerEntityProps;
 
 export type Output = {
   id: EntityIdValueObject;
@@ -16,6 +17,7 @@ export type Output = {
 
 export class CreateCustomerUseCase implements UseCase<Input, Output> {
   constructor(
+    private readonly factory: CustomerFactory,
     @Inject(CustomerRepositoryToken)
     private readonly repository: CustomerRepository,
   ) {}
@@ -31,11 +33,9 @@ export class CreateCustomerUseCase implements UseCase<Input, Output> {
       );
     }
 
-    const entity = await this.repository.create(props);
+    const entity = this.factory.createCustomer(props);
+    const { id, name } = await this.repository.save(entity);
 
-    return {
-      id: entity.id,
-      name: entity.name,
-    };
+    return { id, name };
   }
 }

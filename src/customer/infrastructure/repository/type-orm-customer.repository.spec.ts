@@ -1,29 +1,24 @@
-import { Repository } from 'typeorm';
-import { TypeOrmCustomerRepository } from './type-orm-customer.repository';
-import { CustomerEntity as InfrastructureCustomerEntity } from '../entity/customer.entity';
-import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
 import { CustomerEntity as DomainCustomerEntity } from '@/customer/domain/entity/customer.entity';
+import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
 import {
-  getDomainEssentialCustomerEntityProps,
+  getDomainCustomerEntity,
   getInfrastructureCustomerEntity,
-  getInfrastructureEssentialCustomerEntityProps,
   getValidCpf,
+  getValidCustomerEntityId,
 } from '@/testing/customer/helpers';
-import { EntityIdGeneratorHelper } from '@/shared/domain/helper/entity-id-generator.helper.interface';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { getTypeOrmRepositoryMock } from '@/testing/shared/mock/type-orm.repository.mock';
-import { getEntityIdGeneratorHelperMock } from '@/testing/shared/mock/entity-id-generator.helper.mock';
+import { Repository } from 'typeorm';
+import { CustomerEntity as InfrastructureCustomerEntity } from '../entity/customer.entity';
+import { TypeOrmCustomerRepository } from './type-orm-customer.repository';
 
 describe('TypeOrmCustomerRepository', () => {
   let repositoryMock: jest.Mocked<Repository<InfrastructureCustomerEntity>>;
-  let entityIdGeneratorMock: jest.Mocked<EntityIdGeneratorHelper>;
   let sut: TypeOrmCustomerRepository;
 
   beforeEach(() => {
     const mocks = getTypeOrmRepositoryMock<InfrastructureCustomerEntity>();
     repositoryMock = mocks.repositoryMock;
-    entityIdGeneratorMock = getEntityIdGeneratorHelperMock();
-    sut = new TypeOrmCustomerRepository(entityIdGeneratorMock, repositoryMock);
+    sut = new TypeOrmCustomerRepository(repositoryMock);
   });
 
   describe('findByCpf', () => {
@@ -62,24 +57,19 @@ describe('TypeOrmCustomerRepository', () => {
     });
   });
 
-  describe('create', () => {
-    it('should create a new customer entity', async () => {
+  describe('save', () => {
+    it('should save the entity', async () => {
       // Arrange
-      const customerProps = getDomainEssentialCustomerEntityProps();
-      const dbEntityProps = getInfrastructureEssentialCustomerEntityProps();
-      const dbEntity = getInfrastructureCustomerEntity(dbEntityProps);
-      entityIdGeneratorMock.generate.mockReturnValue(
-        EntityIdValueObject.create(dbEntity.id),
-      );
+      const entity = getDomainCustomerEntity();
+      const dbEntity = getInfrastructureCustomerEntity(entity);
       repositoryMock.save.mockResolvedValue(dbEntity);
 
       // Act
-      const result = await sut.create(customerProps);
+      const result = await sut.save(entity);
 
       // Assert
-      expect(entityIdGeneratorMock.generate).toHaveBeenCalledTimes(1);
       expect(repositoryMock.save).toHaveBeenCalledTimes(1);
-      expect(repositoryMock.save).toHaveBeenCalledWith(dbEntityProps);
+      expect(repositoryMock.save).toHaveBeenCalledWith(dbEntity);
       expect(result).toBeDefined();
       expect(result).toBeInstanceOf(DomainCustomerEntity);
       expect(result.id.value).toBe(dbEntity.id);
@@ -90,21 +80,28 @@ describe('TypeOrmCustomerRepository', () => {
       expect(result.updatedAt).toBe(dbEntity.updatedAt);
     });
 
-    it('should create a new customer entity without optional fields', async () => {
+    it('should save the entity without optional fields', async () => {
       // Arrange
-      const dbEntity = getInfrastructureCustomerEntity({
-        id: 'customer-id',
+      const entity = new DomainCustomerEntity({
+        id: getValidCustomerEntityId(),
         name: null,
         email: null,
         cpf: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
-      entityIdGeneratorMock.generate.mockReturnValue(
-        EntityIdValueObject.create(dbEntity.id),
-      );
+      const dbEntity: InfrastructureCustomerEntity = {
+        id: entity.id.value,
+        name: null,
+        email: null,
+        cpf: null,
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
+      };
       repositoryMock.save.mockResolvedValue(dbEntity);
 
       // Act
-      const result = await sut.create({});
+      const result = await sut.save(entity);
 
       // Assert
       expect(result.id.value).toBe(dbEntity.id);

@@ -1,43 +1,34 @@
+import { AbstractEntity } from '@/shared/domain/entity/abstract.entity';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
+import { CpfValueObject } from '../value-object/cpf.value-object';
 import { EmailValueObject } from '../value-object/email.value-object';
 import { FullNameValueObject } from '../value-object/full-name.value-object';
-import { CpfValueObject } from '../value-object/cpf.value-object';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 
-export type EssentialCustomerEntityProps = {
+export type PartialCustomerEntityProps = {
   name?: FullNameValueObject;
   email?: EmailValueObject;
   cpf?: CpfValueObject;
 };
 
-export type CustomerEntityProps = EssentialCustomerEntityProps & {
-  createdAt?: Date;
-  updatedAt?: Date;
-};
-
-export type CustomerEntityPropsWithId = CustomerEntityProps & {
+export type CompleteCustomerEntityProps = {
   id: EntityIdValueObject;
+  name?: FullNameValueObject;
+  email?: EmailValueObject;
+  cpf?: CpfValueObject;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-export class CustomerEntity {
-  public readonly id: EntityIdValueObject;
-  public readonly name?: FullNameValueObject;
-  public readonly email?: EmailValueObject;
-  public readonly cpf?: CpfValueObject;
-  public readonly createdAt?: Date;
-  public readonly updatedAt?: Date;
-
-  private constructor(props: CustomerEntityPropsWithId) {
-    this.id = props.id;
-    this.name = props.name;
-    this.email = props.email;
-    this.cpf = props.cpf;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
+export class CustomerEntity extends AbstractEntity<CompleteCustomerEntityProps> {
+  public get name(): FullNameValueObject | null {
+    return this.props.name;
   }
 
-  public static create(props: CustomerEntityPropsWithId): CustomerEntity {
-    const entity = new CustomerEntity(props);
+  public get email(): EmailValueObject | null {
+    return this.props.email;
+  }
 
-    return entity;
+  public get cpf(): CpfValueObject | null {
+    return this.props.cpf;
   }
 }

@@ -2,8 +2,8 @@ import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object'
 import { EmailValueObject } from '@/customer/domain/value-object/email.value-object';
 import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
 import {
-  TransformPrimitiveToValueObject,
   TransformOptional,
+  TransformPrimitiveToValueObject,
 } from '@/shared/infrastructure/decorator/class-transformer-helpers.decorator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';

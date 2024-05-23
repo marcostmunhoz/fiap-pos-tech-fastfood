@@ -1,18 +1,22 @@
-import { CustomerEntity } from './customer.entity';
-import { getDomainCustomerEntityPropsWithId } from '@/testing/customer/helpers';
+import {
+  getDomainCompleteCustomerEntityProps,
+  getDomainCustomerEntity,
+} from '@/testing/customer/helpers';
 
 describe('CustomerEntity', () => {
-  describe('create', () => {
-    it('should return a new Customer instance', async () => {
+  describe('getters', () => {
+    it('should return the correct values', async () => {
       // Arrange
-      const props = getDomainCustomerEntityPropsWithId();
-
-      // Act
-      const result = CustomerEntity.create(props);
+      const props = getDomainCompleteCustomerEntityProps();
+      const entity = getDomainCustomerEntity(props);
 
       // Assert
-      expect(result).toBeInstanceOf(CustomerEntity);
-      expect(result).toEqual(props);
+      expect(entity.id).toEqual(props.id);
+      expect(entity.name).toEqual(props.name);
+      expect(entity.email).toEqual(props.email);
+      expect(entity.cpf).toEqual(props.cpf);
+      expect(entity.createdAt).toEqual(props.createdAt);
+      expect(entity.updatedAt).toEqual(props.updatedAt);
     });
   });
 });

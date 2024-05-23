@@ -3,6 +3,6 @@ import { CustomerRepository } from '@/customer/domain/repository/customer.reposi
 export const getCustomerRepositoryMock =
   (): jest.Mocked<CustomerRepository> => ({
     findByCpf: jest.fn(),
-    create: jest.fn(),
+    save: jest.fn(),
     existsWithCpf: jest.fn(),
   });

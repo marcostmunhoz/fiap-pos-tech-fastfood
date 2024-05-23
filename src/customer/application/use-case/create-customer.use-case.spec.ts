@@ -1,78 +1,88 @@
-import { CreateCustomerUseCase } from './create-customer.use-case';
-import { CustomerEntityPropsWithId } from '@/customer/domain/entity/customer.entity';
+import { CustomerEntity } from '@/customer/domain/entity/customer.entity';
+import { CustomerFactory } from '@/customer/domain/factory/customer.factory';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
-import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
-import { getDomainEssentialCustomerEntityProps } from '@/testing/customer/helpers';
+import {
+  getDomainCustomerEntity,
+  getDomainPartialCustomerEntityProps,
+  getValidCustomerEntityId,
+} from '@/testing/customer/helpers';
+import { getCustomerFactoryMock } from '@/testing/customer/mock/customer.factory.mock';
 import { getCustomerRepositoryMock } from '@/testing/customer/mock/customer.repository.mock';
+import { CreateCustomerUseCase } from './create-customer.use-case';
 
 describe('CreateCustomerUseCase', () => {
+  let factoryMock: jest.Mocked<CustomerFactory>;
+  let repositoryMock: jest.Mocked<CustomerRepository>;
   let sut: CreateCustomerUseCase;
-  let repository: jest.Mocked<CustomerRepository>;
 
   beforeEach(() => {
-    repository = getCustomerRepositoryMock();
-    sut = new CreateCustomerUseCase(repository);
+    factoryMock = getCustomerFactoryMock();
+    repositoryMock = getCustomerRepositoryMock();
+    sut = new CreateCustomerUseCase(factoryMock, repositoryMock);
   });
 
   describe('execute', () => {
     it('should create a new customer when the given CPF does not exists', async () => {
       // Arrange
-      const props = getDomainEssentialCustomerEntityProps();
-      const propsWithId: CustomerEntityPropsWithId = {
-        id: EntityIdValueObject.create('some-id'),
-        ...props,
-      };
+      const props = getDomainPartialCustomerEntityProps();
+      const entity = getDomainCustomerEntity(props);
       const output = {
-        id: propsWithId.id,
-        name: props.name,
+        id: entity.id,
+        name: entity.name,
       };
-      repository.create.mockResolvedValue(propsWithId);
-      repository.existsWithCpf.mockResolvedValue(false);
+      repositoryMock.existsWithCpf.mockResolvedValue(false);
+      factoryMock.createCustomer.mockReturnValue(entity);
+      repositoryMock.save.mockResolvedValue(entity);
 
       // Act
       const result = await sut.execute(props);
 
       // Assert
-      expect(repository.create).toHaveBeenCalledWith(props);
-      expect(repository.existsWithCpf).toHaveBeenCalledWith(props.cpf);
+      expect(factoryMock.createCustomer).toHaveBeenCalledTimes(1);
+      expect(factoryMock.createCustomer).toHaveBeenCalledWith(props);
+      expect(repositoryMock.existsWithCpf).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.existsWithCpf).toHaveBeenCalledWith(props.cpf);
+      expect(repositoryMock.save).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.save).toHaveBeenCalledWith(entity);
       expect(result).toEqual(output);
     });
 
     it('should create a new customer without optional fields', async () => {
       // Arrange
-      const propsWithId: CustomerEntityPropsWithId = {
-        id: EntityIdValueObject.create('some-id'),
+      const entity = new CustomerEntity({
+        id: getValidCustomerEntityId(),
         name: null,
         email: null,
         cpf: null,
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
+      });
       const output = {
-        id: propsWithId.id,
+        id: entity.id,
         name: null,
       };
-      repository.create.mockResolvedValue(propsWithId);
+      factoryMock.createCustomer.mockReturnValue(entity);
+      repositoryMock.save.mockResolvedValue(entity);
 
       // Act
       const result = await sut.execute({});
 
       // Assert
       expect(result).toEqual(output);
-      expect(repository.create).toHaveBeenCalledWith({});
+      expect(repositoryMock.save).toHaveBeenCalledWith(entity);
     });
 
     it('should throw an error when a customer with the given CPF already exists', async () => {
       // Arrange
-      const props = getDomainEssentialCustomerEntityProps();
-      repository.existsWithCpf.mockResolvedValue(true);
+      const props = getDomainPartialCustomerEntityProps();
+      repositoryMock.existsWithCpf.mockResolvedValue(true);
 
       // Act
-      const result = sut.execute(props);
+      const act = () => sut.execute(props);
 
       // Assert
-      await expect(result).rejects.toThrow(
+      expect(act).rejects.toThrow(
         new EntityAlreadyExistsException(
           'Customer already exists with given CPF.',
         ),

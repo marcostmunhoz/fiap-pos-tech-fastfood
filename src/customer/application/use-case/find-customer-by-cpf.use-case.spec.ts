@@ -1,10 +1,10 @@
-import { FindCustomerByCpfUseCase } from './find-customer-by-cpf.use-case';
 import { CustomerRepository } from '@/customer/domain/repository/customer.repository.interface';
 import {
   getDomainCustomerEntity,
   getValidCpf,
 } from '@/testing/customer/helpers';
 import { getCustomerRepositoryMock } from '@/testing/customer/mock/customer.repository.mock';
+import { FindCustomerByCpfUseCase } from './find-customer-by-cpf.use-case';
 
 describe('FindCustomerByCpfUseCase', () => {
   let sut: FindCustomerByCpfUseCase;

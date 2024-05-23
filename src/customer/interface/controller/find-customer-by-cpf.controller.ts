@@ -1,5 +1,12 @@
 import { FindCustomerByCpfUseCase } from '@/customer/application/use-case/find-customer-by-cpf.use-case';
 import {
+  DefaultBadRequestResponse,
+  DefaultInternalServerErrorResponse,
+  DefaultNotFoundResponse,
+  DefaultUnprocessableEntityResponse,
+} from '@/shared/infrastructure/decorator/swagger-response.decorator';
+import { mapObjectToResponse } from '@/shared/infrastructure/helper/response.helper';
+import {
   Controller,
   Get,
   HttpCode,
@@ -8,15 +15,8 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { FindCustomerByCpfPathParam } from '../dto/find-customer-by-cpf.request';
 import { CustomerResponse } from '../dto/customer.response';
-import {
-  DefaultBadRequestResponse,
-  DefaultInternalServerErrorResponse,
-  DefaultNotFoundResponse,
-  DefaultUnprocessableEntityResponse,
-} from '@/shared/infrastructure/decorator/swagger-response.decorator';
-import { mapObjectToResponse } from '@/shared/infrastructure/helper/response.helper';
+import { FindCustomerByCpfPathParam } from '../dto/find-customer-by-cpf.request';
 
 @ApiTags('Customers')
 @Controller('customers')

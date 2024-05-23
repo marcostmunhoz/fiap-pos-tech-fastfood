@@ -1,84 +1,67 @@
 import {
+  CompleteCustomerEntityProps,
   CustomerEntity as DomainCustomerEntity,
-  CustomerEntityProps,
-  EssentialCustomerEntityProps as DomainEssentialCustomerEntityProps,
-  CustomerEntityPropsWithId,
-  EssentialCustomerEntityProps,
+  PartialCustomerEntityProps,
 } from '@/customer/domain/entity/customer.entity';
 import { CpfValueObject } from '@/customer/domain/value-object/cpf.value-object';
 import { EmailValueObject } from '@/customer/domain/value-object/email.value-object';
 import { FullNameValueObject } from '@/customer/domain/value-object/full-name.value-object';
-import {
-  EssentialCustomerEntityProps as InfrastructureEssentialCustomerEntityProps,
-  CustomerEntity as InfrastructureCustomerEntity,
-} from '@/customer/infrastructure/entity/customer.entity';
+import { CustomerEntity as InfrastructureCustomerEntity } from '@/customer/infrastructure/entity/customer.entity';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 
-export function getValidEntityId(): EntityIdValueObject {
-  return EntityIdValueObject.create('customer-id');
-}
+export const getValidCustomerEntityId = (): EntityIdValueObject =>
+  EntityIdValueObject.create('customer-id');
 
-export function getValidCpf(): CpfValueObject {
-  return CpfValueObject.create('12345678909');
-}
+export const getValidCpf = (): CpfValueObject =>
+  CpfValueObject.create('12345678909');
 
-export function getValidFullName(): FullNameValueObject {
-  return FullNameValueObject.createFromFullName('John Doe');
-}
+export const getValidFullName = (): FullNameValueObject =>
+  FullNameValueObject.createFromFullName('John Doe');
 
-export function getValidEmail(): EmailValueObject {
-  return EmailValueObject.create('john.doe@example.com');
-}
+export const getValidEmail = (): EmailValueObject =>
+  EmailValueObject.create('john.doe@example.com');
 
-export function getDomainEssentialCustomerEntityProps(): DomainEssentialCustomerEntityProps {
-  return {
+export const getDomainPartialCustomerEntityProps =
+  (): PartialCustomerEntityProps => ({
     name: getValidFullName(),
     email: getValidEmail(),
     cpf: getValidCpf(),
-  };
-}
-
-export function getDomainCustomerEntityProps(): CustomerEntityProps {
-  return {
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...getDomainEssentialCustomerEntityProps(),
-  };
-}
-
-export function getDomainCustomerEntityPropsWithId(): CustomerEntityPropsWithId {
-  return {
-    id: getValidEntityId(),
-    ...getDomainCustomerEntityProps(),
-  };
-}
-
-export function getDomainCustomerEntity(
-  props?: EssentialCustomerEntityProps,
-): DomainCustomerEntity {
-  return DomainCustomerEntity.create({
-    id: getValidEntityId(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...(props || getDomainEssentialCustomerEntityProps()),
   });
-}
 
-export function getInfrastructureEssentialCustomerEntityProps(): InfrastructureEssentialCustomerEntityProps {
-  return {
-    id: 'customer-id',
-    name: getValidFullName().value,
-    email: getValidEmail().value,
-    cpf: getValidCpf().value,
-  };
-}
-
-export function getInfrastructureCustomerEntity(
-  props?: InfrastructureEssentialCustomerEntityProps,
-): InfrastructureCustomerEntity {
-  return {
+export const getDomainCompleteCustomerEntityProps =
+  (): CompleteCustomerEntityProps => ({
+    id: getValidCustomerEntityId(),
     createdAt: new Date(),
     updatedAt: new Date(),
-    ...(props || getInfrastructureEssentialCustomerEntityProps()),
+    ...getDomainPartialCustomerEntityProps(),
+  });
+
+export const getDomainCustomerEntity = (
+  props: Partial<CompleteCustomerEntityProps> = {},
+): DomainCustomerEntity => {
+  const defaultProps = getDomainCompleteCustomerEntityProps();
+
+  return new DomainCustomerEntity({
+    id: props.id || defaultProps.id,
+    name: props.name || defaultProps.name,
+    email: props.email || defaultProps.email,
+    cpf: props.cpf || defaultProps.cpf,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
+  });
+};
+
+export const getInfrastructureCustomerEntity = (
+  props: Partial<CompleteCustomerEntityProps> = {},
+): InfrastructureCustomerEntity => {
+  const defaultProps = getDomainCompleteCustomerEntityProps();
+
+  return {
+    id: props.id?.value || defaultProps.id.value,
+    name: props.name?.value || defaultProps.name.value,
+    email: props.email?.value || defaultProps.email.value,
+    cpf: props.cpf?.value || defaultProps.cpf.value,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
   };
-}
+};

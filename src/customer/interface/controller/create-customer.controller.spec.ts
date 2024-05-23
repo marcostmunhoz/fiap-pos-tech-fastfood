@@ -1,17 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CreateCustomerController } from './create-customer.controller';
 import {
   CreateCustomerUseCase,
-  Input,
   Output,
 } from '@/customer/application/use-case/create-customer.use-case';
 import {
-  getDomainCustomerEntityPropsWithId,
   getValidCpf,
+  getValidCustomerEntityId,
   getValidEmail,
   getValidFullName,
 } from '@/testing/customer/helpers';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CreateCustomerRequest } from '../dto/create-customer.request';
+import { CreateCustomerController } from './create-customer.controller';
 
 describe('CreateCustomerController', () => {
   let useCaseMock: jest.Mocked<CreateCustomerUseCase>;
@@ -42,7 +41,10 @@ describe('CreateCustomerController', () => {
         email: getValidEmail(),
         cpf: getValidCpf(),
       };
-      const output: Output = getDomainCustomerEntityPropsWithId();
+      const output: Output = {
+        id: getValidCustomerEntityId(),
+        name: request.name,
+      };
       useCaseMock.execute.mockResolvedValue(output);
 
       // Act
