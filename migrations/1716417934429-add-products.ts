@@ -2,6 +2,10 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreatePayments1716417934429 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
+
     queryRunner.query(
       `INSERT INTO products (id, code, name, description, category, price, created_at, updated_at) VALUES (
           UUID(),
@@ -125,6 +129,10 @@ export class CreatePayments1716417934429 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
+
     queryRunner.query(`DELETE FROM products`);
   }
 }

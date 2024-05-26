@@ -15,6 +15,6 @@ export class PaymentEntity extends BaseEntity {
   @Column()
   status: string;
 
-  @Column({ name: 'external_payment_id' })
+  @Column({ name: 'external_payment_id', nullable: true })
   externalPaymentId?: string;
 }

@@ -36,6 +36,7 @@ services:
       - ./src:/app/src
       - ./config:/app/config
       - ./migrations/:/app/migrations
+      - .env:/app/.env
     depends_on:
       db:
         condition: service_healthy

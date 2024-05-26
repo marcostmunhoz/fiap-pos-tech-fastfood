@@ -13,8 +13,8 @@ export class OrderEntity extends BaseEntity {
   @Column({ name: 'customer_id' })
   customerId: string;
 
-  @Column({ name: 'customer_name' })
-  customerName: string;
+  @Column({ name: 'customer_name', nullable: true })
+  customerName?: string;
 
   @Column({ type: 'json' })
   items: OrderItemProps[];

@@ -3,12 +3,12 @@ import { Column, Entity } from 'typeorm';
 
 @Entity({ name: 'customers' })
 export class CustomerEntity extends BaseEntity {
-  @Column()
-  name: string;
+  @Column({ nullable: true })
+  name?: string;
 
-  @Column()
-  email: string;
+  @Column({ nullable: true })
+  email?: string;
 
-  @Column()
-  cpf: string;
+  @Column({ nullable: true })
+  cpf?: string;
 }

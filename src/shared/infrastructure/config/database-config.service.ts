@@ -27,10 +27,18 @@ export class DatabaseConfigService {
   }
 
   getDatabase(): string {
+    if (process.env.NODE_ENV === 'test') {
+      return this.configService.get<string>('MYSQL_DATABASE_TESTING_NAME');
+    }
+
     return this.configService.get<string>('MYSQL_DATABASE_NAME');
   }
 
   getLogging(): boolean {
+    if (process.env.NODE_ENV === 'test') {
+      return false;
+    }
+
     return this.configService.get<string>('MYSQL_DATABASE_LOGGING') === 'true';
   }
 
@@ -39,6 +47,10 @@ export class DatabaseConfigService {
   }
 
   getSynchronize(): boolean {
+    if (process.env.NODE_ENV === 'test') {
+      return true;
+    }
+
     return false;
   }
 }
