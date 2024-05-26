@@ -10,6 +10,7 @@ export type Output = Array<{
   products: Array<{
     code: string;
     name: string;
+    description: string;
     price: number;
   }>;
 }>;
@@ -30,6 +31,7 @@ export class ListProductsUseCase implements UseCase<Input, Output> {
       carry[product.category].push({
         code: product.code.value,
         name: product.name.value,
+        description: product.description.value,
         price: product.price.valueAsFloat,
       });
 

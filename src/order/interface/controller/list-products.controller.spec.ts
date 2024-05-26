@@ -38,6 +38,7 @@ describe('ListProductsController', () => {
             {
               code: product.code.value,
               name: product.name.value,
+              description: product.description.value,
               price: product.price.valueAsFloat,
             },
           ],

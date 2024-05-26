@@ -16,6 +16,7 @@ export class ListProductsResponse {
       {
         code: 'PRD-001',
         name: 'Product Name',
+        description: 'Product Description',
         price: 10.99,
       },
     ],
@@ -23,6 +24,7 @@ export class ListProductsResponse {
   products: Array<{
     code: string;
     name: string;
+    description: string;
     price: number;
   }>;
 }
