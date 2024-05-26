@@ -38,9 +38,11 @@ export class ListProductsUseCase implements UseCase<Input, Output> {
       return carry;
     }, {});
 
-    return Object.entries(groupedProducts).map(([category, products]) => ({
-      category,
-      products,
-    })) as Output;
+    return Object.entries(groupedProducts)
+      .map(([category, products]) => ({
+        category,
+        products,
+      }))
+      .sort((a, b) => a.category.localeCompare(b.category)) as Output;
   }
 }
