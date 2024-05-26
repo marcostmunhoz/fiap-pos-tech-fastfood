@@ -8,6 +8,7 @@ import { KitchenModule } from './kitchen/kitchen.module';
 import { OrderModule } from './order/order.module';
 import { PaymentModule } from './payment/payment.module';
 import { SharedModule } from './shared/shared.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { SharedModule } from './shared/shared.module';
     KitchenModule,
     OrderModule,
     PaymentModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
