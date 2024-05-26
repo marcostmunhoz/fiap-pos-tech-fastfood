@@ -1,28 +1,16 @@
-import { RequestMethod } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import 'reflect-metadata';
 import { AppModule } from './app.module';
+import { applyGlobalAppConfig } from './main.config';
 import { AppConfigService } from './shared/infrastructure/config/app-config.service';
-import { DomainExceptionFilter } from './shared/infrastructure/filter/domain-exception.filter';
-import { TransformationPipe } from './shared/infrastructure/pipe/transformation.pipe';
-import { ValidationPipe } from './shared/infrastructure/pipe/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(AppConfigService);
 
-  app.useGlobalPipes(new ValidationPipe(), new TransformationPipe());
-
-  app.useGlobalFilters(new DomainExceptionFilter());
-
-  app.setGlobalPrefix('api/v1', {
-    exclude: [
-      { path: 'api/docs', method: RequestMethod.GET },
-      { path: 'health', method: RequestMethod.GET },
-    ],
-  });
+  applyGlobalAppConfig(app);
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Fastfood Totem API')
