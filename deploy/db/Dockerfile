@@ -1,6 +1,7 @@
-FROM mysql:8
+FROM mysql:8 as dev
 
-ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=app
-ENV MYSQL_USER=app
-ENV MYSQL_PASSWORD=secret
+# Development specific settings
+
+FROM dev as prod
+
+# Production specific settings

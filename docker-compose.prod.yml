@@ -1,19 +1,15 @@
 services:
   db:
     build:
-      context: ./deploy/db
-      dockerfile: Dockerfile
-      target: dev
+      dockerfile: ./deploy/db/Dockerfile
     ports:
       - '3306:3306'
     networks:
       - default
     volumes:
       - db_data:/var/lib/mysql
-      - ./deploy/db/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      # Check for the testing database to be ready, meaning the entrypoint script finished running
-      test: mysql testing -uroot -proot --silent --execute "select 1;"
+      test: mysql app -uroot -proot --silent --execute "select 1;"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,16 +23,10 @@ services:
     build:
       context: .
       dockerfile: ./deploy/app/Dockerfile
-      target: dev
     ports:
       - '3000:3000'
     networks:
       - default
-    volumes:
-      - ./src:/app/src
-      - ./config:/app/config
-      - ./migrations/:/app/migrations
-      - app_data:/app/node_modules
     depends_on:
       db:
         condition: service_healthy
@@ -56,4 +46,3 @@ networks:
 
 volumes:
   db_data:
-  app_data:
