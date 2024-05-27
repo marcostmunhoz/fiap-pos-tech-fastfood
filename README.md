@@ -1,4 +1,4 @@
-# FIAP Pos Tech - Tech Challenge
+# FIAP Tech Challenge - Fastfood Kiosk API
 
 ## Description
 
