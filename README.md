@@ -78,6 +78,16 @@ In both cases, **the application must be running in development mode**.
 
 - Check application status: GET /health
 
+## Additional Notes
+
+There are sample migrations that populates the tables with some data. They'll be executed automatically with the regular migrations, creating:
+
+- A customer with CPF 66894662053 (ID edd93592-550c-4c01-9966-f91c60b9cca3)
+- A customer without optional data (ID c091b4b6-ed8f-4bef-b5da-e2981646a5cc)
+- 13 sample products, split into the 4 categories (food, drink, dessert, and side)
+- 6 sample orders (3 for each customer), with different items, split into 1 canceled, 1 pending, 2 paid, 1 preparing and 1 ready
+- 6 sample payments (1 for each order), with the corresponding payment status (e.g. the canceled order has failed payment)
+
 ## TODOs
 
 - Implement authentication and guard for kitchen endpoints
