@@ -36,6 +36,7 @@ services:
       - ./src:/app/src
       - ./config:/app/config
       - ./migrations/:/app/migrations
+      - ./test:/app/test
       - .env:/app/.env
     depends_on:
       db:
@@ -49,7 +50,9 @@ services:
       MYSQL_DATABASE_PORT: 3306
       MYSQL_DATABASE_USERNAME: app
       MYSQL_DATABASE_PASSWORD: secret
+      MYSQL_DATABASE_TESTING_NAME: testing
       MYSQL_DATABASE_NAME: app
+      MYSQL_DATABASE_LOGGING: true
 
 networks:
   default:

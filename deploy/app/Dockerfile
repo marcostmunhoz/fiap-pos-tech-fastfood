@@ -1,7 +1,5 @@
 FROM node:20.12.2-alpine3.19 AS dev
 
-ENV NODE_ENV=development
-
 WORKDIR /app
 
 COPY package.json yarn.lock ./

@@ -4,7 +4,11 @@ import { AppConfigService } from './app-config.service';
 import { DatabaseConfigService } from './database-config.service';
 
 @Module({
-  imports: [BaseConfigModule.forRoot()],
+  imports: [
+    BaseConfigModule.forRoot({
+      ignoreEnvFile: true,
+    }),
+  ],
   providers: [AppConfigService, DatabaseConfigService],
   exports: [AppConfigService, DatabaseConfigService],
 })
