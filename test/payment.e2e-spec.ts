@@ -48,6 +48,16 @@ describe('Payment (e2e)', () => {
       });
   };
 
+  const updateOrderStatus = async (
+    app: INestApplication,
+    orderId: string,
+    status: string,
+  ): Promise<supertest.Test> => {
+    return await supertest(app.getHttpServer())
+      .put(`/api/v1/orders/${orderId}/status`)
+      .send({ status });
+  };
+
   beforeAll(async () => {
     app = await createApp();
     databaseHelper = new DatabaseHelper(app);
@@ -129,5 +139,45 @@ describe('Payment (e2e)', () => {
     expect(createResponse.body.status).toBe('paid');
   });
 
-  it.todo('should list orders with successful payment');
+  it('should list orders with successful payment', async () => {
+    // Arrange
+    const orderId1 = await createOrder(app);
+    const orderId2 = await createOrder(app);
+    const orderId3 = await createOrder(app);
+    const orderId4 = await createOrder(app);
+    await payUsingCard(app, orderId1, 'credit-card');
+    await payUsingCard(app, orderId2, 'credit-card');
+    await updateOrderStatus(app, orderId2, 'preparing');
+    await payUsingCard(app, orderId3, 'credit-card');
+    await updateOrderStatus(app, orderId3, 'preparing');
+    await updateOrderStatus(app, orderId3, 'ready');
+    await payUsingCard(app, orderId4, 'credit-card');
+    await updateOrderStatus(app, orderId4, 'preparing');
+    await updateOrderStatus(app, orderId4, 'ready');
+
+    // Act
+    const response = await supertest(app.getHttpServer()).get(`/api/v1/orders`);
+
+    // Assert
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(3);
+    expect(response.body[0].status).toBe('paid');
+    expect(response.body[0].orders).toHaveLength(1);
+    expect(response.body[0].orders[0].id).toEqual(orderId1);
+    expect(response.body[0].orders[0].customerName).toEqual('Customer Name');
+    expect(response.body[0].orders[0].updatedAt).toBeDefined();
+    expect(response.body[1].status).toBe('preparing');
+    expect(response.body[1].orders).toHaveLength(1);
+    expect(response.body[1].orders[0].id).toEqual(orderId2);
+    expect(response.body[1].orders[0].customerName).toEqual('Customer Name');
+    expect(response.body[1].orders[0].updatedAt).toBeDefined();
+    expect(response.body[2].status).toBe('ready');
+    expect(response.body[2].orders).toHaveLength(2);
+    expect(response.body[2].orders[1].id).toEqual(orderId3);
+    expect(response.body[2].orders[1].customerName).toEqual('Customer Name');
+    expect(response.body[2].orders[1].updatedAt).toBeDefined();
+    expect(response.body[2].orders[0].id).toEqual(orderId4);
+    expect(response.body[2].orders[0].customerName).toEqual('Customer Name');
+    expect(response.body[2].orders[0].updatedAt).toBeDefined();
+  });
 });
