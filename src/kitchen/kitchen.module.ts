@@ -5,12 +5,14 @@ import { DeleteProductUseCase } from './application/use-case/delete-product.use-
 import { ListOrdersUseCase } from './application/use-case/list-orders.use-case';
 import { SearchProductsUseCase } from './application/use-case/search-products.use-case';
 import { ShowProductUseCase } from './application/use-case/show-product.use-case';
+import { UpdateOrderStatusUseCase } from './application/use-case/update-order-status.use-case';
 import { UpdateProductUseCase } from './application/use-case/update-product.use-case';
 import { CreateProductController } from './interface/controller/create-product.controller';
 import { DeleteProductController } from './interface/controller/delete-product.controller';
 import { ListOrdersController } from './interface/controller/list-orders.controller';
 import { SearchProductsController } from './interface/controller/search-products.controller';
 import { ShowProductController } from './interface/controller/show-product.controller';
+import { UpdateOrderStatusController } from './interface/controller/update-order-status.controller';
 import { UpdateProductController } from './interface/controller/update-product.controller';
 
 const useCases = [
@@ -20,6 +22,7 @@ const useCases = [
   DeleteProductUseCase,
   SearchProductsUseCase,
   ListOrdersUseCase,
+  UpdateOrderStatusUseCase,
 ];
 
 @Module({
@@ -32,6 +35,7 @@ const useCases = [
     DeleteProductController,
     SearchProductsController,
     ListOrdersController,
+    UpdateOrderStatusController,
   ],
 })
 export class KitchenModule {}

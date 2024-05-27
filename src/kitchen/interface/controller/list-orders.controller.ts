@@ -8,14 +8,14 @@ import { ListOrdersResponse } from '../dto/list-orders.response';
 @ApiTags('Orders')
 @Controller('orders')
 export class ListOrdersController {
-  constructor(private readonly listOrdersUseCase: ListOrdersUseCase) {}
+  constructor(private readonly useCase: ListOrdersUseCase) {}
 
   @Get()
   @HttpCode(200)
   @ApiOkResponse({ type: ListOrdersResponse, isArray: true })
   @DefaultInternalServerErrorResponse()
   async execute(): Promise<ListOrdersResponse[]> {
-    const result = this.listOrdersUseCase.execute();
+    const result = this.useCase.execute();
 
     return mapObjectToResponse(
       ListOrdersResponse,

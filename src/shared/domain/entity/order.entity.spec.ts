@@ -5,6 +5,7 @@ import {
   getValidOrderItem,
 } from '@/testing/shared/helpers';
 import { OrderStatusEnum } from '../enum/order-status.enum';
+import { InvalidOrderStatusTransitionException } from '../exception/invalid-order-status-transition.exception';
 import { ItemAlreadyAddedException } from '../exception/item-already-added.exception';
 import { ItemNotFoundException } from '../exception/item-not-found.exception';
 import { ItemQuantityValueObject } from '../value-object/item-quantity.value-object';
@@ -268,7 +269,85 @@ describe('OrderEntity', () => {
       expect(order.status).toEqual(OrderStatusEnum.PAID);
     });
 
-    it('should throw an exception if the order can not be edited', async () => {
+    it('should throw an exception if the order can not be marked as paid', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.CANCELED,
+      });
+
+      // Act
+      const act = () => order.markAsPaid();
+
+      // Assert
+      expect(act).toThrow(
+        new InvalidOrderStatusTransitionException(
+          OrderStatusEnum.CANCELED,
+          OrderStatusEnum.PAID,
+        ),
+      );
+    });
+  });
+
+  describe('markAsPreparing', () => {
+    it('should mark the order as preparing', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PAID,
+      });
+      const orderSpy = jest.spyOn(order as any, 'markAsUpdated');
+
+      // Act
+      order.markAsPreparing();
+
+      // Assert
+      expect(orderSpy).toHaveBeenCalledTimes(1);
+      expect(order.status).toEqual(OrderStatusEnum.PREPARING);
+    });
+
+    it('should throw an exception if the order can not be marked as preparing', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PENDING,
+      });
+
+      // Act
+      const act = () => order.markAsPreparing();
+
+      // Assert
+      expect(act).toThrow(
+        new InvalidOrderStatusTransitionException(
+          OrderStatusEnum.PENDING,
+          OrderStatusEnum.PREPARING,
+        ),
+      );
+    });
+  });
+
+  describe('markAsReady', () => {
+    it('should mark the order as ready', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PREPARING,
+      });
+      const orderSpy = jest.spyOn(order as any, 'markAsUpdated');
+
+      // Act
+      order.markAsReady();
+
+      // Assert
+      expect(orderSpy).toHaveBeenCalledTimes(1);
+      expect(order.status).toEqual(OrderStatusEnum.READY);
+    });
+
+    it('should throw an exception if the order can not be marked as ready', async () => {
       // Arrange
       const props = getDomainCompleteOrderEntityProps();
       const order = getDomainOrderEntity({
@@ -277,17 +356,63 @@ describe('OrderEntity', () => {
       });
 
       // Act
-      const act = () => order.markAsPaid();
+      const act = () => order.markAsReady();
 
       // Assert
-      expect(act).toThrow(OrderCanNotBeEditedException);
+      expect(act).toThrow(
+        new InvalidOrderStatusTransitionException(
+          OrderStatusEnum.PAID,
+          OrderStatusEnum.READY,
+        ),
+      );
+    });
+  });
+
+  describe('markAsDelivered', () => {
+    it('should mark the order as delivered', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.READY,
+      });
+      const orderSpy = jest.spyOn(order as any, 'markAsUpdated');
+
+      // Act
+      order.markAsDelivered();
+
+      // Assert
+      expect(orderSpy).toHaveBeenCalledTimes(1);
+      expect(order.status).toEqual(OrderStatusEnum.DELIVERED);
+    });
+
+    it('should throw an exception if the order can not be marked as delivered', async () => {
+      // Arrange
+      const props = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...props,
+        status: OrderStatusEnum.PREPARING,
+      });
+
+      // Act
+      const act = () => order.markAsDelivered();
+
+      // Assert
+      expect(act).toThrow(
+        new InvalidOrderStatusTransitionException(
+          OrderStatusEnum.PREPARING,
+          OrderStatusEnum.DELIVERED,
+        ),
+      );
     });
   });
 
   describe('markAsCanceled', () => {
     it('should mark the order as canceled', async () => {
       // Arrange
-      const order = getDomainOrderEntity();
+      const order = getDomainOrderEntity({
+        status: OrderStatusEnum.PENDING,
+      });
       const orderSpy = jest.spyOn(order as any, 'markAsUpdated');
 
       // Act
@@ -298,19 +423,24 @@ describe('OrderEntity', () => {
       expect(order.status).toEqual(OrderStatusEnum.CANCELED);
     });
 
-    it('should throw an exception if the order can not be edited', async () => {
+    it('should throw an exception if the order can not be marked as canceled', async () => {
       // Arrange
       const props = getDomainCompleteOrderEntityProps();
       const order = getDomainOrderEntity({
         ...props,
-        status: OrderStatusEnum.PAID,
+        status: OrderStatusEnum.DELIVERED,
       });
 
       // Act
       const act = () => order.markAsCanceled();
 
       // Assert
-      expect(act).toThrow(OrderCanNotBeEditedException);
+      expect(act).toThrow(
+        new InvalidOrderStatusTransitionException(
+          OrderStatusEnum.DELIVERED,
+          OrderStatusEnum.CANCELED,
+        ),
+      );
     });
   });
 });

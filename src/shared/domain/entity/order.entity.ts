@@ -1,4 +1,5 @@
 import { OrderStatusEnum } from '../enum/order-status.enum';
+import { InvalidOrderStatusTransitionException } from '../exception/invalid-order-status-transition.exception';
 import { ItemAlreadyAddedException } from '../exception/item-already-added.exception';
 import { ItemNotFoundException } from '../exception/item-not-found.exception';
 import { OrderCanNotBeEditedException } from '../exception/order-can-not-be-edited.exception';
@@ -102,7 +103,12 @@ export class OrderEntity extends AbstractEntity<CompleteOrderEntityProps> {
   }
 
   public markAsPaid(): OrderEntity {
-    this.ensureCanBeEdited();
+    if (OrderStatusEnum.PENDING !== this.status) {
+      throw new InvalidOrderStatusTransitionException(
+        this.status,
+        OrderStatusEnum.PAID,
+      );
+    }
 
     this.props.status = OrderStatusEnum.PAID;
     this.markAsUpdated();
@@ -110,8 +116,55 @@ export class OrderEntity extends AbstractEntity<CompleteOrderEntityProps> {
     return this;
   }
 
+  public markAsPreparing(): OrderEntity {
+    if (OrderStatusEnum.PAID !== this.status) {
+      throw new InvalidOrderStatusTransitionException(
+        this.status,
+        OrderStatusEnum.PREPARING,
+      );
+    }
+
+    this.props.status = OrderStatusEnum.PREPARING;
+    this.markAsUpdated();
+
+    return this;
+  }
+
+  public markAsReady(): OrderEntity {
+    if (OrderStatusEnum.PREPARING !== this.status) {
+      throw new InvalidOrderStatusTransitionException(
+        this.status,
+        OrderStatusEnum.READY,
+      );
+    }
+
+    this.props.status = OrderStatusEnum.READY;
+    this.markAsUpdated();
+
+    return this;
+  }
+
+  public markAsDelivered(): OrderEntity {
+    if (OrderStatusEnum.READY !== this.status) {
+      throw new InvalidOrderStatusTransitionException(
+        this.status,
+        OrderStatusEnum.DELIVERED,
+      );
+    }
+
+    this.props.status = OrderStatusEnum.DELIVERED;
+    this.markAsUpdated();
+
+    return this;
+  }
+
   public markAsCanceled(): OrderEntity {
-    this.ensureCanBeEdited();
+    if (OrderStatusEnum.PENDING !== this.status) {
+      throw new InvalidOrderStatusTransitionException(
+        this.status,
+        OrderStatusEnum.CANCELED,
+      );
+    }
 
     this.props.status = OrderStatusEnum.CANCELED;
     this.markAsUpdated();
