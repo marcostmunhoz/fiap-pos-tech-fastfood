@@ -1,4 +1,5 @@
 import { OrderEntity as DomainOrderEntity } from '@/shared/domain/entity/order.entity';
+import { OrderStatusEnum } from '@/shared/domain/enum/order-status.enum';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import {
   getDomainOrderEntity,
@@ -92,6 +93,36 @@ describe('TypeOrmOrderRepository', () => {
       expect(result.total.value).toBe(entity.total.value);
       expect(result.createdAt).toEqual(entity.createdAt);
       expect(result.updatedAt).toEqual(entity.updatedAt);
+    });
+  });
+
+  describe('listAscendingByUpdatedAt', () => {
+    it('should return a list of orders ordered by updatedAt', async () => {
+      // Arrange
+      const dbEntities = [
+        getInfrastructureOrderEntity({
+          id: EntityIdValueObject.create('order-id-1'),
+        }),
+        getInfrastructureOrderEntity({
+          id: EntityIdValueObject.create('order-id-2'),
+        }),
+      ];
+      repositoryMock.find.mockResolvedValue(dbEntities);
+
+      // Act
+      const result = await sut.listAscendingByUpdatedAt(OrderStatusEnum.PAID);
+
+      // Assert
+      expect(repositoryMock.find).toHaveBeenCalledTimes(1);
+      expect(repositoryMock.find).toHaveBeenCalledWith({
+        where: { status: OrderStatusEnum.PAID },
+        order: { updatedAt: 'ASC' },
+      });
+      expect(result).toHaveLength(2);
+      expect(result[0]).toBeInstanceOf(DomainOrderEntity);
+      expect(result[0].id.value).toBe(dbEntities[0].id);
+      expect(result[1]).toBeInstanceOf(DomainOrderEntity);
+      expect(result[1].id.value).toBe(dbEntities[1].id);
     });
   });
 });

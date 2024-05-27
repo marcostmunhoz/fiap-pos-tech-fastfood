@@ -3,4 +3,5 @@ import { OrderRepository } from '@/shared/domain/repository/order.repository.int
 export const getOrderRepositoryMock = (): jest.Mocked<OrderRepository> => ({
   findById: jest.fn(),
   save: jest.fn(),
+  listAscendingByUpdatedAt: jest.fn(),
 });
