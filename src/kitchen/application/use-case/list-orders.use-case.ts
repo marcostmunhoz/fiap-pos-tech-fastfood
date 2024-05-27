@@ -12,6 +12,12 @@ export type Output = Array<{
   orders: Array<{
     id: string;
     customerName?: string;
+    items: Array<{
+      code: string;
+      name: string;
+      price: number;
+      quantity: number;
+    }>;
     updatedAt: Date;
   }>;
 }>;
@@ -54,6 +60,12 @@ export class ListOrdersUseCase implements UseCase<Input, Output> {
       id: order.id.value,
       customerName: order.customerName,
       updatedAt: order.updatedAt,
+      items: order.items.map((item) => ({
+        code: item.code,
+        name: item.name,
+        price: item.price.valueAsFloat,
+        quantity: item.quantity.value,
+      })),
     };
   }
 }

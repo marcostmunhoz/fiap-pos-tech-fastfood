@@ -1,7 +1,10 @@
-import { OrderEntity } from '@/shared/domain/entity/order.entity';
 import { OrderStatusEnum } from '@/shared/domain/enum/order-status.enum';
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
+import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
+import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
+import { OrderItemValueObject } from '@/shared/domain/value-object/order-item.value-object';
+import { getDomainOrderEntity } from '@/testing/shared/helpers';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import { ListOrdersUseCase } from './list-orders.use-case';
 
@@ -17,36 +20,55 @@ describe('ListOrdersUseCase', () => {
   describe('execute', () => {
     it('should return the filtered orders', async () => {
       // Arrange
-      const order1 = {
+      const order1 = getDomainOrderEntity({
         id: EntityIdValueObject.create('order-id-1'),
         customerName: 'Customer 1',
+        items: [
+          OrderItemValueObject.create({
+            code: 'PRD-1',
+            name: 'X-Burger',
+            price: MoneyValueObject.create(1500),
+            quantity: ItemQuantityValueObject.create(2),
+          }),
+        ],
+        status: OrderStatusEnum.PAID,
         updatedAt: new Date('2021-01-01T00:00:00Z'),
-      } as unknown as OrderEntity;
-      const order2 = {
+      });
+      const order2 = getDomainOrderEntity({
         id: EntityIdValueObject.create('order-id-2'),
         customerName: 'Customer 2',
+        items: [],
+        status: OrderStatusEnum.PAID,
         updatedAt: new Date('2021-01-02T00:00:00Z'),
-      } as unknown as OrderEntity;
-      const order3 = {
+      });
+      const order3 = getDomainOrderEntity({
         id: EntityIdValueObject.create('order-id-3'),
         customerName: 'Customer 3',
+        items: [],
+        status: OrderStatusEnum.PREPARING,
         updatedAt: new Date('2021-01-03T00:00:00Z'),
-      } as unknown as OrderEntity;
-      const order4 = {
+      });
+      const order4 = getDomainOrderEntity({
         id: EntityIdValueObject.create('order-id-4'),
         customerName: 'Customer 4',
+        items: [],
+        status: OrderStatusEnum.PREPARING,
         updatedAt: new Date('2021-01-04T00:00:00Z'),
-      } as unknown as OrderEntity;
-      const order5 = {
+      });
+      const order5 = getDomainOrderEntity({
         id: EntityIdValueObject.create('order-id-5'),
         customerName: 'Customer 5',
+        items: [],
+        status: OrderStatusEnum.READY,
         updatedAt: new Date('2021-01-05T00:00:00Z'),
-      } as unknown as OrderEntity;
-      const order6 = {
+      });
+      const order6 = getDomainOrderEntity({
         id: EntityIdValueObject.create('order-id-6'),
         customerName: 'Customer 6',
+        items: [],
+        status: OrderStatusEnum.READY,
         updatedAt: new Date('2021-01-06T00:00:00Z'),
-      } as unknown as OrderEntity;
+      });
       repository.listAscendingByUpdatedAt.mockResolvedValueOnce([
         order1,
         order2,
@@ -69,6 +91,11 @@ describe('ListOrdersUseCase', () => {
       expect(result[0].orders).toHaveLength(2);
       expect(result[0].orders[0].id).toBe('order-id-1');
       expect(result[0].orders[0].customerName).toBe('Customer 1');
+      expect(result[0].orders[0].items).toHaveLength(1);
+      expect(result[0].orders[0].items[0].code).toBe('PRD-1');
+      expect(result[0].orders[0].items[0].name).toBe('X-Burger');
+      expect(result[0].orders[0].items[0].price).toBe(15);
+      expect(result[0].orders[0].items[0].quantity).toBe(2);
       expect(result[0].orders[0].updatedAt).toEqual(
         new Date('2021-01-01T00:00:00Z'),
       );

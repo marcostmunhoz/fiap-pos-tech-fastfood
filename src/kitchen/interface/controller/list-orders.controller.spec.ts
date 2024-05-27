@@ -33,31 +33,44 @@ describe('ListOrdersController', () => {
       const order1 = {
         id: 'order-id-1',
         customerName: 'Customer 1',
+        items: [
+          {
+            code: 'PRD-1',
+            name: 'X-Burger',
+            price: 1500,
+            quantity: 2,
+          },
+        ],
         updatedAt: new Date('2021-01-01T00:00:00Z'),
       };
       const order2 = {
         id: 'order-id-2',
         customerName: 'Customer 2',
+        items: [],
         updatedAt: new Date('2021-01-02T00:00:00Z'),
       };
       const order3 = {
         id: 'order-id-3',
         customerName: 'Customer 3',
+        items: [],
         updatedAt: new Date('2021-01-03T00:00:00Z'),
       };
       const order4 = {
         id: 'order-id-4',
         customerName: 'Customer 4',
+        items: [],
         updatedAt: new Date('2021-01-04T00:00:00Z'),
       };
       const order5 = {
         id: 'order-id-5',
         customerName: 'Customer 5',
+        items: [],
         updatedAt: new Date('2021-01-05T00:00:00Z'),
       };
       const order6 = {
         id: 'order-id-6',
         customerName: 'Customer 6',
+        items: [],
         updatedAt: new Date('2021-01-06T00:00:00Z'),
       };
       const output: Output = [

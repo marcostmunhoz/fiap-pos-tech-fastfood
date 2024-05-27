@@ -11,6 +11,14 @@ class ListOrdersItem {
   customerName?: string;
 
   @Expose()
+  items: Array<{
+    code: string;
+    name: string;
+    price: number;
+    quantity: number;
+  }>;
+
+  @Expose()
   updatedAt: Date;
 }
 
@@ -29,6 +37,14 @@ export class ListOrdersResponse {
     example: {
       id: '053b636d-aaa3-4700-9ead-fe9cfd20507f',
       customerName: 'John Doe',
+      items: [
+        {
+          code: 'PRD-001',
+          name: 'Product Name',
+          price: 10.99,
+          quantity: 2,
+        },
+      ],
       updatedAt: new Date(),
     },
   })
