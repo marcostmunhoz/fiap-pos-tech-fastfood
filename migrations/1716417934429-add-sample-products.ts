@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreatePayments1716417934429 implements MigrationInterface {
+export class CreateSamplePayments1716417934429 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (process.env.NODE_ENV === 'test') {
       return;
