@@ -1,4 +1,4 @@
-FROM mysql:8 as dev
+FROM mysql:8.0.38 as dev
 
 # Development specific settings
 

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fastfood.fullname" . }}-db
+  labels:
+    app.kubernetes.io/component: db
+  {{- include "fastfood.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: db
+    {{- include "fastfood.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: db
+      {{- include "fastfood.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: db.root_password
+              name: {{ include "fastfood.fullname" . }}-db-config
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: db.database
+              name: {{ include "fastfood.fullname" . }}-db-config
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              key: db.user
+              name: {{ include "fastfood.fullname" . }}-db-config
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: db.password
+              name: {{ include "fastfood.fullname" . }}-db-config
+        image: {{ .Values.db.image }}:{{ .Values.db.tag }}
+        name: {{ include "fastfood.fullname" . }}-db
+        ports:
+        - containerPort: {{ .Values.db.port }}
+        resources:
+          limits:
+            cpu: {{ .Values.db.resources.cpu.limits | quote }}
+            memory: {{ .Values.db.resources.memory.limits | quote }}
+          requests:
+            cpu: {{ .Values.db.resources.cpu.requests | quote }}
+            memory: {{ .Values.db.resources.memory.requests | quote }}

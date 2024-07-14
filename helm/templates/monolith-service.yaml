@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fastfood.fullname" . }}-monolith-service
+  labels:
+  {{- include "fastfood.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.monolith.service.type }}
+  selector:
+    app.kubernetes.io/component: monolith
+  {{- include "fastfood.selectorLabels" . | nindent 4 }}
+  ports:
+    - protocol: {{ .Values.monolith.service.protocol }}
+      port: {{ .Values.monolith.service.port }}
+      targetPort: {{ .Values.monolith.port }}
