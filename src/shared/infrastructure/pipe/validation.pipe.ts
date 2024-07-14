@@ -82,7 +82,7 @@ export class ValidationPipe implements PipeTransform<any> {
     // If data was provided (e.g., @Body('id')), then the pipe should not apply validations
     // because we can not use the PropertyDecorators there
     if (data) {
-      return true;
+      return false;
     }
 
     if (!metatype) {
