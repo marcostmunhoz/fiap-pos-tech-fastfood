@@ -1,6 +1,8 @@
 import { Controller, Get, HttpCode, Query } from '@nestjs/common';
+import { ApiExcludeController } from '@nestjs/swagger';
 
 @Controller('load')
+@ApiExcludeController()
 export class LoadController {
   @Get('/')
   @HttpCode(200)
