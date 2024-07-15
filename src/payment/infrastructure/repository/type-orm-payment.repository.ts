@@ -24,6 +24,20 @@ export class TypeOrmPaymentRepository implements PaymentRepository {
     return this.mapToDomainEntity(dbEntity);
   }
 
+  async findByExternalPaymentId(
+    externalPaymentId: string,
+  ): Promise<DomainPaymentEntity> {
+    const dbEntity = await this.typeOrmRepository.findOneBy({
+      externalPaymentId,
+    });
+
+    if (!dbEntity) {
+      return null;
+    }
+
+    return this.mapToDomainEntity(dbEntity);
+  }
+
   async existsWithOrderIdAndNotFailed(orderId: string): Promise<boolean> {
     return await this.typeOrmRepository.exists({
       where: {

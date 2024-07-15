@@ -37,9 +37,22 @@ export const getDomainCompletePaymentEntityProps =
   });
 
 export const getDomainPaymentEntity = (
-  props?: CompletePaymentEntityProps,
-): DomainPaymentEntity =>
-  new DomainPaymentEntity(props || getDomainCompletePaymentEntityProps());
+  props: Partial<CompletePaymentEntityProps> = {},
+): DomainPaymentEntity => {
+  const defaultProps = getDomainCompletePaymentEntityProps();
+
+  return new DomainPaymentEntity({
+    id: props.id || defaultProps.id,
+    orderId: props.orderId || defaultProps.orderId,
+    total: props.total || defaultProps.total,
+    paymentMethod: props.paymentMethod || defaultProps.paymentMethod,
+    status: props.status || defaultProps.status,
+    externalPaymentId:
+      props.externalPaymentId || defaultProps.externalPaymentId,
+    createdAt: props.createdAt || defaultProps.createdAt,
+    updatedAt: props.updatedAt || defaultProps.updatedAt,
+  });
+};
 
 export const getInfrastructurePaymentEntity = (
   entity?: DomainPaymentEntity,
