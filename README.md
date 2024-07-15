@@ -22,10 +22,8 @@ To install the application, follow the steps below:
 
 - Clone the repository
 - Build and run the containers
-  - To run in development mode, use the commands `docker compose build` and `docker compose up`. In this mode, the application responds to changes made in the source code (watch mode) and a database is also created for running e2e tests.
-  - To run in production mode, use the commands `docker compose -f docker-compose.prod.yml build` and `docker compose -f docker-compose.prod.yml up`. In this mode, the application is built during the container construction process, ignoring test files, and served in production mode.
-  - NOTE: If switching between execution modes, it is necessary to clear the volumes attached to the containers, as they share the same volume for data persistence. To do this, after stopping the containers, run `docker compose down -v`.
-- After building and running the container, the application will be available at `http://localhost:3000`.
+  - To run in development mode, use the commands `docker compose build` and `docker compose up`. In this mode, the application responds to changes made in the source code (watch mode) and a database is also created for running e2e tests. The application will be available at `http://localhost:3000`.
+  - To run in production mode, you must use the provided helm chart. The chart is located in the `helm` folder. To install the chart, use the command `helm install fastfood helm`. The chart will create and run the MySQL database and application pods, as well as the load balancer and HPA. If you're using Minikube, you can access the application using the command `minikube service fastfood-monolith-service --url`. The application will be available at the URL provided by the command. Note that the helm chart uses a previously built Docker image, so the local changes will not be reflected in the production environment unless you change the image in the `values.yaml` file.
 
 ## Accessing the API Documentation
 
@@ -67,6 +65,7 @@ In both cases, **the application must be running in development mode**.
 
 - Perform a payment: [POST /api/v1/payments](http://localhost:3000/api/docs#/Payments/CreatePaymentController_execute)
 - Update Pix payment status: [POST /api/v1/payments/{id}/refresh-status](http://localhost:3000/api/docs#/Payments/RefreshPaymentStatusController_execute)
+- Process invoice event: [POST /api/v1/payments/invoice-event](http://localhost:3000/api/docs#/Payments/InvoiceEventController_execute)
 - NOTE: Card payments (credit-card, debit-card, or voucher) are automatically approved when the card number is "1111222233334444". For other numbers, they are rejected (simulating a payment failure). Pix payments are always created with a pending status and subsequently updated via the refresh-status request.
 
 ### Kitchen
@@ -77,6 +76,7 @@ In both cases, **the application must be running in development mode**.
 ### Health Check
 
 - Check application status: GET /health
+- Simulate a load: GET /api/v1/load?level=numberBetween1And50 (note that this endpoint uses a fibonacci sequence to simulate a load, so it may take a while to respond depending on the "level" used)
 
 ## Additional Notes
 
