@@ -9,7 +9,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
     queryRunner.query(
       `INSERT INTO products (id, code, name, description, category, price, created_at, updated_at) VALUES (
           UUID(),
-          'PRD-1',
+          'PRD-001',
           'X-Burger',
           'Lanche composto por pão, queijo e hambúrguer',
           'food',
@@ -18,7 +18,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-2',
+          'PRD-002',
           'X-Salada',
           'Lanche composto por pão, alface, tomate, queijo e hambúrguer',
           'food',
@@ -27,7 +27,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-3',
+          'PRD-003',
           'X-Bacon',
           'Lanche composto por pão, alface, tomate, queijo, hambúrguer e bacon',
           'food',
@@ -36,7 +36,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-4',
+          'PRD-004',
           'X-Tudo',
           'Lanche composto por pão, alface, tomate, queijo, hambúrguer, bacon, ovo e milho',
           'food',
@@ -45,7 +45,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-5',
+          'PRD-005',
           'Batata Frita Pequena',
           'Porção de batata frita pequena',
           'side',
@@ -54,7 +54,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-6',
+          'PRD-006',
           'Batata Frita Média',
           'Porção de batata frita média',
           'side',
@@ -63,7 +63,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-7',
+          'PRD-007',
           'Batata Frita Grande',
           'Porção de batata frita grande',
           'side',
@@ -72,7 +72,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-8',
+          'PRD-008',
           'Refrigerante 300ml',
           'Refrigerante de 300ml',
           'drink',
@@ -81,7 +81,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-9',
+          'PRD-009',
           'Refrigerante 500ml',
           'Refrigerante de 500ml',
           'drink',
@@ -90,7 +90,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-10',
+          'PRD-010',
           'Refrigerante 1L',
           'Refrigerante de 1L',
           'drink',
@@ -99,7 +99,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-11',
+          'PRD-011',
           'Milk shake 300ml',
           'Milk shake de 300ml',
           'dessert',
@@ -108,7 +108,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-12',
+          'PRD-012',
           'Milk shake 500ml',
           'Milk shake de 500ml',
           'dessert',
@@ -117,7 +117,7 @@ export class CreateSamplePayments1716417934429 implements MigrationInterface {
           NOW()
       ), (
           UUID(),
-          'PRD-13',
+          'PRD-013',
           'Milk shake 1L',
           'Milk shake de 1L',
           'dessert',

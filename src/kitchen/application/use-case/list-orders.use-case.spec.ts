@@ -25,7 +25,7 @@ describe('ListOrdersUseCase', () => {
         customerName: 'Customer 1',
         items: [
           OrderItemValueObject.create({
-            code: 'PRD-1',
+            code: 'PRD-001',
             name: 'X-Burger',
             price: MoneyValueObject.create(1500),
             quantity: ItemQuantityValueObject.create(2),
@@ -92,7 +92,7 @@ describe('ListOrdersUseCase', () => {
       expect(result[0].orders[0].id).toBe('order-id-1');
       expect(result[0].orders[0].customerName).toBe('Customer 1');
       expect(result[0].orders[0].items).toHaveLength(1);
-      expect(result[0].orders[0].items[0].code).toBe('PRD-1');
+      expect(result[0].orders[0].items[0].code).toBe('PRD-001');
       expect(result[0].orders[0].items[0].name).toBe('X-Burger');
       expect(result[0].orders[0].items[0].price).toBe(15);
       expect(result[0].orders[0].items[0].quantity).toBe(2);

@@ -35,7 +35,7 @@ describe('ListOrdersController', () => {
         customerName: 'Customer 1',
         items: [
           {
-            code: 'PRD-1',
+            code: 'PRD-001',
             name: 'X-Burger',
             price: 1500,
             quantity: 2,
