@@ -143,7 +143,7 @@ describe('CreatePaymentUseCase', () => {
       expect(paymentSetExternalPaymentIdSpy).toHaveBeenCalledWith(
         'external-payment-id',
       );
-      expect(orderMarkAsPaidSpy).toHaveBeenCalledTimes(1);
+      expect(orderMarkAsPaidSpy).not.toHaveBeenCalled();
       expect(paymentRepositoryMock.save).toHaveBeenCalledTimes(1);
       expect(paymentRepositoryMock.save).toHaveBeenCalledWith(payment);
       expect(orderRepositoryMock.save).toHaveBeenCalledTimes(1);

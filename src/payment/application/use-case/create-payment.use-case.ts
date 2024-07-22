@@ -117,7 +117,6 @@ export class CreatePaymentUseCase implements UseCase<Input, Output> {
         });
 
       payment.setExternalPaymentId(id);
-      order.markAsPaid();
 
       return {
         id: payment.id,

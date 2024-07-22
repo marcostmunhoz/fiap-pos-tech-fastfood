@@ -1,6 +1,8 @@
 import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
 import { PaymentRepository } from '@/payment/domain/repository/payment.repository.interface';
+import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
+import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import {
   getDomainCompletePaymentEntityProps,
   getDomainPaymentEntity,
@@ -8,6 +10,8 @@ import {
 } from '@/testing/payment/helpers';
 import { getPaymentGatewayServiceMock } from '@/testing/payment/mock/payment-gateway-service.mock';
 import { getPaymentRepositoryMock } from '@/testing/payment/mock/payment.repository.mock';
+import { getDomainOrderEntity } from '@/testing/shared/helpers';
+import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
 import {
   Input,
@@ -16,14 +20,20 @@ import {
 } from './refresh-payment-status.use-case';
 
 describe('RefreshPaymentStatusUseCase', () => {
-  let repositoryMock: jest.Mocked<PaymentRepository>;
+  let paymentRepositoryMock: jest.Mocked<PaymentRepository>;
+  let orderRepositoryMock: jest.Mocked<OrderRepository>;
   let paymentGatewayMock: jest.Mocked<PaymentGatewayService>;
   let sut: RefreshPaymentStatusUseCase;
 
   beforeEach(() => {
-    repositoryMock = getPaymentRepositoryMock();
+    paymentRepositoryMock = getPaymentRepositoryMock();
+    orderRepositoryMock = getOrderRepositoryMock();
     paymentGatewayMock = getPaymentGatewayServiceMock();
-    sut = new RefreshPaymentStatusUseCase(repositoryMock, paymentGatewayMock);
+    sut = new RefreshPaymentStatusUseCase(
+      paymentRepositoryMock,
+      orderRepositoryMock,
+      paymentGatewayMock,
+    );
   });
 
   describe('execute', function () {
@@ -32,7 +42,7 @@ describe('RefreshPaymentStatusUseCase', () => {
       const input: Input = {
         id: getValidPaymentEntityId(),
       };
-      repositoryMock.findById.mockResolvedValueOnce(null);
+      paymentRepositoryMock.findById.mockResolvedValueOnce(null);
 
       // Act
       const act = () => sut.execute(input);
@@ -51,7 +61,7 @@ describe('RefreshPaymentStatusUseCase', () => {
       const input: Input = {
         id: entity.id,
       };
-      repositoryMock.findById.mockResolvedValueOnce(entity);
+      paymentRepositoryMock.findById.mockResolvedValueOnce(entity);
 
       // Act
       const act = () => sut.execute(input);
@@ -71,7 +81,7 @@ describe('RefreshPaymentStatusUseCase', () => {
       const input: Input = {
         id: entity.id,
       };
-      repositoryMock.findById.mockResolvedValueOnce(entity);
+      paymentRepositoryMock.findById.mockResolvedValueOnce(entity);
 
       // Act
       const act = () => sut.execute(input);
@@ -96,7 +106,7 @@ describe('RefreshPaymentStatusUseCase', () => {
       const output: Output = {
         status: PaymentStatusEnum.PAID,
       };
-      repositoryMock.findById.mockResolvedValueOnce(entity);
+      paymentRepositoryMock.findById.mockResolvedValueOnce(entity);
 
       // Act
       const result = await sut.execute(input);
@@ -117,7 +127,7 @@ describe('RefreshPaymentStatusUseCase', () => {
       const input: Input = {
         id: entity.id,
       };
-      repositoryMock.findById.mockResolvedValueOnce(entity);
+      paymentRepositoryMock.findById.mockResolvedValueOnce(entity);
       paymentGatewayMock.isPixPaid.mockRejectedValueOnce(new Error('Error'));
 
       // Act
@@ -137,25 +147,34 @@ describe('RefreshPaymentStatusUseCase', () => {
         paymentMethod: PaymentMethodEnum.PIX,
         status: PaymentStatusEnum.PENDING,
       });
+      const order = getDomainOrderEntity({
+        id: EntityIdValueObject.create(entity.orderId),
+      });
       const input: Input = {
         id: entity.id,
       };
       const output: Output = {
         status: PaymentStatusEnum.PAID,
       };
-      repositoryMock.findById.mockResolvedValueOnce(entity);
+      paymentRepositoryMock.findById.mockResolvedValueOnce(entity);
+      orderRepositoryMock.findById.mockResolvedValueOnce(order);
       paymentGatewayMock.isPixPaid.mockResolvedValueOnce(true);
+      const paymentMarkAsPaidSpy = jest.spyOn(entity, 'markAsPaid');
+      const orderMarkAsPaidSpy = jest.spyOn(order, 'markAsPaid');
 
       // Act
       const result = await sut.execute(input);
 
       // Assert
+      expect(paymentMarkAsPaidSpy).toHaveBeenCalledTimes(1);
+      expect(orderMarkAsPaidSpy).toHaveBeenCalledTimes(1);
       expect(paymentGatewayMock.isPixPaid).toHaveBeenCalledTimes(1);
       expect(paymentGatewayMock.isPixPaid).toHaveBeenCalledWith(
         entity.externalPaymentId,
       );
-      expect(repositoryMock.save).toHaveBeenCalledTimes(1);
-      expect(repositoryMock.save).toHaveBeenCalledWith(entity);
+      expect(paymentRepositoryMock.save).toHaveBeenCalledTimes(1);
+      expect(orderRepositoryMock.save).toHaveBeenCalledTimes(1);
+      expect(paymentRepositoryMock.save).toHaveBeenCalledWith(entity);
       expect(entity.status).toEqual(PaymentStatusEnum.PAID);
       expect(result).toEqual(output);
     });

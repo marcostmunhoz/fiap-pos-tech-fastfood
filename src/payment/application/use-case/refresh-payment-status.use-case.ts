@@ -10,7 +10,9 @@ import {
 } from '@/payment/tokens';
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
+import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
+import { OrderRepositoryToken } from '@/shared/tokens';
 import { Inject } from '@nestjs/common';
 import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
 
@@ -25,13 +27,15 @@ export type Output = {
 export class RefreshPaymentStatusUseCase implements UseCase<Input, Output> {
   constructor(
     @Inject(PaymentRepositoryToken)
-    private readonly repository: PaymentRepository,
+    private readonly paymentRepository: PaymentRepository,
+    @Inject(OrderRepositoryToken)
+    private readonly orderRepository: OrderRepository,
     @Inject(PaymentGatewayServiceToken)
     private readonly paymentGatewayService: PaymentGatewayService,
   ) {}
 
   async execute(input: Input): Promise<Output> {
-    const payment = await this.repository.findById(input.id);
+    const payment = await this.paymentRepository.findById(input.id);
 
     if (!payment) {
       throw new EntityNotFoundException('Payment not found with given ID.');
@@ -53,6 +57,10 @@ export class RefreshPaymentStatusUseCase implements UseCase<Input, Output> {
       return { status: payment.status };
     }
 
+    const order = await this.orderRepository.findById(
+      EntityIdValueObject.create(payment.orderId),
+    );
+
     try {
       const idPaid = await this.paymentGatewayService.isPixPaid(
         payment.externalPaymentId,
@@ -60,7 +68,9 @@ export class RefreshPaymentStatusUseCase implements UseCase<Input, Output> {
 
       if (idPaid) {
         payment.markAsPaid();
-        this.repository.save(payment);
+        order.markAsPaid();
+        this.paymentRepository.save(payment);
+        this.orderRepository.save(order);
       }
 
       return { status: payment.status };
