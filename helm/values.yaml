@@ -1,6 +1,6 @@
 db:
   image: 'southamerica-east1-docker.pkg.dev/fiap-pos-graduacao/fastfood/fastfood-db'
-  tag: '0.6.0'
+  tag: '0.16.0'
   databaseName: fastfood
   user: fastfood
   password: secret
@@ -20,7 +20,7 @@ db:
 
 monolith:
   image: 'southamerica-east1-docker.pkg.dev/fiap-pos-graduacao/fastfood/fastfood-monolith'
-  tag: '0.6.0'
+  tag: '0.16.0'
   host: 0.0.0.0
   port: 3000
   service:
@@ -41,3 +41,9 @@ monolith:
     cpuAverageUtilization: 70
     memoryAverageUtilization: 70
     stabilizationWindowSeconds: 30
+
+webhook:
+  image: 'southamerica-east1-docker.pkg.dev/fiap-pos-graduacao/fastfood/fastfood-webhook'
+  tag: '0.16.0'
+  path: api/v1/payments/invoice-event
+  successfulJobsHistoryLimit: 3
