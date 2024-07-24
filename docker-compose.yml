@@ -1,7 +1,7 @@
 services:
   db:
     build:
-      context: ./deploy/db
+      context: ./docker/db
       dockerfile: Dockerfile
       target: dev
     ports:
@@ -10,7 +10,7 @@ services:
       - default
     volumes:
       - db_data:/var/lib/mysql
-      - ./deploy/db/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/db/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       # Check for the testing database to be ready, meaning the entrypoint script finished running
       test: mysql testing -uroot -proot --silent --execute "select 1;"
@@ -26,7 +26,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./deploy/app/Dockerfile
+      dockerfile: ./docker/app/Dockerfile
       target: dev
     ports:
       - '3000:3000'
