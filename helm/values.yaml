@@ -1,6 +1,6 @@
 db:
   image: 'marcostmunhoz/fiap-tech-challenge-fastfood-db'
-  tag: '0.16.0'
+  tag: '0.17.0'
   databaseName: fastfood
   user: fastfood
   password: secret
@@ -20,7 +20,7 @@ db:
 
 monolith:
   image: 'marcostmunhoz/fiap-tech-challenge-fastfood-monolith'
-  tag: '0.16.0'
+  tag: '0.17.0'
   host: 0.0.0.0
   port: 3000
   service:
@@ -44,6 +44,6 @@ monolith:
 
 webhook:
   image: 'marcostmunhoz/fiap-tech-challenge-fastfood-webhook'
-  tag: '0.16.0'
+  tag: '0.17.0'
   path: api/v1/payments/invoice-event
   successfulJobsHistoryLimit: 3

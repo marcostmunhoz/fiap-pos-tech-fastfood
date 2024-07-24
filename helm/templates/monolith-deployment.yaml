@@ -33,24 +33,24 @@ spec:
           value: {{ include "fastfood.fullname" . }}-db-service.default.svc.cluster.local
         - name: MYSQL_DATABASE_PORT
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.port
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_USERNAME
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.user
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.password
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_NAME
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.database
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         image: {{ .Values.monolith.image }}:{{ .Values.monolith.tag }}
         name: {{ include "fastfood.fullname" . }}-monolith
         ports:
@@ -78,24 +78,24 @@ spec:
           value: {{ include "fastfood.fullname" . }}-db-service.default.svc.cluster.local
         - name: MYSQL_DATABASE_PORT
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.port
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_USERNAME
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.user
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.password
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_NAME
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.database
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
       - command:
         - sh
         - -c
@@ -105,24 +105,24 @@ spec:
           value: {{ include "fastfood.fullname" . }}-db-service.default.svc.cluster.local
         - name: MYSQL_DATABASE_PORT
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.port
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_USERNAME
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.user
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_PASSWORD
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.password
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         - name: MYSQL_DATABASE_NAME
           valueFrom:
-            configMapKeyRef:
+            secretKeyRef:
               key: db.database
-              name: {{ include "fastfood.fullname" . }}-db-config
+              name: {{ include "fastfood.fullname" . }}-db-secret
         image: {{ .Values.monolith.image }}:{{ .Values.monolith.tag }}
         name: migrations
 
