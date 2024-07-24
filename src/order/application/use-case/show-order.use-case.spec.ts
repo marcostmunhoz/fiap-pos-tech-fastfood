@@ -24,14 +24,16 @@ describe('ShowOrderUseCase', () => {
       const output: Output = {
         items: entity.items,
         total: entity.total,
+        status: entity.status,
       };
 
       // Act
-      await sut.execute({ id: entity.id });
+      const result = await sut.execute({ id: entity.id });
 
       // Assert
       expect(repository.findById).toHaveBeenCalledTimes(1);
       expect(repository.findById).toHaveBeenCalledWith(entity.id);
+      expect(result).toEqual(output);
     });
 
     it('should throw an error when a order with the given id does not exists', async () => {

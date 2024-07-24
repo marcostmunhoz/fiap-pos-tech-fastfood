@@ -1,4 +1,5 @@
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
+import { OrderStatusEnum } from '@/shared/domain/enum/order-status.enum';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
@@ -19,6 +20,7 @@ export type Output = {
     quantity: ItemQuantityValueObject;
   }>;
   total: MoneyValueObject;
+  status: OrderStatusEnum;
 };
 
 export class ShowOrderUseCase implements UseCase<Input, Output> {
@@ -37,6 +39,7 @@ export class ShowOrderUseCase implements UseCase<Input, Output> {
     return {
       items: order.items,
       total: order.total,
+      status: order.status,
     };
   }
 }

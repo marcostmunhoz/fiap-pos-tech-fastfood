@@ -44,6 +44,7 @@ describe('ShowOrderController', () => {
       const output: Output = {
         items: order.items,
         total: order.total,
+        status: order.status,
       };
       useCaseMock.execute.mockResolvedValue(output);
 
@@ -63,6 +64,7 @@ describe('ShowOrderController', () => {
           },
         ],
         total: order.total.valueAsFloat,
+        status: order.status,
       });
     });
   });

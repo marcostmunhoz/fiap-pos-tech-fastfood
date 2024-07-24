@@ -1,3 +1,4 @@
+import { OrderStatusEnum } from '@/shared/domain/enum/order-status.enum';
 import { MoneyValueObject } from '@/shared/domain/value-object/money.value-object';
 import {
   TransformObjectKeyOptional,
@@ -44,4 +45,11 @@ export class OrderResponse {
     type: Number,
   })
   total: number;
+
+  @Expose()
+  @ApiProperty({
+    example: OrderStatusEnum.PAID,
+    enum: OrderStatusEnum,
+  })
+  status: string;
 }
