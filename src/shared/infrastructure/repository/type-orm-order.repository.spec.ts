@@ -96,27 +96,27 @@ describe('TypeOrmOrderRepository', () => {
     });
   });
 
-  describe('listAscendingByUpdatedAt', () => {
+  describe('listAscendingByCreatedAt', () => {
     it('should return a list of orders ordered by updatedAt', async () => {
       // Arrange
       const dbEntities = [
         getInfrastructureOrderEntity({
-          id: EntityIdValueObject.create('order-id-1'),
+          id: EntityIdValueObject.create('order-id-2'),
         }),
         getInfrastructureOrderEntity({
-          id: EntityIdValueObject.create('order-id-2'),
+          id: EntityIdValueObject.create('order-id-1'),
         }),
       ];
       repositoryMock.find.mockResolvedValue(dbEntities);
 
       // Act
-      const result = await sut.listAscendingByUpdatedAt(OrderStatusEnum.PAID);
+      const result = await sut.listAscendingByCreatedAt(OrderStatusEnum.PAID);
 
       // Assert
       expect(repositoryMock.find).toHaveBeenCalledTimes(1);
       expect(repositoryMock.find).toHaveBeenCalledWith({
         where: { status: OrderStatusEnum.PAID },
-        order: { updatedAt: 'ASC' },
+        order: { createdAt: 'ASC' },
       });
       expect(result).toHaveLength(2);
       expect(result[0]).toBeInstanceOf(DomainOrderEntity);

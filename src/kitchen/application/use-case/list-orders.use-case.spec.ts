@@ -69,17 +69,17 @@ describe('ListOrdersUseCase', () => {
         status: OrderStatusEnum.READY,
         updatedAt: new Date('2021-01-06T00:00:00Z'),
       });
-      repository.listAscendingByUpdatedAt.mockResolvedValueOnce([
-        order1,
-        order2,
+      repository.listAscendingByCreatedAt.mockResolvedValueOnce([
+        order5,
+        order6,
       ]);
-      repository.listAscendingByUpdatedAt.mockResolvedValueOnce([
+      repository.listAscendingByCreatedAt.mockResolvedValueOnce([
         order3,
         order4,
       ]);
-      repository.listAscendingByUpdatedAt.mockResolvedValueOnce([
-        order5,
-        order6,
+      repository.listAscendingByCreatedAt.mockResolvedValueOnce([
+        order1,
+        order2,
       ]);
 
       // Act
@@ -87,22 +87,17 @@ describe('ListOrdersUseCase', () => {
 
       // Assert
       expect(result).toHaveLength(3);
-      expect(result[0].status).toBe(OrderStatusEnum.PAID);
+      expect(result[0].status).toBe(OrderStatusEnum.READY);
       expect(result[0].orders).toHaveLength(2);
-      expect(result[0].orders[0].id).toBe('order-id-1');
-      expect(result[0].orders[0].customerName).toBe('Customer 1');
-      expect(result[0].orders[0].items).toHaveLength(1);
-      expect(result[0].orders[0].items[0].code).toBe('PRD-001');
-      expect(result[0].orders[0].items[0].name).toBe('X-Burger');
-      expect(result[0].orders[0].items[0].price).toBe(15);
-      expect(result[0].orders[0].items[0].quantity).toBe(2);
+      expect(result[0].orders[0].id).toBe('order-id-5');
+      expect(result[0].orders[0].customerName).toBe('Customer 5');
       expect(result[0].orders[0].updatedAt).toEqual(
-        new Date('2021-01-01T00:00:00Z'),
+        new Date('2021-01-05T00:00:00Z'),
       );
-      expect(result[0].orders[1].id).toBe('order-id-2');
-      expect(result[0].orders[1].customerName).toBe('Customer 2');
+      expect(result[0].orders[1].id).toBe('order-id-6');
+      expect(result[0].orders[1].customerName).toBe('Customer 6');
       expect(result[0].orders[1].updatedAt).toEqual(
-        new Date('2021-01-02T00:00:00Z'),
+        new Date('2021-01-06T00:00:00Z'),
       );
       expect(result[1].status).toBe(OrderStatusEnum.PREPARING);
       expect(result[1].orders).toHaveLength(2);
@@ -116,17 +111,22 @@ describe('ListOrdersUseCase', () => {
       expect(result[1].orders[1].updatedAt).toEqual(
         new Date('2021-01-04T00:00:00Z'),
       );
-      expect(result[2].status).toBe(OrderStatusEnum.READY);
+      expect(result[2].status).toBe(OrderStatusEnum.PAID);
       expect(result[2].orders).toHaveLength(2);
-      expect(result[2].orders[0].id).toBe('order-id-5');
-      expect(result[2].orders[0].customerName).toBe('Customer 5');
+      expect(result[2].orders[0].id).toBe('order-id-1');
+      expect(result[2].orders[0].customerName).toBe('Customer 1');
+      expect(result[2].orders[0].items).toHaveLength(1);
+      expect(result[2].orders[0].items[0].code).toBe('PRD-001');
+      expect(result[2].orders[0].items[0].name).toBe('X-Burger');
+      expect(result[2].orders[0].items[0].price).toBe(15);
+      expect(result[2].orders[0].items[0].quantity).toBe(2);
       expect(result[2].orders[0].updatedAt).toEqual(
-        new Date('2021-01-05T00:00:00Z'),
+        new Date('2021-01-01T00:00:00Z'),
       );
-      expect(result[2].orders[1].id).toBe('order-id-6');
-      expect(result[2].orders[1].customerName).toBe('Customer 6');
+      expect(result[2].orders[1].id).toBe('order-id-2');
+      expect(result[2].orders[1].customerName).toBe('Customer 2');
       expect(result[2].orders[1].updatedAt).toEqual(
-        new Date('2021-01-06T00:00:00Z'),
+        new Date('2021-01-02T00:00:00Z'),
       );
     });
   });

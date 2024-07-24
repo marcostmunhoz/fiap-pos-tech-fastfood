@@ -29,28 +29,27 @@ export class ListOrdersUseCase implements UseCase<Input, Output> {
   ) {}
 
   async execute(): Promise<Output> {
-    const paidOrders = await this.orderRepository.listAscendingByUpdatedAt(
-      OrderStatusEnum.PAID,
-    );
-    const preparingOrders = await this.orderRepository.listAscendingByUpdatedAt(
-      OrderStatusEnum.PREPARING,
-    );
-    const readyOrders = await this.orderRepository.listAscendingByUpdatedAt(
+    const readyOrders = await this.orderRepository.listAscendingByCreatedAt(
       OrderStatusEnum.READY,
     );
-
+    const preparingOrders = await this.orderRepository.listAscendingByCreatedAt(
+      OrderStatusEnum.PREPARING,
+    );
+    const paidOrders = await this.orderRepository.listAscendingByCreatedAt(
+      OrderStatusEnum.PAID,
+    );
     return [
       {
-        status: OrderStatusEnum.PAID,
-        orders: paidOrders.map(this.mapOrderToOutput),
+        status: OrderStatusEnum.READY,
+        orders: readyOrders.map(this.mapOrderToOutput),
       },
       {
         status: OrderStatusEnum.PREPARING,
         orders: preparingOrders.map(this.mapOrderToOutput),
       },
       {
-        status: OrderStatusEnum.READY,
-        orders: readyOrders.map(this.mapOrderToOutput),
+        status: OrderStatusEnum.PAID,
+        orders: paidOrders.map(this.mapOrderToOutput),
       },
     ];
   }

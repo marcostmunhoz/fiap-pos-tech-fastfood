@@ -36,12 +36,12 @@ export class TypeOrmOrderRepository implements OrderRepository {
     return this.mapToDomainEntity(dbEntity);
   }
 
-  async listAscendingByUpdatedAt(
+  async listAscendingByCreatedAt(
     status: OrderStatusEnum,
   ): Promise<DomainOrderEntity[]> {
     const dbEntities = await this.typeOrmRepository.find({
       where: { status },
-      order: { updatedAt: 'ASC' },
+      order: { createdAt: 'ASC' },
     });
 
     return dbEntities.map((entity) => this.mapToDomainEntity(entity));
