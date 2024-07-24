@@ -1,5 +1,5 @@
 db:
-  image: 'southamerica-east1-docker.pkg.dev/fiap-pos-graduacao/fastfood/fastfood-db'
+  image: 'marcostmunhoz/fiap-tech-challenge-fastfood-db'
   tag: '0.16.0'
   databaseName: fastfood
   user: fastfood
@@ -19,7 +19,7 @@ db:
       limits: 1Gi
 
 monolith:
-  image: 'southamerica-east1-docker.pkg.dev/fiap-pos-graduacao/fastfood/fastfood-monolith'
+  image: 'marcostmunhoz/fiap-tech-challenge-fastfood-monolith'
   tag: '0.16.0'
   host: 0.0.0.0
   port: 3000
@@ -43,7 +43,7 @@ monolith:
     stabilizationWindowSeconds: 30
 
 webhook:
-  image: 'southamerica-east1-docker.pkg.dev/fiap-pos-graduacao/fastfood/fastfood-webhook'
+  image: 'marcostmunhoz/fiap-tech-challenge-fastfood-webhook'
   tag: '0.16.0'
   path: api/v1/payments/invoice-event
   successfulJobsHistoryLimit: 3

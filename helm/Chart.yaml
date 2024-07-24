@@ -1,5 +1,5 @@
 apiVersion: v2
-name: fastfood
+name: fiap-tech-challenge-fastfood-helm
 description: A Helm chart for Kubernetes
 type: application
 version: 0.16.0
