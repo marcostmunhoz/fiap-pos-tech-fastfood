@@ -19,9 +19,8 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           token_format: 'access_token'
-          service_account: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
-          workload_identity_provider: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
           access_token_lifetime: 300s
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
 
       - name: Login to Artifact Registry
         uses: docker/login-action@v3
