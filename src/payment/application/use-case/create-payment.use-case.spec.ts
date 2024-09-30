@@ -12,6 +12,7 @@ import { getPaymentGatewayServiceMock } from '@/testing/payment/mock/payment-gat
 import { getPaymentFactoryMock } from '@/testing/payment/mock/payment.factory.mock';
 import { getPaymentRepositoryMock } from '@/testing/payment/mock/payment.repository.mock';
 import { getDomainOrderEntity } from '@/testing/shared/helpers';
+import { mockUser } from '@/testing/shared/mock/auth.guard.mock';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import { PaymentGatewayService } from '../service/payment-gateway.service.interface';
 import { CreatePaymentUseCase, Input, Output } from './create-payment.use-case';
@@ -41,6 +42,7 @@ describe('CreatePaymentUseCase', () => {
       // Arrange
       const input: Input = {
         orderId: getValidOrderEntityId(),
+        user: mockUser,
         paymentMethod: PaymentMethodEnum.PIX,
       };
       paymentRepositoryMock.existsWithOrderIdAndNotFailed.mockResolvedValue(
@@ -60,6 +62,7 @@ describe('CreatePaymentUseCase', () => {
       // Arrange
       const input: Input = {
         orderId: getValidOrderEntityId(),
+        user: mockUser,
         paymentMethod: PaymentMethodEnum.PIX,
       };
       paymentRepositoryMock.existsWithOrderIdAndNotFailed.mockResolvedValue(
@@ -74,6 +77,28 @@ describe('CreatePaymentUseCase', () => {
       expect(act).rejects.toThrow('Order not found with given ID.');
     });
 
+    it('should throw an error if order belongs to another user', async () => {
+      // Arrange
+      const order = getDomainOrderEntity({
+        customerId: 'another-user-id',
+      });
+      const input: Input = {
+        orderId: getValidOrderEntityId(),
+        user: mockUser,
+        paymentMethod: PaymentMethodEnum.PIX,
+      };
+      paymentRepositoryMock.existsWithOrderIdAndNotFailed.mockResolvedValue(
+        false,
+      );
+      orderRepositoryMock.findById.mockResolvedValue(order);
+
+      // Act
+      const result = sut.execute(input);
+
+      // Assert
+      await expect(result).rejects.toThrow('Unauthorized resource.');
+    });
+
     it('should return a PixPaymentOutput if payment method is PIX', async () => {
       // Arrange
       const order = getDomainOrderEntity();
@@ -86,6 +111,7 @@ describe('CreatePaymentUseCase', () => {
       });
       const input: Input = {
         orderId: order.id.value,
+        user: mockUser,
         paymentMethod: PaymentMethodEnum.PIX,
       };
       const output: Output = {
@@ -180,6 +206,7 @@ describe('CreatePaymentUseCase', () => {
         });
         const input: Input = {
           orderId: order.id.value,
+          user: mockUser,
           paymentMethod,
           cardData: {
             number: '1111222233334444',
@@ -250,6 +277,7 @@ describe('CreatePaymentUseCase', () => {
       });
       const input: Input = {
         orderId: order.id.value,
+        user: mockUser,
         paymentMethod: PaymentMethodEnum.PIX,
       };
       const paymentMarkAsFailedSpy = jest.spyOn(payment, 'markAsFailed');

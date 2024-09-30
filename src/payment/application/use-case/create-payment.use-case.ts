@@ -10,8 +10,10 @@ import {
 } from '@/payment/tokens';
 import { UseCase } from '@/shared/application/use-case/use-case.interface';
 import { OrderEntity } from '@/shared/domain/entity/order.entity';
+import { UserEntity } from '@/shared/domain/entity/user.entity';
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
+import { UnauthorizedResourceException } from '@/shared/domain/exception/unauthorized-resource.exception';
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { EntityIdValueObject } from '@/shared/domain/value-object/entity-id.value-object';
 import { OrderRepositoryToken } from '@/shared/tokens';
@@ -20,6 +22,7 @@ import { PaymentGatewayService } from '../service/payment-gateway.service.interf
 
 export type CardPaymentInput = {
   orderId: string;
+  user: UserEntity;
   paymentMethod:
     | PaymentMethodEnum.CREDIT_CARD
     | PaymentMethodEnum.DEBIT_CARD
@@ -33,6 +36,7 @@ export type CardPaymentInput = {
 
 export type PixPaymentInput = {
   orderId: string;
+  user: UserEntity;
   paymentMethod: PaymentMethodEnum.PIX;
 };
 
@@ -82,6 +86,10 @@ export class CreatePaymentUseCase implements UseCase<Input, Output> {
 
     if (!order) {
       throw new EntityNotFoundException('Order not found with given ID.');
+    }
+
+    if (order.customerId !== input.user.id) {
+      throw new UnauthorizedResourceException();
     }
 
     const payment = this.paymentFactory.createPayment({

@@ -1,6 +1,7 @@
 import { PaymentEntity } from '@/payment/infrastructure/entity/payment.entity';
 import { OrderEntity } from '@/shared/infrastructure/entity/order.entity';
 import { ProductEntity } from '@/shared/infrastructure/entity/product.entity';
+import { getAuthToken } from '@/testing/shared/mock/auth.guard.mock';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
 import { DatabaseHelper, createApp } from './helpers';
@@ -10,15 +11,19 @@ describe('Payment (e2e)', () => {
   let databaseHelper: DatabaseHelper;
 
   const createOrder = async (app: INestApplication): Promise<string> => {
-    await supertest(app.getHttpServer()).post('/api/v1/products').send({
-      code: 'PRD-001',
-      name: 'Product',
-      description: 'Product description',
-      category: 'food',
-      price: 10.99,
-    });
+    await supertest(app.getHttpServer())
+      .post('/api/v1/products')
+      .auth(getAuthToken(app), { type: 'bearer' })
+      .send({
+        code: 'PRD-001',
+        name: 'Product',
+        description: 'Product description',
+        category: 'food',
+        price: 10.99,
+      });
     const createOrderResponse = await supertest(app.getHttpServer())
       .post('/api/v1/orders')
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send({
         customerId: 'customer-id',
         customerName: 'Customer Name',
@@ -37,6 +42,7 @@ describe('Payment (e2e)', () => {
   ): Promise<supertest.Test> => {
     return await supertest(app.getHttpServer())
       .post(`/api/v1/payments`)
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send({
         orderId,
         paymentMethod,
@@ -82,6 +88,7 @@ describe('Payment (e2e)', () => {
     // Act
     const createResponse = await supertest(app.getHttpServer())
       .post(`/api/v1/payments`)
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send({
         orderId,
         paymentMethod: 'pix',

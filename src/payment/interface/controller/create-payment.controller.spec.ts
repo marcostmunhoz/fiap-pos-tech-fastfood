@@ -4,10 +4,15 @@ import {
 } from '@/payment/application/use-case/create-payment.use-case';
 import { PaymentMethodEnum } from '@/payment/domain/enum/payment-method.enum';
 import { PaymentStatusEnum } from '@/payment/domain/enum/payment-status.enum';
+import { AuthGuard } from '@/shared/infrastructure/guard/auth.guard';
 import {
   getValidOrderEntityId,
   getValidPaymentEntityId,
 } from '@/testing/payment/helpers';
+import {
+  createMockGuard,
+  mockUser,
+} from '@/testing/shared/mock/auth.guard.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreatePaymentRequest } from '../dto/create-payment.request';
 import { CreatePaymentController } from './create-payment.controller';
@@ -28,7 +33,10 @@ describe('CreatePaymentController', () => {
         },
       ],
       controllers: [CreatePaymentController],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue(createMockGuard())
+      .compile();
 
     controller = module.get<CreatePaymentController>(CreatePaymentController);
   });
@@ -36,6 +44,7 @@ describe('CreatePaymentController', () => {
   describe('execute', () => {
     it('should return the created Pix payment', async () => {
       // Arrange
+      const user = mockUser;
       const request: CreatePaymentRequest = {
         orderId: getValidOrderEntityId(),
         paymentMethod: PaymentMethodEnum.PIX,
@@ -51,11 +60,11 @@ describe('CreatePaymentController', () => {
       useCaseMock.execute.mockResolvedValue(output);
 
       // Act
-      const response = await controller.execute(request);
+      const response = await controller.execute(mockUser, request);
 
       // Assert
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
-      expect(useCaseMock.execute).toHaveBeenCalledWith(request);
+      expect(useCaseMock.execute).toHaveBeenCalledWith({ ...request, user });
       expect(response).toEqual({
         id: output.id.value,
         status: output.status,
@@ -68,6 +77,7 @@ describe('CreatePaymentController', () => {
 
     it('should return the created card payment', async () => {
       // Arrange
+      const user = mockUser;
       const request: CreatePaymentRequest = {
         orderId: getValidOrderEntityId(),
         paymentMethod: PaymentMethodEnum.PIX,
@@ -84,11 +94,11 @@ describe('CreatePaymentController', () => {
       useCaseMock.execute.mockResolvedValue(output);
 
       // Act
-      const response = await controller.execute(request);
+      const response = await controller.execute(user, request);
 
       // Assert
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
-      expect(useCaseMock.execute).toHaveBeenCalledWith(request);
+      expect(useCaseMock.execute).toHaveBeenCalledWith({ ...request, user });
       expect(response).toEqual({
         id: output.id.value,
         status: output.status,
