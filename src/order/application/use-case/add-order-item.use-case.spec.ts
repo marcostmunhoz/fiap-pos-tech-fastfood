@@ -8,6 +8,7 @@ import {
   getDomainProductEntity,
   getValidOrderEntityId,
 } from '@/testing/shared/helpers';
+import { mockUser } from '@/testing/shared/mock/auth.guard.mock';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import { getProductRepositoryMock } from '@/testing/shared/mock/product.repository.mock';
 import { AddOrderItemUseCase, Input } from './add-order-item.use-case';
@@ -34,6 +35,7 @@ describe('AddOrderItemUseCase', () => {
       const product = getDomainProductEntity();
       const input: Input = {
         id: order.id,
+        user: mockUser,
         data: {
           productCode: product.code.value,
           quantity: ItemQuantityValueObject.create(2),
@@ -70,6 +72,7 @@ describe('AddOrderItemUseCase', () => {
       // Arrange
       const input: Input = {
         id: getValidOrderEntityId(),
+        user: mockUser,
         data: {
           productCode: 'product-code',
           quantity: ItemQuantityValueObject.create(2),
@@ -84,6 +87,33 @@ describe('AddOrderItemUseCase', () => {
       await expect(result).rejects.toThrow('Order not found with given ID.');
     });
 
+    it('should throw an error if order belongs to another user', async () => {
+      // Arrange
+      const orderProps = getDomainCompleteOrderEntityProps();
+      const order = getDomainOrderEntity({
+        ...orderProps,
+        items: [],
+        customerId: 'another-user-id',
+      });
+      const product = getDomainProductEntity();
+      const input: Input = {
+        id: order.id,
+        user: mockUser,
+        data: {
+          productCode: product.code.value,
+          quantity: ItemQuantityValueObject.create(2),
+        },
+      };
+      orderRepositoryMock.findById.mockResolvedValue(order);
+      productRepositoryMock.findByCode.mockResolvedValue(product);
+
+      // Act
+      const result = sut.execute(input);
+
+      // Assert
+      await expect(result).rejects.toThrow('Unauthorized resource.');
+    });
+
     it('should throw an error if product is not found', async () => {
       // Arrange
       const orderProps = getDomainCompleteOrderEntityProps();
@@ -93,6 +123,7 @@ describe('AddOrderItemUseCase', () => {
       });
       const input: Input = {
         id: order.id,
+        user: mockUser,
         data: {
           productCode: 'product-code',
           quantity: ItemQuantityValueObject.create(2),

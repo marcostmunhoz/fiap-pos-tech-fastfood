@@ -6,6 +6,7 @@ import {
   getValidOrderEntityId,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
+import { mockUser } from '@/testing/shared/mock/auth.guard.mock';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import {
   ChangeOrderItemQuantityUseCase,
@@ -33,6 +34,7 @@ describe('ChangeOrderItemQuantityUseCase', () => {
       const orderSpy = jest.spyOn(order, 'changeItemQuantity');
       const input: Input = {
         id: order.id,
+        user: mockUser,
         data: {
           productCode: item.code,
           quantity: ItemQuantityValueObject.create(5),
@@ -59,6 +61,7 @@ describe('ChangeOrderItemQuantityUseCase', () => {
       // Arrange
       const input: Input = {
         id: getValidOrderEntityId(),
+        user: mockUser,
         data: {
           productCode: 'product-code',
           quantity: ItemQuantityValueObject.create(2),
@@ -74,5 +77,27 @@ describe('ChangeOrderItemQuantityUseCase', () => {
         'Order not found with given ID.',
       );
     });
+  });
+
+  it('should throw an error if order belongs to another user', async () => {
+    // Arrange
+    const order = getDomainOrderEntity({
+      customerId: 'another-user-id',
+    });
+    const input: Input = {
+      id: getValidOrderEntityId(),
+      user: mockUser,
+      data: {
+        productCode: 'product-code',
+        quantity: ItemQuantityValueObject.create(2),
+      },
+    };
+    orderRepositoryMock.findById.mockResolvedValue(order);
+
+    // Act
+    const result = sut.execute(input);
+
+    // Assert
+    await expect(result).rejects.toThrow('Unauthorized resource.');
   });
 });

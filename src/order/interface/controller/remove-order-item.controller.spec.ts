@@ -1,5 +1,10 @@
 import { RemoveOrderItemUseCase } from '@/order/application/use-case/remove-order-item.use-case';
+import { AuthGuard } from '@/shared/infrastructure/guard/auth.guard';
 import { getValidOrderEntityId } from '@/testing/shared/helpers';
+import {
+  createMockGuard,
+  mockUser,
+} from '@/testing/shared/mock/auth.guard.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderParam } from '../dto/order.param';
 import { RemoveOrderItemRequest } from '../dto/remove-order-item.request';
@@ -21,7 +26,10 @@ describe('RemoveOrderItemController', () => {
         },
       ],
       controllers: [RemoveOrderItemController],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue(createMockGuard())
+      .compile();
 
     controller = module.get<RemoveOrderItemController>(
       RemoveOrderItemController,
@@ -31,6 +39,7 @@ describe('RemoveOrderItemController', () => {
   describe('execute', () => {
     it('should remove an item from the existing order', async () => {
       // Arrange
+      const user = mockUser;
       const param: OrderParam = {
         id: getValidOrderEntityId(),
       };
@@ -39,13 +48,14 @@ describe('RemoveOrderItemController', () => {
       };
 
       // Act
-      await controller.execute(param, request);
+      await controller.execute(mockUser, param, request);
 
       // Assert
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
       expect(useCaseMock.execute).toHaveBeenCalledWith({
         id: param.id,
         data: request,
+        user,
       });
     });
   });

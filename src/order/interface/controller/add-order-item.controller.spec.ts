@@ -1,6 +1,11 @@
 import { AddOrderItemUseCase } from '@/order/application/use-case/add-order-item.use-case';
 import { ItemQuantityValueObject } from '@/shared/domain/value-object/item-quantity.value-object';
+import { AuthGuard } from '@/shared/infrastructure/guard/auth.guard';
 import { getValidOrderEntityId } from '@/testing/shared/helpers';
+import {
+  createMockGuard,
+  mockUser,
+} from '@/testing/shared/mock/auth.guard.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderItemRequest } from '../dto/order-item.request';
 import { OrderParam } from '../dto/order.param';
@@ -22,7 +27,10 @@ describe('AddOrderItemController', () => {
         },
       ],
       controllers: [AddOrderItemController],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue(createMockGuard())
+      .compile();
 
     controller = module.get<AddOrderItemController>(AddOrderItemController);
   });
@@ -30,6 +38,7 @@ describe('AddOrderItemController', () => {
   describe('execute', () => {
     it('should add an item to the existing order', async () => {
       // Arrange
+      const user = mockUser;
       const param: OrderParam = {
         id: getValidOrderEntityId(),
       };
@@ -39,13 +48,14 @@ describe('AddOrderItemController', () => {
       };
 
       // Act
-      await controller.execute(param, request);
+      await controller.execute(mockUser, param, request);
 
       // Assert
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
       expect(useCaseMock.execute).toHaveBeenCalledWith({
         id: param.id,
         data: request,
+        user,
       });
     });
   });

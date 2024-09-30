@@ -4,8 +4,9 @@ import {
   getDomainOrderEntity,
   getValidOrderEntityId,
 } from '@/testing/shared/helpers';
+import { mockUser } from '@/testing/shared/mock/auth.guard.mock';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
-import { Output, ShowOrderUseCase } from './show-order.use-case';
+import { Input, Output, ShowOrderUseCase } from './show-order.use-case';
 
 describe('ShowOrderUseCase', () => {
   let sut: ShowOrderUseCase;
@@ -28,7 +29,7 @@ describe('ShowOrderUseCase', () => {
       };
 
       // Act
-      const result = await sut.execute({ id: entity.id });
+      const result = await sut.execute({ id: entity.id, user: mockUser });
 
       // Assert
       expect(repository.findById).toHaveBeenCalledTimes(1);
@@ -42,12 +43,30 @@ describe('ShowOrderUseCase', () => {
       repository.findById.mockResolvedValue(null);
 
       // Act
-      const result = sut.execute({ id });
+      const result = sut.execute({ id, user: mockUser });
 
       // Assert
       expect(result).rejects.toThrow(
         new EntityNotFoundException('Order not found with given ID.'),
       );
+    });
+
+    it('should throw an error if order belongs to another user', async () => {
+      // Arrange
+      const order = getDomainOrderEntity({
+        customerId: 'another-user-id',
+      });
+      const input: Input = {
+        id: getValidOrderEntityId(),
+        user: mockUser,
+      };
+      repository.findById.mockResolvedValue(order);
+
+      // Act
+      const result = sut.execute(input);
+
+      // Assert
+      await expect(result).rejects.toThrow('Unauthorized resource.');
     });
   });
 });

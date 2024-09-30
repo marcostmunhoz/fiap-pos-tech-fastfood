@@ -2,11 +2,16 @@ import {
   Output,
   ShowOrderUseCase,
 } from '@/order/application/use-case/show-order.use-case';
+import { AuthGuard } from '@/shared/infrastructure/guard/auth.guard';
 import {
   getDomainCompleteOrderEntityProps,
   getDomainOrderEntity,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
+import {
+  createMockGuard,
+  mockUser,
+} from '@/testing/shared/mock/auth.guard.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ShowOrderController } from './show-order.controller';
 
@@ -26,7 +31,10 @@ describe('ShowOrderController', () => {
         },
       ],
       controllers: [ShowOrderController],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue(createMockGuard())
+      .compile();
 
     controller = module.get<ShowOrderController>(ShowOrderController);
   });
@@ -34,6 +42,7 @@ describe('ShowOrderController', () => {
   describe('execute', () => {
     it('should return an existing order', async () => {
       // Arrange
+      const user = mockUser;
       const props = getDomainCompleteOrderEntityProps();
       const item = getValidOrderItem();
       const order = getDomainOrderEntity({
@@ -49,11 +58,11 @@ describe('ShowOrderController', () => {
       useCaseMock.execute.mockResolvedValue(output);
 
       // Act
-      const response = await controller.execute({ id });
+      const response = await controller.execute(user, { id });
 
       // Assert
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
-      expect(useCaseMock.execute).toHaveBeenCalledWith({ id });
+      expect(useCaseMock.execute).toHaveBeenCalledWith({ id, user });
       expect(response).toEqual({
         items: [
           {

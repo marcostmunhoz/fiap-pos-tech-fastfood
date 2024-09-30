@@ -1,6 +1,7 @@
 import { DomainException } from '@/shared/domain/exception/domain.exception';
 import { EntityAlreadyExistsException } from '@/shared/domain/exception/entity-already-exists.exception';
 import { EntityNotFoundException } from '@/shared/domain/exception/entity-not-found.exception';
+import { UnauthorizedResourceException } from '@/shared/domain/exception/unauthorized-resource.exception';
 import {
   ArgumentsHost,
   Catch,
@@ -35,6 +36,10 @@ export class DomainExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof EntityAlreadyExistsException) {
       response.statusCode = HttpStatus.CONFLICT;
+    }
+
+    if (exception instanceof UnauthorizedResourceException) {
+      response.statusCode = HttpStatus.FORBIDDEN;
     }
 
     return response;

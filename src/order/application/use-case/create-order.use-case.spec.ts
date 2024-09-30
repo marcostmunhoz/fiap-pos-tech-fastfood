@@ -1,6 +1,7 @@
 import { OrderFactory } from '@/shared/domain/factory/order.factory';
 import { OrderRepository } from '@/shared/domain/repository/order.repository.interface';
 import { getDomainOrderEntity } from '@/testing/shared/helpers';
+import { mockUser } from '@/testing/shared/mock/auth.guard.mock';
 import { getOrderFactoryMock } from '@/testing/shared/mock/order.factory.mock';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import { CreateOrderUseCase, Input } from './create-order.use-case';
@@ -19,10 +20,7 @@ describe('CreateOrderUseCase', () => {
   describe('execute', () => {
     it('should create an order', async () => {
       // Arrange
-      const input: Input = {
-        customerId: 'customer-id',
-        customerName: 'customer-name',
-      };
+      const input: Input = mockUser;
       const order = getDomainOrderEntity();
       orderFactoryMock.createOrder.mockReturnValueOnce(order);
       orderRepositoryMock.save.mockResolvedValueOnce(order);
@@ -32,7 +30,10 @@ describe('CreateOrderUseCase', () => {
 
       // Assert
       expect(orderFactoryMock.createOrder).toHaveBeenCalledTimes(1);
-      expect(orderFactoryMock.createOrder).toHaveBeenCalledWith(input);
+      expect(orderFactoryMock.createOrder).toHaveBeenCalledWith({
+        customerId: input.id,
+        customerName: input.name,
+      });
       expect(orderRepositoryMock.save).toHaveBeenCalledTimes(1);
       expect(orderRepositoryMock.save).toHaveBeenCalledWith(order);
       expect(result.id.equals(order.id)).toBe(true);

@@ -5,6 +5,7 @@ import {
   getValidOrderEntityId,
   getValidOrderItem,
 } from '@/testing/shared/helpers';
+import { mockUser } from '@/testing/shared/mock/auth.guard.mock';
 import { getOrderRepositoryMock } from '@/testing/shared/mock/order.repository.mock';
 import { Input, RemoveOrderItemUseCase } from './remove-order-item.use-case';
 
@@ -28,6 +29,7 @@ describe('RemoveOrderItemUseCase', () => {
       });
       const input: Input = {
         id: order.id,
+        user: mockUser,
         data: {
           productCode: item.code,
         },
@@ -51,6 +53,7 @@ describe('RemoveOrderItemUseCase', () => {
       // Arrange
       const input: Input = {
         id: getValidOrderEntityId(),
+        user: mockUser,
         data: {
           productCode: 'product-code',
         },
@@ -65,5 +68,26 @@ describe('RemoveOrderItemUseCase', () => {
       expect(orderRepositoryMock.findById).toHaveBeenCalledTimes(1);
       expect(orderRepositoryMock.findById).toHaveBeenCalledWith(input.id);
     });
+  });
+
+  it('should throw an error if order belongs to another user', async () => {
+    // Arrange
+    const order = getDomainOrderEntity({
+      customerId: 'another-user-id',
+    });
+    const input: Input = {
+      id: getValidOrderEntityId(),
+      user: mockUser,
+      data: {
+        productCode: 'product-code',
+      },
+    };
+    orderRepositoryMock.findById.mockResolvedValue(order);
+
+    // Act
+    const result = sut.execute(input);
+
+    // Assert
+    await expect(result).rejects.toThrow('Unauthorized resource.');
   });
 });

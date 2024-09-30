@@ -1,5 +1,6 @@
 import { OrderEntity } from '@/shared/infrastructure/entity/order.entity';
 import { ProductEntity } from '@/shared/infrastructure/entity/product.entity';
+import { getAuthToken } from '@/testing/shared/mock/auth.guard.mock';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
 import { DatabaseHelper, createApp } from './helpers';
@@ -18,6 +19,7 @@ describe('Order (e2e)', () => {
 
     return await supertest(app.getHttpServer())
       .post('/api/v1/orders')
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send(body);
   };
 
@@ -51,6 +53,7 @@ describe('Order (e2e)', () => {
 
     return await supertest(app.getHttpServer())
       .post(`/api/v1/orders/${orderId}/add-item`)
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send(body);
   };
 
@@ -61,6 +64,7 @@ describe('Order (e2e)', () => {
   ): Promise<supertest.Test> => {
     return await supertest(app.getHttpServer())
       .post(`/api/v1/orders/${orderId}/remove-item`)
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send({ productCode });
   };
 
@@ -77,6 +81,7 @@ describe('Order (e2e)', () => {
 
     return await supertest(app.getHttpServer())
       .post(`/api/v1/orders/${orderId}/change-item-quantity`)
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send(body);
   };
 
@@ -84,9 +89,10 @@ describe('Order (e2e)', () => {
     app: INestApplication,
     orderId: string,
   ): Promise<supertest.Test> => {
-    return await supertest(app.getHttpServer()).get(
-      `/api/v1/orders/${orderId}`,
-    );
+    return await supertest(app.getHttpServer())
+      .get(`/api/v1/orders/${orderId}`)
+      .auth(getAuthToken(app), { type: 'bearer' })
+      .send();
   };
 
   beforeAll(async () => {
@@ -169,6 +175,7 @@ describe('Order (e2e)', () => {
     // Act
     const response = await supertest(app.getHttpServer())
       .post('/api/v1/orders')
+      .auth(getAuthToken(app), { type: 'bearer' })
       .send(body);
 
     // Assert
