@@ -16,6 +16,7 @@ async function bootstrap() {
     .setTitle('Fastfood Totem API')
     .setDescription('API for Fastfood Totem')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, document, {

@@ -41,9 +41,9 @@ export const getValidMoney = (): MoneyValueObject =>
 export const getValidProductCategory = (): ProductCategoryEnum =>
   ProductCategoryEnum.FOOD;
 
-export const getValidOrderCustomerId = (): string => 'customer-id';
+export const getValidOrderCustomerId = (): string => 'mock-id';
 
-export const getValidOrderCustomerName = (): string => 'Customer Name';
+export const getValidOrderCustomerName = (): string => 'John Doe';
 
 export const getValidOrderItem = (): OrderItemValueObject =>
   OrderItemValueObject.create({

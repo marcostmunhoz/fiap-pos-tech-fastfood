@@ -18,6 +18,7 @@ services:
       timeout: 5s
       retries: 5
     environment:
+      JWT_SECRET: secret
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: app
       MYSQL_USER: app

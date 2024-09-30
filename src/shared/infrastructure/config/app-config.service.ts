@@ -12,4 +12,8 @@ export class AppConfigService {
   getPort(): number {
     return parseInt(this.configService.get('PORT'), 10) || 3000;
   }
+
+  getJwtSecret(): string {
+    return this.configService.get('JWT_SECRET');
+  }
 }

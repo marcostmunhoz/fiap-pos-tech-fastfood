@@ -60,4 +60,15 @@ describe('AppConfigService', () => {
       expect(configService.get).toHaveBeenCalledWith('PORT');
     });
   });
+
+  describe('getJwtSecret', () => {
+    it('should return the JWT secret', () => {
+      const jwtSecret = 'jwt-secret';
+      jest.spyOn(configService, 'get').mockReturnValue(jwtSecret);
+
+      expect(service.getJwtSecret()).toBe(jwtSecret);
+      expect(configService.get).toHaveBeenCalledTimes(1);
+      expect(configService.get).toHaveBeenCalledWith('JWT_SECRET');
+    });
+  });
 });

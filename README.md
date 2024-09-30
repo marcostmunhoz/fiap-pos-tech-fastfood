@@ -5,7 +5,6 @@
 This project was developed as part of the evaluation process for the postgraduate course in Software Architecture at FIAP. The goal is to create an application that simulates a system used in a fast food environment, from the kiosk to order delivery. To achieve this goal, the idea is to build a monolithic application with a hexagonal architecture, applying DDD concepts. The application includes the following features:
 
 - Product management
-- Customer registration (identified or not)
 - Order placement
 - Payment (simulated)
 - Order status tracking
@@ -18,7 +17,10 @@ MySQL was also used as the database for data persistence.
 
 ## Installing the application
 
-Check the [installation guide](docs/install.md) for more details.
+```bash
+nvm use
+yarn install
+```
 
 ## Accessing the API Documentation
 

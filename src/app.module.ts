@@ -3,12 +3,11 @@ import { DatabaseConfigService } from '@/shared/infrastructure/config/database-c
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
-import { CustomerModule } from './customer/customer.module';
+import { HealthModule } from './health/health.module';
 import { KitchenModule } from './kitchen/kitchen.module';
 import { OrderModule } from './order/order.module';
 import { PaymentModule } from './payment/payment.module';
 import { SharedModule } from './shared/shared.module';
-import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -29,7 +28,6 @@ import { HealthModule } from './health/health.module';
       inject: [DatabaseConfigService],
     }),
     ConfigModule,
-    CustomerModule,
     SharedModule,
     KitchenModule,
     OrderModule,
