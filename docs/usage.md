@@ -6,6 +6,8 @@ Once the application is running, you can start using it by following the steps b
 
 To start a new order, you need to have a customer ID. If the customer is already registered, you can find it by its CPF. If not, you can create a new customer.
 
+Note: the customer registration and logging in flow is handled by the auth serverless function. The customer must be logged in in order to start and fill an order.
+
 ```mermaid
 flowchart TD
   A[Start a new order] --> B{Customer already exists?}
@@ -19,9 +21,7 @@ flowchart TD
   G --> H[Order started]
 ```
 
-- Find customer by CPF: [GET /api/v1/customers/{cpf}](http://localhost:3000/api/docs#/Customers/FindCustomerByCpfController_execute)
-- Create a new customer with identification/create a new anonymous customer: [POST /api/v1/customers](http://localhost:3000/api/docs#/Customers/CreateCustomerController_execute)
-- Create a new order using customer ID: [POST /api/v1/orders](http://localhost:3000/api/docs#/Orders/CreateOrderController_execute)
+- Create a new order: [POST /api/v1/orders](http://localhost:3000/api/docs#/Orders/CreateOrderController_execute)
 
 ### Tips for development environment:
 

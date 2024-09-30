@@ -1,5 +1,5 @@
 import { DeleteProductUseCase } from '@/kitchen/application/use-case/delete-product.use-case';
-import { getDomainCompleteCustomerEntityProps } from '@/testing/customer/helpers';
+import { getDomainCompleteProductEntityProps } from '@/testing/shared/helpers';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteProductController } from './delete-product.controller';
 
@@ -27,7 +27,7 @@ describe('DeleteProductController', () => {
   describe('execute', () => {
     it('should delete an existing product', async () => {
       // Arrange
-      const props = getDomainCompleteCustomerEntityProps();
+      const props = getDomainCompleteProductEntityProps();
       const { id } = props;
 
       // Act
