@@ -60,7 +60,7 @@ jobs:
       - name: Build webhook
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./docker/webhook
           file: ./docker/webhook/Dockerfile
           push: true
           tags: marcostmunhoz/fiap-tech-challenge-fastfood-webhook:${{ env.VERSION }}
