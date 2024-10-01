@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Get the version from package.json
-        run: echo "VERSION=${{ fromJson(file('package.json')).version }}" >> $GITHUB_ENV
+        run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
       - name: Build
         uses: docker/build-push-action@v6
