@@ -49,10 +49,18 @@ jobs:
       - name: Get the version from package.json
         run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
-      - name: Build
+      - name: Build app
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/app/Dockerfile
           push: true
           tags: marcostmunhoz/fiap-tech-challenge-fastfood-monolith:${{ env.VERSION }}
+
+      - name: Build webhook
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/webhook/Dockerfile
+          push: true
+          tags: marcostmunhoz/fiap-tech-challenge-fastfood-webhook:${{ env.VERSION }}
