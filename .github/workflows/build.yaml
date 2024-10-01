@@ -1,6 +1,8 @@
-name: build
+name: 'Build'
 
-on: [push]
+on:
+  push:
+    branches: ['main']
 
 jobs:
   build:
@@ -8,38 +10,25 @@ jobs:
 
     permissions:
       contents: read
-      id-token: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          token_format: 'access_token'
-          access_token_lifetime: 300s
-          credentials_json: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Login to Artifact Registry
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.GCLOUD_REGISTRY }}
-          username: oauth2accesstoken
-          password: ${{ steps.auth.outputs.access_token }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push the app Docker image
+      - name: Get the version from package.json
+        run: echo "VERSION=${{ fromJson(file('package.json')).version }}" >> $GITHUB_ENV
+
+      - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./docker/app/Dockerfile
           push: true
-          tags: ${{ secrets.GCLOUD_REGISTRY }}/${{ secrets.GCLOUD_PROJECT_ID }}/fastfood-monolith:${{ github.sha }}
-
-      - name: Build and push the db Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./docker/db
-          push: true
-          tags: ${{ secrets.GCLOUD_REGISTRY }}/${{ secrets.GCLOUD_PROJECT_ID }}/fastfood-db:${{ github.sha }}
+          tags: marcostmunhoz/fiap-tech-challenge-fastfood-monolith:${{ env.VERSION }}
